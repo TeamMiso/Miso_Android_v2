@@ -24,11 +24,11 @@ jobs:
           restore-keys: |
             ${{runner.os}}-gradle-
 
-      - name: Setup JDK 11
+      - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: "zulu"
-          java-version: 11
+          java-version: 17
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
@@ -48,7 +48,7 @@ jobs:
         
         with:
           title: ✅ MISO-Android-CI 성공! ✅
-          webhook: ${{ secrets.SMS_DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.MISO_DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           image: ${{ secrets.SUCCESS_IMAGE }}
           description: 정답이다, 연금술사!
@@ -61,7 +61,7 @@ jobs:
         if: ${{ failure() }}
         with:
           title: ❗️ MISO-Android-CI 실패! ❗️
-          webhook: ${{ secrets.SMS_DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.MISO_DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           image: ${{ secrets.FAILED_IMAGE }}
           description: CI 실패...
