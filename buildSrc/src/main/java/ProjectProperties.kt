@@ -10,6 +10,7 @@ object ProjectProperties {
         const val TARGET_SDK_VERSION = 33
 
         val JAVA_VERSION = JavaVersion.VERSION_1_8
+        val JWM_TARGET = JavaVersion.VERSION_1_8.toString()
     }
 
     object Gradle {
