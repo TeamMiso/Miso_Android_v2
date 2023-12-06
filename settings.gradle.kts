@@ -17,3 +17,4 @@ rootProject.name = "Miso_Android_v2"
 include(":di")
 include(":data")
 include(":domain")
+include(":design-system")
