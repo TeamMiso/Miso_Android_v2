@@ -51,7 +51,7 @@ jobs:
           webhook: ${{ secrets.MISO_DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           image: ${{ secrets.SUCCESS_IMAGE }}
-          description: 정답이다, 연금술사!
+          description: Happy, happy, HAPPY!
           color: 00FF00
           url: "https://github.com/sarisia/actions-status-discord"
           username: MISO CI 봇
@@ -64,7 +64,7 @@ jobs:
           webhook: ${{ secrets.MISO_DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           image: ${{ secrets.FAILED_IMAGE }}
-          description: CI 실패...
+          description: Despair
           color: 00FF00
           url: "https://github.com/sarisia/actions-status-discord"
           username: MISO CI 봇
