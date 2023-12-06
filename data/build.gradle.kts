@@ -28,7 +28,7 @@ android {
         targetCompatibility = ProjectProperties.Versions.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = ProjectProperties.Versions.JWM_TARGET
+        jvmTarget = ProjectProperties.Versions.JVM_TARGET
     }
 }
 

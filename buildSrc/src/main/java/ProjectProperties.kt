@@ -12,7 +12,7 @@ object ProjectProperties {
         const val VERSION_NAME = "1.0"
 
         val JAVA_VERSION = JavaVersion.VERSION_1_8
-        val JWM_TARGET = JavaVersion.VERSION_1_8.toString()
+        val JVM_TARGET = JavaVersion.VERSION_1_8.toString()
     }
 
     object Gradle {
