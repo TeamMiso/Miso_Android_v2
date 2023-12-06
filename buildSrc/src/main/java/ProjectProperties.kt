@@ -8,6 +8,8 @@ object ProjectProperties {
         const val BUILD_TOOLS_VERSION = "32.0.0"
         const val MIN_SDK_VERSION = 26
         const val TARGET_SDK_VERSION = 33
+        const val VERSION_CODE = 1
+        const val VERSION_NAME = "1.0"
 
         val JAVA_VERSION = JavaVersion.VERSION_1_8
         val JWM_TARGET = JavaVersion.VERSION_1_8.toString()
