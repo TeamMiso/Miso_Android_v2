@@ -14,5 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Miso_Android_v2"
-include(":app")
- 
+include(":di")
