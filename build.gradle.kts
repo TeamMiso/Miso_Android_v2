@@ -1,5 +1,12 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
 plugins {
-    id("com.android.application") version "8.1.4" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
+    id(ProjectProperties.Gradle.APPLICATION) version Versions.GRADLE_ANDROID apply false
+    id(ProjectProperties.Gradle.LIBRARY) version Versions.GRADLE_ANDROID apply false
+    id(ProjectProperties.Gradle.KOTLIN) version Versions.GRADLE_KOTLIN apply false
 }
