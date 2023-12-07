@@ -19,7 +19,7 @@ object ProjectProperties {
         const val APPLICATION = "com.android.application"
         const val LIBRARY = "com.android.library"
         const val KOTLIN = "org.jetbrains.kotlin.android"
-        const val HILT_PLUGIN = "com.google.dagger.hilt.android"
+        const val HILT = "com.google.dagger.hilt.android"
         const val KAPT = "kotlin-kapt"
 
         const val DI = "com.miso.miso_android_v2"
