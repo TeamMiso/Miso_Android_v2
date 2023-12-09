@@ -1,7 +1,7 @@
 plugins {
     id(ProjectProperties.Gradle.KOTLIN)
     id(ProjectProperties.Gradle.LIBRARY)
-    id(ProjectProperties.Gradle.KAPT)
+    kotlin(ProjectProperties.Gradle.KAPT)
 }
 
 android {

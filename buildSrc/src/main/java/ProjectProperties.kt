@@ -20,7 +20,7 @@ object ProjectProperties {
         const val LIBRARY = "com.android.library"
         const val KOTLIN = "org.jetbrains.kotlin.android"
         const val HILT = "com.google.dagger.hilt.android"
-        const val KAPT = "kotlin-kapt"
+        const val KAPT = "kapt"
 
         const val DI = "com.miso.miso_android_v2"
         const val DATA = "com.miso.data"
