@@ -1,6 +1,8 @@
 plugins {
     id(ProjectProperties.Gradle.KOTLIN)
     id(ProjectProperties.Gradle.LIBRARY)
+    id(ProjectProperties.Gradle.HILT)
+    id(ProjectProperties.Gradle.KAPT)
 }
 
 android {
@@ -23,16 +25,33 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = ProjectProperties.Versions.JAVA_VERSION
         targetCompatibility = ProjectProperties.Versions.JAVA_VERSION
     }
+
     kotlinOptions {
         jvmTarget = ProjectProperties.Versions.JVM_TARGET
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.COMPOSE
     }
 }
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":design-system"))
+
+    //hilt
+    implementation(Dependency.Google.HILT_ANDROID)
+    kapt(Dependency.Google.HILT_ANDROID_COMPILER)
+    
     //aac
     implementation(Dependency.AndroidX.APP_COMPAT)
     implementation(Dependency.AndroidX.CORE_KTX)
