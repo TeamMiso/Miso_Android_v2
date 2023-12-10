@@ -11,15 +11,16 @@ object ProjectProperties {
         const val VERSION_CODE = 1
         const val VERSION_NAME = "1.0"
 
-        val JAVA_VERSION = JavaVersion.VERSION_1_8
-        val JVM_TARGET = JavaVersion.VERSION_1_8.toString()
+        val JAVA_VERSION = JavaVersion.VERSION_17
+        val JVM_TARGET = JavaVersion.VERSION_17.toString()
     }
 
     object Gradle {
         const val APPLICATION = "com.android.application"
         const val LIBRARY = "com.android.library"
         const val KOTLIN = "org.jetbrains.kotlin.android"
-        const val KAPT = "kotlin-kapt"
+        const val HILT = "com.google.dagger.hilt.android"
+        const val KAPT = "kapt"
 
         const val DI = "com.miso.miso_android_v2"
         const val DATA = "com.miso.data"

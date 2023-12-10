@@ -1,6 +1,8 @@
 plugins {
     id(ProjectProperties.Gradle.KOTLIN)
-    id(ProjectProperties.Gradle.LIBRARY)
+    id(ProjectProperties.Gradle.APPLICATION)
+    id(ProjectProperties.Gradle.HILT)
+    kotlin(ProjectProperties.Gradle.KAPT)
 }
 
 android {
@@ -8,8 +10,11 @@ android {
     compileSdk = ProjectProperties.Versions.COMPILE_SDK_VERSION
 
     defaultConfig {
+        applicationId = ProjectProperties.Gradle.DI
         minSdk = ProjectProperties.Versions.MIN_SDK_VERSION
         targetSdk = ProjectProperties.Versions.TARGET_SDK_VERSION
+        versionCode = ProjectProperties.Versions.VERSION_CODE
+        versionName = ProjectProperties.Versions.VERSION_NAME
 
         testInstrumentationRunner = ProjectProperties.TestProperties.TEST_RUNNER
         vectorDrawables {
@@ -36,6 +41,14 @@ android {
 }
 
 dependencies {
+    implementation(project(":presentation"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
+    //hilt
+    implementation(Dependency.Google.HILT_ANDROID)
+    kapt(Dependency.Google.HILT_ANDROID_COMPILER)
+
     //androidx
     implementation(Dependency.AndroidX.CORE_KTX)
     implementation(Dependency.AndroidX.APP_COMPAT)

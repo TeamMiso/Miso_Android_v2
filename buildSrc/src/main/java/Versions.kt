@@ -14,7 +14,7 @@ object Versions {
     const val GITHUB_CORE = "8.1.0"
 
     //compose
-    const val COMPOSE = "1.4.2"
+    const val COMPOSE = "1.4.3"
     const val ACTIVITY_COMPOSE = "1.7.2"
     const val COMPOSE_MATERIAL = "1.4.3"
     const val COMPOSE_MATERIAL3 = "1.1.1"

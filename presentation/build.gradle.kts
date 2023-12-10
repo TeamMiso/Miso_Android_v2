@@ -1,6 +1,8 @@
 plugins {
     id(ProjectProperties.Gradle.KOTLIN)
     id(ProjectProperties.Gradle.LIBRARY)
+    id(ProjectProperties.Gradle.HILT)
+    kotlin(ProjectProperties.Gradle.KAPT)
 }
 
 android {
@@ -12,6 +14,9 @@ android {
 
         testInstrumentationRunner = ProjectProperties.TestProperties.TEST_RUNNER
         consumerProguardFiles(ProjectProperties.Files.CONSUMER_PROGUARDFILES)
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -23,16 +28,38 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = ProjectProperties.Versions.JAVA_VERSION
         targetCompatibility = ProjectProperties.Versions.JAVA_VERSION
     }
+
     kotlinOptions {
         jvmTarget = ProjectProperties.Versions.JVM_TARGET
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.COMPOSE
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":design-system"))
+
+    //hilt
+    implementation(Dependency.Google.HILT_ANDROID)
+    kapt(Dependency.Google.HILT_ANDROID_COMPILER)
+
     //aac
     implementation(Dependency.AndroidX.APP_COMPAT)
     implementation(Dependency.AndroidX.CORE_KTX)
