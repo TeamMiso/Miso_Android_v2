@@ -9,21 +9,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.miso.presentation.ui.ui.theme.Miso_Android_v2Theme
+import com.miso.design_system.theme.MisoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Miso_Android_v2Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android Miso App")
-                }
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                Greeting("Android Miso App")
             }
         }
     }
@@ -31,16 +29,18 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+    MisoTheme { colors, typography ->
+        Text(
+            text = name,
+            color = colors.PRIMARY,
+            style = typography.titleLarge,
+            fontWeight = FontWeight.ExtraLight
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    Miso_Android_v2Theme {
-        Greeting("Android Miso App")
-    }
+    Greeting("Android Miso App")
 }
