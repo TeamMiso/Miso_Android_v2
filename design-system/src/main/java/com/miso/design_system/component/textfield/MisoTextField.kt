@@ -124,11 +124,11 @@ fun MisoTextField(
                 },
                 readOnly = readOnly
             )
-            if (isError) {
-                Column(
-                    modifier = Modifier.height(32.dp),
-                    verticalArrangement = Arrangement.Center
-                ) {
+            Column(
+                modifier = Modifier.height(32.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                if (isError) {
                     Text(text = errorText, color = colors.RED1, style = typography.captionLarge)
                 }
             }
