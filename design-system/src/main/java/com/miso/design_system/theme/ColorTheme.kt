@@ -3,7 +3,6 @@ package com.miso.design_system.theme
 import androidx.compose.ui.graphics.Color
 
 abstract class ColorTheme {
-
     abstract val PRIMARY: Color
 
     abstract val BULE1: Color
