@@ -18,7 +18,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,20 +27,16 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = ProjectProperties.Versions.JAVA_VERSION
         targetCompatibility = ProjectProperties.Versions.JAVA_VERSION
     }
-
     kotlinOptions {
         jvmTarget = ProjectProperties.Versions.JVM_TARGET
     }
-
     buildFeatures {
         compose = true
     }
-
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.COMPOSE
     }
