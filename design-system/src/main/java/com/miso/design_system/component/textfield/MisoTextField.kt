@@ -1,14 +1,14 @@
 package com.miso.design_system.component.textfield
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -153,6 +153,7 @@ fun MisoPasswordTextField(
     maxLines: Int = Int.MAX_VALUE,
     singleLine: Boolean = false,
     onValueChange: (String) -> Unit = {},
+    onFindPasswordClick: () -> Unit = {}
 ) {
     val isFocused = remember { mutableStateOf(false) }
 
@@ -229,7 +230,11 @@ fun MisoPasswordTextField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (isError) {
-                    Text(text = errorText, color = colors.RED1, style = typography.captionLarge)
+                    Text(
+                        text = errorText,
+                        color = colors.RED1,
+                        style = typography.captionLarge
+                    )
                 } else {
                     Text(
                         text = "비밀번호를 잊으셨나요?",
@@ -239,7 +244,15 @@ fun MisoPasswordTextField(
                 }
 
                 if (isLink) {
-                    Text(text = "비밀번호 찾기", color = colors.BULE1, style = typography.captionLarge)
+                    Text(
+                        text = "비밀번호 찾기",
+                        modifier = Modifier.clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) { onFindPasswordClick() },
+                        color = colors.BULE1,
+                        style = typography.captionLarge
+                    )
                 }
             }
         }

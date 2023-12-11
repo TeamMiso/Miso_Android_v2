@@ -41,14 +41,14 @@ fun LoginScreen(
 ) {
     val isKeyboardOpen by keyboardAsState()
 
-    var sizeState by remember { mutableStateOf(0.25f) }
+    var sizeState by remember { mutableStateOf(0.2f) }
     val animatedSpacerHeight by animateFloatAsState(targetValue = sizeState)
 
     LaunchedEffect(isKeyboardOpen) {
         if (isKeyboardOpen) {
             sizeState = 0.1f
         } else {
-            sizeState = 0.25f
+            sizeState = 0.2f
             focusManager.clearFocus()
         }
     }
@@ -105,7 +105,7 @@ fun LoginScreen(
         ) {
 
         }
-        Spacer(modifier = Modifier.height(85.dp))
+        Spacer(modifier = Modifier.height(80.dp))
         LoginDividerAndText()
         Spacer(modifier = Modifier.height(16.dp))
         MoveSignUpText {
