@@ -102,15 +102,11 @@ fun LoginScreen(
         MisoButton(
             modifier = Modifier,
             text = "로그인",
-        ) {
-
-        }
+        ) {}
         Spacer(modifier = Modifier.height(80.dp))
         LoginDividerAndText()
         Spacer(modifier = Modifier.height(16.dp))
-        MoveSignUpText {
-
-        }
+        MoveSignUpText {}
     }
 }
 

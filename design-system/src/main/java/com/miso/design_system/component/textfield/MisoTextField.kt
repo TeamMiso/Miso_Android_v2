@@ -58,9 +58,7 @@ fun MisoTextField(
     onValueChange: (String) -> Unit = {},
     onClickButton: () -> Unit,
 ) {
-    val isFocused = remember {
-        mutableStateOf(false)
-    }
+    val isFocused = remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -242,7 +240,6 @@ fun MisoPasswordTextField(
                         style = typography.captionLarge
                     )
                 }
-
                 if (isLink) {
                     Text(
                         text = "비밀번호 찾기",
