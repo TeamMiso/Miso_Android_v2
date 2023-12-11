@@ -63,7 +63,14 @@ object MisoTypography {
     )
 
     @Stable
-    val caption = TextStyle(
+    val captionLarge = TextStyle(
+        fontFamily = suit,
+        fontSize = 12.sp,
+        lineHeight = 15.6.sp
+    )
+
+    @Stable
+    val captionSmall = TextStyle(
         fontFamily = suit,
         fontSize = 10.sp,
         lineHeight = 16.sp
