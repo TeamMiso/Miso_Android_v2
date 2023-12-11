@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.sp
 import com.miso.design_system.R
 
 object MisoTypography {
-
     private val suit = FontFamily(
         Font(R.font.suitv1_bold, FontWeight.Bold),
         Font(R.font.suitv1_extrabold, FontWeight.ExtraBold),
