@@ -110,7 +110,7 @@ fun MisoTextField(
                 singleLine = singleLine,
                 textStyle = typography.textSmall,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    textColor = if (isError) colors.RED1 else colors.GREYSCALE3,
+                    textColor = if (isError) colors.RED1 else colors.BLACK,
                     backgroundColor = Color.Transparent,
                     placeholderColor = colors.GREYSCALE3,
                     focusedBorderColor = Color.Transparent,
@@ -207,7 +207,7 @@ fun MisoPasswordTextField(
                 singleLine = singleLine,
                 textStyle = typography.textSmall,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    textColor = if (isError) colors.RED1 else colors.GREYSCALE3,
+                    textColor = if (isError) colors.RED1 else colors.BLACK,
                     backgroundColor = Color.Transparent,
                     placeholderColor = colors.GREYSCALE3,
                     focusedBorderColor = Color.Transparent,
