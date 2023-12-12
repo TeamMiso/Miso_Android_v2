@@ -19,6 +19,9 @@ object Dependency {
         const val CAMERA_CAMERA2 = "androidx.camera:camera-camera2:${Versions.CAMERA}-rc01@aar"
         const val CAMERA_LIFECYCLE = "androidx.camera:camera-lifecycle:${Versions.CAMERA}"
         const val CAMERA_EXTENSIONS = "androidx.camera:camera-extensions:${Versions.CAMERA}"
+
+        //splash
+        const val SPLASH = "androidx.core:core-splashscreen:${Versions.SPLASH}"
     }
 
     object Compose {

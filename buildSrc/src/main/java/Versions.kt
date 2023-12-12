@@ -67,4 +67,7 @@ object Versions {
 
     //markdown
     const val MARKDOWN = "0.3.6"
+
+    //splash
+    const val SPLASH = "1.0.1"
 }

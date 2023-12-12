@@ -81,4 +81,6 @@ dependencies {
     implementation(Dependency.Google.ACCOMPANIST)
     implementation(Dependency.Google.ACCOMPANIST_PERMISSION)
 
+    //splash
+    implementation(Dependency.AndroidX.SPLASH)
 }
