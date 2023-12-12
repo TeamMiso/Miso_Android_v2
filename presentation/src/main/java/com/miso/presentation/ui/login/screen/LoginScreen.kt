@@ -37,7 +37,8 @@ import com.miso.presentation.ui.util.keyboardAsState
 
 @Composable
 fun LoginScreen(
-    focusManager: FocusManager
+    focusManager: FocusManager,
+    onSignUpClick: () -> Unit
 ) {
     val isKeyboardOpen by keyboardAsState()
 
@@ -77,7 +78,7 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             placeHolder = "이메일",
             setText = email,
-            isError = true,
+            isError = false,
             onValueChange = { emailChange ->
                 email = emailChange
             },
@@ -92,7 +93,7 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             placeHolder = "비밀번호",
             setText = password,
-            isError = true,
+            isError = false,
             onValueChange = { passwordChange ->
                 password = passwordChange
             },
@@ -106,12 +107,17 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(80.dp))
         LoginDividerAndText()
         Spacer(modifier = Modifier.height(16.dp))
-        MoveSignUpText {}
+        MoveSignUpText {
+            onSignUpClick()
+        }
     }
 }
 
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreView() {
-    LoginScreen(focusManager = LocalFocusManager.current)
+    LoginScreen(
+        focusManager = LocalFocusManager.current,
+        onSignUpClick = {}
+    )
 }
