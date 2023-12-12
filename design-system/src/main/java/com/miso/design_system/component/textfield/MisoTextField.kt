@@ -55,6 +55,7 @@ fun MisoTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     maxLines: Int = Int.MAX_VALUE,
     singleLine: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     onValueChange: (String) -> Unit = {},
     onClickButton: () -> Unit,
 ) {
@@ -120,8 +121,9 @@ fun MisoTextField(
                         DeleteButtonIcon()
                     }
                 },
-                readOnly = readOnly
-            )
+                readOnly = readOnly,
+                visualTransformation = visualTransformation
+                )
             Column(
                 modifier = Modifier.height(32.dp),
                 verticalArrangement = Arrangement.Center
@@ -234,11 +236,13 @@ fun MisoPasswordTextField(
                         style = typography.captionLarge
                     )
                 } else {
-                    Text(
-                        text = "비밀번호를 잊으셨나요?",
-                        color = colors.GREYSCALE3,
-                        style = typography.captionLarge
-                    )
+                    if (isLink) {
+                        Text(
+                            text = "비밀번호를 잊으셨나요?",
+                            color = colors.GREYSCALE3,
+                            style = typography.captionLarge
+                        )
+                    }
                 }
                 if (isLink) {
                     Text(
