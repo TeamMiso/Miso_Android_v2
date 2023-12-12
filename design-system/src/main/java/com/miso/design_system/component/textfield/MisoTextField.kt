@@ -129,7 +129,11 @@ fun MisoTextField(
                 verticalArrangement = Arrangement.Center
             ) {
                 if (isError) {
-                    Text(text = errorText, color = colors.RED1, style = typography.captionLarge)
+                    Text(
+                        text = errorText,
+                        color = colors.RED1,
+                        style = typography.captionLarge
+                    )
                 }
             }
         }

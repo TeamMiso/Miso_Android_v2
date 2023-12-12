@@ -36,7 +36,8 @@ import com.miso.presentation.ui.util.keyboardAsState
 @Composable
 fun SignUpScreen(
     focusManager: FocusManager,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onVerificationClick: () -> Unit
 ) {
     val isKeyboardOpen by keyboardAsState()
 
@@ -137,6 +138,7 @@ fun SignUpScreen(
                 text = "회원가입",
             ) {
                 isEmailError = !email.isEmailValid()
+                if (!isEmailError) onVerificationClick()
             }
         }
     }
@@ -147,6 +149,7 @@ fun SignUpScreen(
 fun SignUpScreenPreView() {
     SignUpScreen(
         focusManager = LocalFocusManager.current,
-        onBackClick = {}
+        onBackClick = {},
+        onVerificationClick = {}
     )
 }
