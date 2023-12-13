@@ -37,7 +37,10 @@ class LoginActivity : BaseActivity() {
                 composable(LoginPage.Login.name) {
                     LoginScreen(
                         focusManager = LocalFocusManager.current,
-                        onSignUpClick = { navController.navigate(LoginPage.SignUp.value) }
+                        onSignUpClick = { navController.navigate(LoginPage.SignUp.value) },
+                        onLoginClick = { body ->
+                            authViewModel.authLogIn(body = body)
+                        }
                     )
                 }
                 composable(LoginPage.SignUp.name) {

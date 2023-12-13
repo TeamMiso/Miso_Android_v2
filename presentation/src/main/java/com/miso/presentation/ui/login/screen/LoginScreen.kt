@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.miso.design_system.component.button.MisoButton
 import com.miso.design_system.component.textfield.MisoPasswordTextField
 import com.miso.design_system.component.textfield.MisoTextField
+import com.miso.domain.model.auth.request.AuthLogInRequestModel
 import com.miso.presentation.ui.login.component.LoginDividerAndText
 import com.miso.presentation.ui.login.component.MisoSubTitleText
 import com.miso.presentation.ui.login.component.MisoTitleText
@@ -38,7 +39,8 @@ import com.miso.presentation.ui.util.keyboardAsState
 @Composable
 fun LoginScreen(
     focusManager: FocusManager,
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    onLoginClick: (body: AuthLogInRequestModel) -> Unit
 ) {
     val isKeyboardOpen by keyboardAsState()
 
@@ -103,7 +105,16 @@ fun LoginScreen(
         MisoButton(
             modifier = Modifier,
             text = "로그인",
-        ) {}
+        ) {
+            if (email.isNotBlank() && password.isNotBlank()) {
+                onLoginClick(
+                    AuthLogInRequestModel(
+                        email = email,
+                        password = password
+                    )
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(80.dp))
         LoginDividerAndText()
         Spacer(modifier = Modifier.height(16.dp))
@@ -118,6 +129,7 @@ fun LoginScreen(
 fun LoginScreenPreView() {
     LoginScreen(
         focusManager = LocalFocusManager.current,
-        onSignUpClick = {}
+        onSignUpClick = {},
+        onLoginClick = {}
     )
 }
