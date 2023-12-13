@@ -9,6 +9,7 @@ import com.miso.domain.model.auth.request.AuthSignUpRequestModel
 import com.miso.domain.model.auth.response.AuthLogInResponseModel
 import com.miso.domain.usecase.auth.AuthLogInUseCase
 import com.miso.domain.usecase.auth.AuthSignUpUseCase
+import com.miso.domain.usecase.auth.SaveTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val authSignUpUseCase: AuthSignUpUseCase,
     private val authLogInUseCase: AuthLogInUseCase,
+    private val saveTokenUseCase: SaveTokenUseCase,
 ) : ViewModel() {
 
     private val _authSignUpResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
@@ -27,6 +29,9 @@ class AuthViewModel @Inject constructor(
 
     private val _authLogInResponse = MutableStateFlow<Event<AuthLogInResponseModel>>(Event.Loading)
     val authLogInResponse = _authLogInResponse.asStateFlow()
+
+    private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
+    val saveTokenResponse = _saveTokenResponse.asStateFlow()
 
     fun authSignUp(body: AuthSignUpRequestModel) = viewModelScope.launch {
         authSignUpUseCase(
@@ -53,6 +58,20 @@ class AuthViewModel @Inject constructor(
             }
         }.onFailure {
             _authLogInResponse.value = it.errorHandling()
+        }
+    }
+
+    fun initLogIn() {
+        _authLogInResponse.value = Event.Loading
+    }
+
+    fun saveToken(token: AuthLogInResponseModel) = viewModelScope.launch {
+        saveTokenUseCase(
+            token = token
+        ).onSuccess {
+            _saveTokenResponse.value = Event.Success()
+        }.onFailure {
+            _saveTokenResponse.value = it.errorHandling()
         }
     }
 }
