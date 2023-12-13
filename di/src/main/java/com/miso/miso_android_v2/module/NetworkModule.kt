@@ -2,6 +2,7 @@ package com.miso.miso_android_v2.module
 
 import com.miso.data.remote.api.AuthAPI
 import com.miso.data.remote.api.EmailAPI
+import com.miso.data.util.AuthInterceptor
 import com.miso.miso_android_v2.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -20,12 +21,15 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideOkhttpClient(): OkHttpClient {
+    fun provideOkhttpClient(
+        authInterceptor: AuthInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .cookieJar(CookieJar.NO_COOKIES)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(authInterceptor)
             .build()
     }
 
