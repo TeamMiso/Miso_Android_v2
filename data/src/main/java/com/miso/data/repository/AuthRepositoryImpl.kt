@@ -1,5 +1,6 @@
 package com.miso.data.repository
 
+import com.miso.data.local.datasource.auth.LocalAuthDataSource
 import com.miso.data.remote.datasource.auth.AuthDataSource
 import com.miso.data.remote.dto.auth.request.AuthLogInRequest
 import com.miso.data.remote.dto.auth.request.AuthSignUpRequest
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
+    private val localAuthDataSource: LocalAuthDataSource,
     private val remoteAuthDatasource: AuthDataSource
 ): AuthRepository {
     override suspend fun authSignUp(body: AuthSignUpRequestModel): Flow<Unit> {
@@ -32,5 +34,14 @@ class AuthRepositoryImpl @Inject constructor(
                 password = body.password,
             )
         ).map { it.toLogInModel() }
+    }
+
+    override suspend fun saveToken(token: AuthLogInResponseModel) {
+        token.let {
+            localAuthDataSource.setAccessToken(it.accessToken)
+            localAuthDataSource.setAccessTime(it.accessExp)
+            localAuthDataSource.setRefreshToken(it.refreshToken)
+            localAuthDataSource.setRefreshTime(it.refreshExp)
+        }
     }
 }
