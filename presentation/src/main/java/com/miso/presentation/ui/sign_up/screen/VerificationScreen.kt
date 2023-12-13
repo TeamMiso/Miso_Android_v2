@@ -23,13 +23,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.component.button.MisoBackButton
 import com.miso.design_system.component.text.MisoBlackTitleText
+import com.miso.domain.model.email.request.EmailRequestModel
 import com.miso.presentation.ui.sign_up.component.NumberTextField
 import com.miso.presentation.ui.util.keyboardAsState
 
 @Composable
 fun VerificationScreen(
     focusManager: FocusManager,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onVerificationClick: (body: EmailRequestModel) -> Unit
 ) {
     val isKeyboardOpen by keyboardAsState()
 
@@ -74,7 +76,11 @@ fun VerificationScreen(
                 onValueChange = {
                     number = it
                 },
-                onFourCharactersEntered = {}
+                onFourCharactersEntered = {
+                    onVerificationClick(
+                        EmailRequestModel(number)
+                    )
+                }
             )
         }
     }
@@ -85,6 +91,7 @@ fun VerificationScreen(
 fun VerificationScreenPreView() {
     VerificationScreen(
         focusManager = LocalFocusManager.current,
-        onBackClick = {}
+        onBackClick = {},
+        onVerificationClick = {}
     )
 }

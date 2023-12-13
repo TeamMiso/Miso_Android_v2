@@ -12,6 +12,7 @@ import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.sign_up.screen.SignUpScreen
 import com.miso.presentation.ui.sign_up.screen.VerificationScreen
 import com.miso.presentation.viewmodel.AuthViewModel
+import com.miso.presentation.viewmodel.EmailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 enum class LoginPage(val value: String) {
@@ -23,6 +24,7 @@ enum class LoginPage(val value: String) {
 @AndroidEntryPoint
 class LoginActivity : BaseActivity() {
     private val authViewModel by viewModels<AuthViewModel>()
+    private val emailViewModel by viewModels<EmailViewModel>()
 
     override fun init() {
         installSplashScreen()
@@ -51,7 +53,10 @@ class LoginActivity : BaseActivity() {
                 composable(LoginPage.Verification.name) {
                     VerificationScreen(
                         focusManager = LocalFocusManager.current,
-                        onBackClick = { navController.popBackStack() }
+                        onBackClick = { navController.popBackStack() },
+                        onVerificationClick = { body ->
+                            emailViewModel.email(body = body)
+                        }
                     )
                 }
             }
