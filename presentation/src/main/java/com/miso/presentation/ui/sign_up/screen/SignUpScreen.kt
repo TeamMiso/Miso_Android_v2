@@ -30,6 +30,7 @@ import com.miso.design_system.component.button.MisoButton
 import com.miso.design_system.component.text.MisoBlackTitleText
 import com.miso.design_system.component.textfield.MisoPasswordTextField
 import com.miso.design_system.component.textfield.MisoTextField
+import com.miso.domain.model.auth.request.AuthSignUpRequestModel
 import com.miso.presentation.ui.util.isEmailValid
 import com.miso.presentation.ui.util.keyboardAsState
 
@@ -37,7 +38,8 @@ import com.miso.presentation.ui.util.keyboardAsState
 fun SignUpScreen(
     focusManager: FocusManager,
     onBackClick: () -> Unit,
-    onVerificationClick: () -> Unit
+    onVerificationClick: () -> Unit,
+    onSignUpClick: (body: AuthSignUpRequestModel) -> Unit
 ) {
     val isKeyboardOpen by keyboardAsState()
 
@@ -138,7 +140,17 @@ fun SignUpScreen(
                 text = "회원가입",
             ) {
                 isEmailError = !email.isEmailValid()
-                if (!isEmailError) onVerificationClick()
+
+                if (!isEmailError && !isPasswordError) {
+                    onSignUpClick(
+                        AuthSignUpRequestModel(
+                            email = email,
+                            password = password,
+                            passwordCheck = confirmPassword
+                        )
+                    )
+                    onVerificationClick()
+                }
             }
         }
     }
@@ -150,6 +162,7 @@ fun SignUpScreenPreView() {
     SignUpScreen(
         focusManager = LocalFocusManager.current,
         onBackClick = {},
-        onVerificationClick = {}
+        onVerificationClick = {},
+        onSignUpClick = {}
     )
 }
