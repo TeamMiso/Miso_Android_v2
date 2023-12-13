@@ -1,6 +1,7 @@
 package com.miso.presentation.ui.login
 
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
@@ -10,6 +11,7 @@ import com.miso.presentation.ui.login.screen.LoginScreen
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.sign_up.screen.SignUpScreen
 import com.miso.presentation.ui.sign_up.screen.VerificationScreen
+import com.miso.presentation.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 enum class LoginPage(val value: String) {
@@ -20,6 +22,8 @@ enum class LoginPage(val value: String) {
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity() {
+    private val authViewModel by viewModels<AuthViewModel>()
+
     override fun init() {
         installSplashScreen()
         setContent {
@@ -38,7 +42,10 @@ class LoginActivity : BaseActivity() {
                     SignUpScreen(
                         focusManager = LocalFocusManager.current,
                         onBackClick = { navController.popBackStack() },
-                        onVerificationClick = { navController.navigate(LoginPage.Verification.value) }
+                        onVerificationClick = { navController.navigate(LoginPage.Verification.value) },
+                        onSignUpClick = { body ->
+                            authViewModel.authSignUp(body = body)
+                        }
                     )
                 }
                 composable(LoginPage.Verification.name) {
