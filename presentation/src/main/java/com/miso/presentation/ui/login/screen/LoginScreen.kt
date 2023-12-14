@@ -188,15 +188,3 @@ suspend fun login(
         }
     }
 }
-
-@Composable
-@Preview(showBackground = true)
-fun LoginScreenPreView() {
-//    LoginScreen(
-//        focusManager = LocalFocusManager.current,
-//        lifecycleScope = CoroutineScope(Dispatchers.Main),
-//        viewModel = null,
-//        onSignUpClick = {},
-//        onLoginClick = {}
-//    )
-}
