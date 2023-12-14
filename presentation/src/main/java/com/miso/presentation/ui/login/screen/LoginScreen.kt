@@ -1,8 +1,5 @@
 package com.miso.presentation.ui.login.screen
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Animatable
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -22,10 +19,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.miso.viewmodel.util.Event
 import com.miso.design_system.component.button.MisoButton
 import com.miso.design_system.component.textfield.MisoPasswordTextField
 import com.miso.design_system.component.textfield.MisoTextField
@@ -35,10 +32,18 @@ import com.miso.presentation.ui.login.component.MisoSubTitleText
 import com.miso.presentation.ui.login.component.MisoTitleText
 import com.miso.presentation.ui.login.component.MoveSignUpText
 import com.miso.presentation.ui.util.keyboardAsState
+import com.miso.presentation.viewmodel.AuthViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun LoginScreen(
     focusManager: FocusManager,
+    lifecycleScope: CoroutineScope,
+    viewModel: AuthViewModel,
     onSignUpClick: () -> Unit,
     onLoginClick: (body: AuthLogInRequestModel) -> Unit
 ) {
@@ -58,6 +63,15 @@ fun LoginScreen(
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    var isEmailError by remember { mutableStateOf(false) }
+    var isPasswordError by remember { mutableStateOf(false) }
+    var errorText by remember { mutableStateOf("") }
+    var isButtonClick by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isButtonClick) {
+        viewModel.initLogIn()
+    }
 
     Column(
         modifier = Modifier
@@ -80,7 +94,8 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             placeHolder = "이메일",
             setText = email,
-            isError = false,
+            isError = isEmailError,
+            errorText = errorText,
             onValueChange = { emailChange ->
                 email = emailChange
             },
@@ -95,7 +110,8 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             placeHolder = "비밀번호",
             setText = password,
-            isError = false,
+            isError = isPasswordError,
+            errorText = errorText,
             onValueChange = { passwordChange ->
                 password = passwordChange
             },
@@ -106,6 +122,7 @@ fun LoginScreen(
             modifier = Modifier,
             text = "로그인",
         ) {
+            isButtonClick = !isButtonClick
             if (email.isNotBlank() && password.isNotBlank()) {
                 onLoginClick(
                     AuthLogInRequestModel(
@@ -113,6 +130,20 @@ fun LoginScreen(
                         password = password
                     )
                 )
+                lifecycleScope.launch {
+                    login(
+                        viewModel = viewModel,
+                        isEmailError = { error ->
+                            isEmailError = error
+                        },
+                        isPasswordError = { error ->
+                            isPasswordError = error
+                        },
+                        errorText = { text ->
+                            errorText = text
+                        }
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(80.dp))
@@ -124,12 +155,36 @@ fun LoginScreen(
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun LoginScreenPreView() {
-    LoginScreen(
-        focusManager = LocalFocusManager.current,
-        onSignUpClick = {},
-        onLoginClick = {}
-    )
+suspend fun login(
+    viewModel: AuthViewModel,
+    isEmailError: (error: Boolean) -> Unit,
+    isPasswordError: (error: Boolean) -> Unit,
+    errorText: (errorText: String) -> Unit,
+) {
+    viewModel.authLogInResponse.collect {
+        when (it) {
+            is Event.Loading -> {
+                isEmailError(false)
+                isPasswordError(false)
+            }
+
+            is Event.Success -> {
+                viewModel.saveToken(token = it.data!!)
+            }
+
+            is Event.BadRequest -> {
+                isPasswordError(true)
+                errorText("비밀번호가 틀렸습니다.")
+            }
+
+            is Event.NotFound -> {
+                isEmailError(true)
+                errorText("가입되지 않은 이메일입니다.")
+            }
+
+            else -> {
+                errorText("알 수 없는 에러")
+            }
+        }
+    }
 }
