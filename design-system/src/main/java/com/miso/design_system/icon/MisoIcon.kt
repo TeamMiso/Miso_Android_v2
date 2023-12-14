@@ -38,3 +38,105 @@ fun VisibilityOffIcon(
         modifier = modifier
     )
 }
+
+@Composable
+fun SearchIcon(
+    modifier: Modifier = Modifier,
+    isClick: Boolean = false
+) {
+    if (!isClick) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_search),
+            contentDescription = "Search Icon",
+            modifier = modifier
+        )
+    } else {
+        Image(
+            painter = painterResource(id = R.drawable.ic_search_click),
+            contentDescription = "Search Click Icon",
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun ShopIcon(
+    modifier: Modifier = Modifier,
+    isClick: Boolean = false
+) {
+    if (!isClick) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_shop),
+            contentDescription = "Shop Icon",
+            modifier = modifier
+        )
+    } else {
+        Image(
+            painter = painterResource(id = R.drawable.ic_shop_click),
+            contentDescription = "Shop Click Icon",
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun CameraIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_camera),
+        contentDescription = "Camera Icon",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun InquiryIcon(
+    modifier: Modifier = Modifier,
+    isClick: Boolean = false
+) {
+    if (!isClick) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_inquiry),
+            contentDescription = "Inquiry Icon",
+            modifier = modifier
+        )
+    } else {
+        Image(
+            painter = painterResource(id = R.drawable.ic_inquiry_click),
+            contentDescription = "Inquiry Click Icon",
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun SettingIcon(
+    modifier: Modifier = Modifier,
+    isClick: Boolean = false
+) {
+    if (!isClick) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_setting),
+            contentDescription = "Setting Icon",
+            modifier = modifier
+        )
+    } else {
+        Image(
+            painter = painterResource(id = R.drawable.ic_setting_click),
+            contentDescription = "Setting Click Icon",
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun NavBackgroundIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_nav_background),
+        contentDescription = "Nav Background Icon",
+        modifier = modifier
+    )
+}
