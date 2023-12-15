@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class RecyclablesDatasourceImpl @Inject constructor(
+class RecyclablesDataSourceImpl @Inject constructor(
     private val api: RecyclablesAPI
-): RecyclablesDatasource {
+): RecyclablesDataSource {
     override suspend fun search(search: String): Flow<SearchResponse> = flow {
         emit(
             MisoApiHandler<SearchResponse>()

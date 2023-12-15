@@ -4,6 +4,8 @@ import com.miso.data.remote.datasource.auth.AuthDataSource
 import com.miso.data.remote.datasource.auth.AuthDataSourceImpl
 import com.miso.data.remote.datasource.email.EmailDataSource
 import com.miso.data.remote.datasource.email.EmailDataSourceImpl
+import com.miso.data.remote.datasource.recyclables.RecyclablesDataSource
+import com.miso.data.remote.datasource.recyclables.RecyclablesDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +23,9 @@ abstract class RemoteDatasourceModule {
     abstract fun provideEmailDataSource(
         emailDataSourceImpl: EmailDataSourceImpl
     ): EmailDataSource
+
+    @Binds
+    abstract fun provideRecyclablesDataSource(
+        recyclablesDataSourceImpl: RecyclablesDataSourceImpl
+    ): RecyclablesDataSource
 }

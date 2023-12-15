@@ -1,6 +1,5 @@
 package com.miso.presentation.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.miso.viewmodel.util.Event
