@@ -61,6 +61,13 @@ dependencies {
     implementation(Dependency.AndroidX.LIFECYCLE_RUNTIME)
     implementation(Dependency.Navigation.NAVIGATION)
 
+    //camerax
+    implementation(Dependency.AndroidX.CAMERA_CORE)
+    implementation(Dependency.AndroidX.CAMERA_CAMERA2)
+    implementation(Dependency.AndroidX.CAMERA_LIFECYCLE)
+    implementation(Dependency.AndroidX.CAMERA_VIEW)
+    implementation(Dependency.AndroidX.CAMERA_EXTENSIONS)
+    
     //compose
     implementation(Dependency.Compose.ACTIVITY_COMPOSE)
     implementation(Dependency.Compose.COMPOSE)
