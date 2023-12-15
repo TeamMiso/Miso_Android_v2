@@ -19,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +42,7 @@ import com.miso.design_system.icon.SearchIcon
 import com.miso.design_system.icon.VisibilityIcon
 import com.miso.design_system.icon.VisibilityOffIcon
 import com.miso.design_system.theme.MisoTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun MisoTextField(
@@ -269,6 +271,7 @@ fun MisoPasswordTextField(
 @Composable
 fun MisoSearchTextField(
     modifier: Modifier = Modifier,
+    debounceTime: Long = 300L,
     placeHolder: String = "",
     readOnly: Boolean = false,
     focusManager: FocusManager = LocalFocusManager.current,
@@ -287,6 +290,11 @@ fun MisoSearchTextField(
         onDispose {
             focusManager.clearFocus()
         }
+    }
+
+    LaunchedEffect(setText) {
+        delay(debounceTime)
+        onValueChange(setText)
     }
 
     MisoTheme { colors, typography ->

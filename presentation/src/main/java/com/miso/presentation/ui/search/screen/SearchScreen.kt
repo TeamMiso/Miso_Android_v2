@@ -34,10 +34,12 @@ import com.miso.presentation.ui.search.component.SearchHistoryList
 import com.miso.presentation.ui.search.component.SearchHistoryTitleText
 import com.miso.presentation.ui.search.component.TodayEnvironmentTipComponent
 import com.miso.presentation.ui.util.keyboardAsState
+import com.miso.presentation.viewmodel.RecyclablesViewModel
 
 @Composable
 fun SearchScreen(
     focusManager: FocusManager,
+    viewModel: RecyclablesViewModel
 ) {
     val isKeyboardOpen by keyboardAsState()
 
@@ -80,6 +82,7 @@ fun SearchScreen(
             Spacer(modifier = Modifier.height(16.dp))
             MisoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
+                debounceTime = 300L,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 placeHolder = "재활용 쓰레기 검색하기...",
                 setText = search,
@@ -102,12 +105,4 @@ fun SearchScreen(
                 .padding(bottom = 96.dp),
         ) {}
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun SearchScreenPreView() {
-    SearchScreen(
-        focusManager = LocalFocusManager.current,
-    )
 }
