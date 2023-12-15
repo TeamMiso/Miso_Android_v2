@@ -32,7 +32,7 @@ fun CameraScreen(
     Row(
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.Bottom,
-        ){
+        ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
