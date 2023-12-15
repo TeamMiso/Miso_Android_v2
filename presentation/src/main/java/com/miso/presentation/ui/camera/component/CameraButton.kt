@@ -76,6 +76,8 @@ fun CameraFlashButton(onClick: () -> Unit){
 
     MisoTheme { colors, typography ->
         IconButton(
+            modifier = Modifier
+                .size(48.dp,48.dp),
             onClick = {
                 onClick()
                 isFlashOn = !isFlashOn
