@@ -12,9 +12,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.search.SearchActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:exported="true"/>
+            android:name=".ui.camera.CameraActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
