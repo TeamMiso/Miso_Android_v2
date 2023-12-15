@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.icon.DeleteButtonIcon
+import com.miso.design_system.icon.SearchIcon
 import com.miso.design_system.icon.VisibilityIcon
 import com.miso.design_system.icon.VisibilityOffIcon
 import com.miso.design_system.theme.MisoTheme
@@ -123,7 +125,7 @@ fun MisoTextField(
                 },
                 readOnly = readOnly,
                 visualTransformation = visualTransformation
-                )
+            )
             Column(
                 modifier = Modifier.height(32.dp),
                 verticalArrangement = Arrangement.Center
@@ -265,6 +267,82 @@ fun MisoPasswordTextField(
 }
 
 @Composable
+fun MisoSearchTextField(
+    modifier: Modifier = Modifier,
+    placeHolder: String = "",
+    readOnly: Boolean = false,
+    focusManager: FocusManager = LocalFocusManager.current,
+    focusRequester: FocusRequester = FocusRequester(),
+    setText: String,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    maxLines: Int = Int.MAX_VALUE,
+    singleLine: Boolean = false,
+    onValueChange: (String) -> Unit = {},
+    onClickButton: () -> Unit,
+) {
+    val isFocused = remember { mutableStateOf(false) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            focusManager.clearFocus()
+        }
+    }
+
+    MisoTheme { colors, typography ->
+        Column(modifier = modifier) {
+            OutlinedTextField(
+                value = setText,
+                onValueChange = {
+                    onValueChange(it)
+                },
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                placeholder = {
+                    Text(
+                        text = placeHolder,
+                        style = typography.textSmall,
+                        color = colors.GREYSCALE3,
+                        fontWeight = FontWeight.Medium
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester)
+                    .border(
+                        width = 1.dp,
+                        color = if (isFocused.value) colors.PRIMARY else colors.GREYSCALE3,
+                        shape = RoundedCornerShape(999.dp)
+                    )
+                    .onFocusChanged {
+                        isFocused.value = it.isFocused
+                    }
+                    .padding(start = 16.dp, end = 16.dp),
+                maxLines = maxLines,
+                singleLine = singleLine,
+                textStyle = typography.textSmall,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = colors.BLACK,
+                    backgroundColor = Color.Transparent,
+                    placeholderColor = colors.GREYSCALE3,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    cursorColor = colors.BULE1
+                ),
+                trailingIcon = {
+                    IconButton(onClick = onClickButton) {
+                        SearchIcon(
+                            isClick = isFocused.value
+                        )
+                    }
+                },
+                readOnly = readOnly
+            )
+        }
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 fun MisoTextFieldPreview() {
     Column(
@@ -285,6 +363,13 @@ fun MisoTextFieldPreview() {
             isError = true,
             onValueChange = {},
             setText = ""
+        )
+
+        MisoSearchTextField(
+            modifier = Modifier.fillMaxSize(),
+            placeHolder = "Test",
+            setText = "",
+            onClickButton = {}
         )
     }
 }
