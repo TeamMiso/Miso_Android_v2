@@ -35,7 +35,7 @@ fun TodayEnvironmentTipComponent(
             Row(
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(48.dp)
+                    .height(56.dp)
                     .border(
                         width = 1.dp,
                         color = colors.PRIMARY,
