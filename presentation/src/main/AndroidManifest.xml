@@ -16,6 +16,11 @@
             android:windowSoftInputMode="adjustNothing"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:theme="@style/Theme.Miso_Android_v2"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
