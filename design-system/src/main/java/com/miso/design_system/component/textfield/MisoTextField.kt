@@ -282,6 +282,7 @@ fun MisoSearchTextField(
     maxLines: Int = Int.MAX_VALUE,
     singleLine: Boolean = false,
     onValueChange: (String) -> Unit = {},
+    onSearchTextChange: (String) -> Unit,
     onClickButton: () -> Unit,
 ) {
     val isFocused = remember { mutableStateOf(false) }
@@ -294,7 +295,7 @@ fun MisoSearchTextField(
 
     LaunchedEffect(setText) {
         delay(debounceTime)
-        onValueChange(setText)
+        onSearchTextChange(setText)
     }
 
     MisoTheme { colors, typography ->
@@ -377,7 +378,8 @@ fun MisoTextFieldPreview() {
             modifier = Modifier.fillMaxSize(),
             placeHolder = "Test",
             setText = "",
-            onClickButton = {}
+            onClickButton = {},
+            onSearchTextChange = {}
         )
     }
 }
