@@ -15,12 +15,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.miso.design_system.theme.MisoTheme
+import com.miso.presentation.R
 
 @Composable
 fun CameraCaptureButton(onClick: () -> Unit){
@@ -50,10 +56,14 @@ fun CameraBackButton(onClick: () -> Unit){
         ) {
             Text(
                 text = "<",
-                style = typography.buttonSmall,
-                color = colors.WHITE,
-                fontWeight = FontWeight(800),
-                textAlign = TextAlign.Right
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    lineHeight = 24.sp,
+                    fontFamily = FontFamily(Font(com.miso.design_system.R.font.suitv1_bold, FontWeight.Bold)),
+                    fontWeight = FontWeight(800),
+                    color = colors.WHITE,
+                    textAlign = TextAlign.Right,
+                )
             )
         }
     }
@@ -74,12 +84,14 @@ fun CameraFlashButton(onClick: () -> Unit){
             if(!isFlashOn) {
                 Image(
                     painter = painterResource(id = com.miso.design_system.R.drawable.ic_camera_flash_off_button),
+                    colorFilter = ColorFilter.tint(colors.WHITE),
                     contentDescription = "Flash Off Button",
                 )
 
             }else {
                 Image(
                     painter = painterResource(id = com.miso.design_system.R.drawable.ic_camera_flash_on_button),
+                    colorFilter = ColorFilter.tint(colors.WHITE),
                     contentDescription = "Flash On Button",
                 )
 
