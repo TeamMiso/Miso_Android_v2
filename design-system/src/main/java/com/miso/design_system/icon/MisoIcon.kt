@@ -7,12 +7,34 @@ import androidx.compose.ui.res.painterResource
 import com.miso.design_system.R
 
 @Composable
+fun MisoColorIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_miso_color),
+        contentDescription = "Miso Color Icon",
+        modifier = modifier
+    )
+}
+
+@Composable
 fun DeleteButtonIcon(
     modifier: Modifier = Modifier,
 ) {
     Image(
         painter = painterResource(id = R.drawable.ic_delete_btn),
         contentDescription = "Delete Button Icon",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun HideButtonIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_hide_button),
+        contentDescription = "Hide Button Icon",
         modifier = modifier
     )
 }
