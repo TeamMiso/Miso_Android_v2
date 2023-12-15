@@ -90,4 +90,7 @@ dependencies {
 
     //splash
     implementation(Dependency.AndroidX.SPLASH)
+
+    //coil
+    implementation(Dependency.Image.COIL)
 }

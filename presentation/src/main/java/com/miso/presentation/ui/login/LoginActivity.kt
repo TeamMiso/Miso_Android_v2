@@ -1,5 +1,6 @@
 package com.miso.presentation.ui.login
 
+import android.content.Intent
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.ui.platform.LocalFocusManager
@@ -11,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.miso.viewmodel.util.Event
 import com.miso.presentation.ui.login.screen.LoginScreen
 import com.miso.presentation.ui.base.BaseActivity
+import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.sign_up.screen.SignUpScreen
 import com.miso.presentation.ui.sign_up.screen.VerificationScreen
 import com.miso.presentation.viewmodel.AuthViewModel
@@ -33,7 +35,9 @@ class LoginActivity : BaseActivity() {
         installSplashScreen()
         lifecycleScope.launch {
             authViewModel.saveTokenResponse.collect {
-                if (it is Event.Success) {}
+                if (it is Event.Success) {
+                    pageSearch()
+                }
             }
         }
         setContent {
@@ -74,5 +78,14 @@ class LoginActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun pageSearch() {
+        startActivity(
+            Intent(
+                this,
+                SearchActivity::class.java
+            )
+        )
     }
 }
