@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -20,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
+import com.miso.presentation.ui.search.screen.SearchScreen
 
 enum class MainPage(val value: String) {
     Search("Search"),
@@ -46,13 +48,7 @@ class SearchActivity : BaseActivity() {
                         startDestination = MainPage.Search.name
                     ) {
                         composable(MainPage.Search.name) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(MaterialTheme.colors.primary)
-                            ) {
-                                Text(text = "Search")
-                            }
+                            SearchScreen(focusManager = LocalFocusManager.current)
                         }
                         composable(MainPage.Shop.name) {
                             Text(text = "Shop")
