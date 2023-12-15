@@ -60,7 +60,7 @@ fun CameraBackButton(onClick: () -> Unit){
 }
 
 @Composable
-fun CameraFlashBtn(onClick: () -> Unit){
+fun CameraFlashButton(onClick: () -> Unit){
 
     var isFlashOn by remember { mutableStateOf(false) }
 
@@ -94,6 +94,6 @@ fun CameraButtonPreView() {
     Column(modifier = Modifier.fillMaxSize()){
         CameraCaptureButton( onClick = {} )
         CameraBackButton( onClick = {} )
-        CameraFlashBtn( onClick = {} )
+        CameraFlashButton( onClick = {} )
     }
 }
