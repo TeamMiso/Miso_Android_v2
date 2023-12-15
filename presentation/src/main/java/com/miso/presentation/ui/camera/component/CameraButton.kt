@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.miso.design_system.theme.MisoTheme
-import com.miso.presentation.R
 
 @Composable
 fun CameraCaptureButton(onClick: () -> Unit){
@@ -49,6 +48,7 @@ fun CameraBackButton(onClick: () -> Unit){
         Button(
             modifier = Modifier
                 .size(48.dp,48.dp),
+            elevation = null,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Transparent
             ),
