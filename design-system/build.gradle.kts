@@ -56,6 +56,7 @@ dependencies {
     implementation(Dependency.Compose.COMPOSE_MATERIAL)
     implementation(Dependency.Compose.COMPOSE_MATERIAL3)
     implementation(Dependency.Compose.COMPOSE_PREVIEW)
+    implementation(Dependency.Navigation.NAVIGATION)
 
     //appcompat
     implementation(Dependency.AndroidX.APP_COMPAT)
