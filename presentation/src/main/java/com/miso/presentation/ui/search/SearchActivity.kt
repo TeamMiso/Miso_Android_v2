@@ -39,7 +39,7 @@ class SearchActivity : BaseActivity() {
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
-            MisoTheme { colors, typography ->
+            MisoTheme { _, _ ->
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

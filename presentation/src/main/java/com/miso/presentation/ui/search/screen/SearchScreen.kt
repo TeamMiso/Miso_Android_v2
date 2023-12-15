@@ -1,6 +1,5 @@
 package com.miso.presentation.ui.search.screen
 
-import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,9 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.miso.viewmodel.util.Event
 import com.miso.design_system.component.chip.MisoChip
@@ -75,8 +72,6 @@ fun SearchScreen(
             }
         )
     }
-
-    Log.d("testt", title)
 
     Box(
         modifier = Modifier
