@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
-fun SearchHistoryList(
+fun SearchList(
     searchHistoryList: List<String>
 ) {
     MisoTheme { colors, _ ->
@@ -18,7 +18,7 @@ fun SearchHistoryList(
             items(searchHistoryList.size) { index ->
                 val reversedIndex = searchHistoryList.size - 1 - index
                 val historyItem = searchHistoryList[reversedIndex]
-                SearchHistoryListItem(
+                SearchListItem(
                     title = historyItem,
                     content = historyItem,
                     image = "",

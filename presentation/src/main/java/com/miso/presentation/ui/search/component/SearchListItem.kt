@@ -29,7 +29,7 @@ import coil.compose.AsyncImage
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
-fun SearchHistoryListItem(
+fun SearchListItem(
     title: String,
     content: String,
     image: String,
@@ -78,7 +78,7 @@ fun SearchHistoryListItem(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(shape = RoundedCornerShape(8.dp))
-                        .background(colors.GREYSCALE3),
+                        .background(colors.GREYSCALE4),
                 )
             }
         }
@@ -89,7 +89,7 @@ fun SearchHistoryListItem(
 @Preview(showBackground = true)
 fun ShopProductListItemPreview() {
     Box(modifier = Modifier.fillMaxSize()) {
-        SearchHistoryListItem(
+        SearchListItem(
             title = "안녕하세요",
             content = "그아아ㅏ아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ아ㅏㅏㅏ아ㅏㅏ아ㅏ아ㅏㅏ아ㅏㅏ아ㅏㅏㅏㅏㅏㅏㅏ아ㅏㅏ아ㅏㅏㅏㅏㅏ아ㅏㅏㅏㅏ아ㅏㅏ아ㅏㅏㅏ아ㅏㅏㅏ아ㅏㅏㅏㅏㅏㅏ아ㅏㅏㅏㄱ",
             image = "https://project-miso.s3.ap-northeast-2.amazonaws.com/file/Rectangle+2083.png",
