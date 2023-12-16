@@ -81,6 +81,7 @@ class SearchActivity : BaseActivity() {
                     }
                     MisoBottomNavigationBar(
                         modifier = Modifier.align(Alignment.BottomCenter),
+                        isVisible = currentRoute in MainPage.values().map { it.name },
                         currentRoute = currentRoute ?: "Search",
                         onSearchClick = { navController.navigate(MainPage.Search.value) },
                         onShopClick = { navController.navigate(MainPage.Shop.value) },

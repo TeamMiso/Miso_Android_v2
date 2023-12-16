@@ -33,6 +33,7 @@ import com.miso.design_system.theme.MisoTheme
 @Composable
 fun MisoBottomNavigationBar(
     modifier: Modifier,
+    isVisible: Boolean,
     currentRoute: String,
     onSearchClick: () -> Unit,
     onShopClick: () -> Unit,
@@ -40,111 +41,113 @@ fun MisoBottomNavigationBar(
     onInquiryClick: () -> Unit,
     onSettingClick: () -> Unit,
 ) {
-    MisoTheme { colors, typography ->
-        Box(
-            modifier = modifier.background(Color.Transparent),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            NavBackgroundIcon()
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp)
-                    .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                    .background(colors.WHITE),
-                verticalAlignment = Alignment.CenterVertically
+    if (isVisible) {
+        MisoTheme { colors, typography ->
+            Box(
+                modifier = modifier.background(Color.Transparent),
+                contentAlignment = Alignment.BottomCenter
             ) {
-                Column(
+                NavBackgroundIcon()
+                Row(
                     modifier = Modifier
-                        .weight(1f)
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) { onSearchClick() },
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .fillMaxWidth()
+                        .height(64.dp)
+                        .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                        .background(colors.WHITE),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    SearchIcon(isClick = currentRoute == "Search")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "검색",
-                        style = typography.captionLarge,
-                        color = if (currentRoute == "Search") colors.PRIMARY else colors.GREYSCALE3
-                    )
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onSearchClick() },
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        SearchIcon(isClick = currentRoute == "Search")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "검색",
+                            style = typography.captionLarge,
+                            color = if (currentRoute == "Search") colors.PRIMARY else colors.GREYSCALE3
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onShopClick() },
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ShopIcon(isClick = currentRoute == "Shop")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "상점",
+                            style = typography.captionLarge,
+                            color = if (currentRoute == "Shop") colors.PRIMARY else colors.GREYSCALE3
+                        )
+                    }
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {}
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onInquiryClick() },
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        InquiryIcon(isClick = currentRoute == "Inquiry")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "문의",
+                            style = typography.captionLarge,
+                            color = if (currentRoute == "Inquiry") colors.PRIMARY else colors.GREYSCALE3
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onSettingClick() },
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        SettingIcon(isClick = currentRoute == "Setting")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "설정",
+                            style = typography.captionLarge,
+                            color = if (currentRoute == "Setting") colors.PRIMARY else colors.GREYSCALE3
+                        )
+                    }
                 }
                 Column(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(64.dp)
+                        .height(80.dp)
                         .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
-                        ) { onShopClick() },
+                        ) { onCameraClick() },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    ShopIcon(isClick = currentRoute == "Shop")
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    CameraIcon()
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "상점",
+                        text = "카메라",
                         style = typography.captionLarge,
-                        color = if (currentRoute == "Shop") colors.PRIMARY else colors.GREYSCALE3
+                        color = colors.GREYSCALE3
                     )
                 }
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {}
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) { onInquiryClick() },
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    InquiryIcon(isClick = currentRoute == "Inquiry")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "문의",
-                        style = typography.captionLarge,
-                        color = if (currentRoute == "Inquiry") colors.PRIMARY else colors.GREYSCALE3
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) { onSettingClick() },
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    SettingIcon(isClick = currentRoute == "Setting")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "설정",
-                        style = typography.captionLarge,
-                        color = if (currentRoute == "Setting") colors.PRIMARY else colors.GREYSCALE3
-                    )
-                }
-            }
-            Column(
-                modifier = Modifier
-                    .width(64.dp)
-                    .height(80.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) { onCameraClick() },
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(8.dp))
-                CameraIcon()
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "카메라",
-                    style = typography.captionLarge,
-                    color = colors.GREYSCALE3
-                )
             }
         }
     }
@@ -155,6 +158,7 @@ fun MisoBottomNavigationBar(
 fun BottomNavigationPreView() {
     MisoBottomNavigationBar(
         modifier = Modifier,
+        isVisible = true,
         currentRoute = "",
         onSearchClick = {},
         onShopClick = {},
