@@ -8,20 +8,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.theme.MisoTheme
+import com.miso.domain.model.recyclables.response.SearchableListModel
+import com.miso.presentation.viewmodel.RecyclablesViewModel
 
 @Composable
 fun SearchList(
-    searchHistoryList: List<String>
+    viewModel: RecyclablesViewModel
 ) {
-    MisoTheme { colors, _ ->
+    MisoTheme { _, _ ->
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(searchHistoryList.size) { index ->
-                val reversedIndex = searchHistoryList.size - 1 - index
-                val historyItem = searchHistoryList[reversedIndex]
+            items(viewModel.recyclableList.size) { index ->
+                val reversedIndex = viewModel.recyclableList.size - 1 - index
+                val listItem = viewModel.recyclableList[reversedIndex]
                 SearchListItem(
-                    title = historyItem,
-                    content = historyItem,
-                    image = "",
+                    title = listItem.title,
+                    content = listItem.recycleMethod,
+                    image = listItem.imageUrl,
                     onItemClick = {}
                 )
                 Spacer(modifier = Modifier.height(32.dp))

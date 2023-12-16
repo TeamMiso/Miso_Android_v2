@@ -7,17 +7,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.miso.viewmodel.util.Event
 import com.miso.design_system.component.button.MisoBackButton
 import com.miso.design_system.component.text.MisoBlackTitleText
 import com.miso.presentation.ui.search.component.SearchList
+import com.miso.presentation.viewmodel.RecyclablesViewModel
 
 @Composable
 fun SearchableListScreen(
+    viewModel: RecyclablesViewModel,
     onBackClick: () -> Unit,
 ) {
+    LaunchedEffect("SearchableList") {
+        searchableList(viewModel = viewModel)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,16 +40,18 @@ fun SearchableListScreen(
             MisoBlackTitleText(text = "검색 가능한 항목")
             Spacer(modifier = Modifier.height(16.dp))
             SearchList(
-                searchHistoryList = listOf("test1", "test2", "test3")
+                viewModel = viewModel
             )
         }
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun SearchableListScreenPreView() {
-    SearchableListScreen(
-        onBackClick = {},
-    )
+suspend fun searchableList(
+    viewModel: RecyclablesViewModel,
+) {
+    viewModel.searchableListResponse.collect {
+        if (it is Event.Success) {
+            viewModel.saveSearchableList(it.data!!.recyclablesList)
+        }
+    }
 }

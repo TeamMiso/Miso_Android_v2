@@ -1,10 +1,13 @@
 package com.miso.presentation.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.miso.viewmodel.util.Event
 import com.example.miso.viewmodel.util.errorHandling
 import com.miso.domain.model.recyclables.response.SearchResponseModel
+import com.miso.domain.model.recyclables.response.SearchableListModel
 import com.miso.domain.model.recyclables.response.SearchableListResponseModel
 import com.miso.domain.usecase.recyclables.SearchUseCase
 import com.miso.domain.usecase.recyclables.SearchableListUseCase
@@ -25,6 +28,17 @@ class RecyclablesViewModel @Inject constructor(
 
     private val _searchableListResponse = MutableStateFlow<Event<SearchableListResponseModel>>(Event.Loading)
     val searchableListResponse = _searchableListResponse.asStateFlow()
+
+    var title = mutableStateOf("")
+        private set
+    var imageUrl = mutableStateOf("")
+        private set
+    var recycleMethod = mutableStateOf("")
+        private set
+    var recyclablesType = mutableStateOf("")
+        private set
+    var recyclableList = mutableStateListOf<SearchableListModel>()
+        private set
 
     fun search(search: String) = viewModelScope.launch {
         searchUseCase(search = search)
@@ -50,5 +64,17 @@ class RecyclablesViewModel @Inject constructor(
             }.onFailure {
                 _searchableListResponse.value = it.errorHandling()
             }
+    }
+
+    fun saveSearch(result: SearchResponseModel) {
+        title.value = result.title
+        imageUrl.value = result.imageUrl
+        recycleMethod.value = result.recycleMethod
+        recyclablesType.value = result.recyclablesType
+    }
+
+    fun saveSearchableList(result: List<SearchableListModel>) {
+        recyclableList.clear()
+        recyclableList.addAll(result)
     }
 }
