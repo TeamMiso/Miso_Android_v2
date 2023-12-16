@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
@@ -64,7 +63,10 @@ class SearchActivity : BaseActivity() {
                             )
                         }
                         composable(SubPage.SearchableList.name) {
-                            SearchableListScreen(onBackClick = { navController.popBackStack() })
+                            SearchableListScreen(
+                                viewModel = recyclablesViewModel,
+                                onBackClick = { navController.popBackStack() }
+                            )
                         }
                         composable(MainPage.Shop.name) {
                             Text(text = "Shop")

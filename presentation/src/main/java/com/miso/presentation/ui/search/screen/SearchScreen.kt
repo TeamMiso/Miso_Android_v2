@@ -29,7 +29,6 @@ import com.example.miso.viewmodel.util.Event
 import com.miso.design_system.component.chip.MisoChip
 import com.miso.design_system.component.text.MisoLogoTitleText
 import com.miso.design_system.component.textfield.MisoSearchTextField
-import com.miso.domain.model.recyclables.response.SearchResponseModel
 import com.miso.presentation.ui.search.component.SearchList
 import com.miso.presentation.ui.search.component.SearchListItem
 import com.miso.presentation.ui.search.component.SearchHistoryTitleText
@@ -57,21 +56,8 @@ fun SearchScreen(
 
     var search by remember { mutableStateOf("") }
 
-    var title by remember { mutableStateOf("") }
-    var content by remember { mutableStateOf("") }
-    var image by remember { mutableStateOf("") }
-    var recyclablesType by remember { mutableStateOf("") }
-
     LaunchedEffect("Search") {
-        search(
-            viewModel = viewModel,
-            searchResult = {
-                title = it.title
-                content = it.recycleMethod
-                image = it.imageUrl
-                recyclablesType = it.recyclablesType
-            }
-        )
+        search(viewModel = viewModel)
     }
 
     Box(
@@ -99,6 +85,7 @@ fun SearchScreen(
                     text = "검색 가능 목록",
                     icon = com.miso.design_system.R.drawable.ic_menu
                 ) {
+                    viewModel.searchableList()
                     onSearchableListClick()
                 }
             }
@@ -127,11 +114,15 @@ fun SearchScreen(
             Spacer(modifier = Modifier.height(16.dp))
             if (search.isEmpty()) {
                 SearchList(
-                    searchHistoryList = listOf("test1", "test2", "test3")
+                    viewModel = viewModel
                 )
             } else {
-                SearchListItem(title = title, content = content, image = image) {
-                    
+                SearchListItem(
+                    title = viewModel.title.value,
+                    content = viewModel.recycleMethod.value,
+                    image = viewModel.imageUrl.value
+                ) {
+
                 }
             }
         }
@@ -144,12 +135,11 @@ fun SearchScreen(
 }
 
 suspend fun search(
-    viewModel: RecyclablesViewModel,
-    searchResult: (searchResult: SearchResponseModel) -> Unit
+    viewModel: RecyclablesViewModel
 ) {
     viewModel.searchResponse.collect {
         if (it is Event.Success) {
-            searchResult(it.data!!)
+            viewModel.saveSearch(it.data!!)
         }
     }
 }
