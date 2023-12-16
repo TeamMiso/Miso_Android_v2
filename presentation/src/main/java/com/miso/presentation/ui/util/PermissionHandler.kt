@@ -108,7 +108,7 @@ class PermissionHandler {
     ) {
         PermissionDialog(
             permissionDescriptionProvider = descriptionProvider,
-            isPermanentlyDeclined = !permissionStatus.shouldShowRationale,
+            isPermissionPermanentDenial = !permissionStatus.shouldShowRationale,
             onDismiss = { showPermissionDialog.value = false },
             onOkClick = { permissionState.launchMultiplePermissionRequest() },
             onGoToAppSettingsClick = {
