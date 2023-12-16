@@ -14,11 +14,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.search.screen.SearchScreen
+import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +30,10 @@ enum class MainPage(val value: String) {
     Camera("Camera"),
     Inquiry("Inquiry"),
     Setting("Setting")
+}
+
+enum class SubPage(val value: String) {
+    SearchableList("SearchableList")
 }
 
 @AndroidEntryPoint
@@ -53,8 +59,12 @@ class SearchActivity : BaseActivity() {
                             SearchScreen(
                                 focusManager = LocalFocusManager.current,
                                 viewModel = recyclablesViewModel,
-                                lifecycleScope = lifecycleScope
+                                lifecycleScope = lifecycleScope,
+                                onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) }
                             )
+                        }
+                        composable(SubPage.SearchableList.name) {
+                            SearchableListScreen(onBackClick = { navController.popBackStack() })
                         }
                         composable(MainPage.Shop.name) {
                             Text(text = "Shop")

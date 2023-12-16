@@ -30,8 +30,8 @@ import com.miso.design_system.component.chip.MisoChip
 import com.miso.design_system.component.text.MisoLogoTitleText
 import com.miso.design_system.component.textfield.MisoSearchTextField
 import com.miso.domain.model.recyclables.response.SearchResponseModel
-import com.miso.presentation.ui.search.component.SearchHistoryList
-import com.miso.presentation.ui.search.component.SearchHistoryListItem
+import com.miso.presentation.ui.search.component.SearchList
+import com.miso.presentation.ui.search.component.SearchListItem
 import com.miso.presentation.ui.search.component.SearchHistoryTitleText
 import com.miso.presentation.ui.search.component.SearchTitleText
 import com.miso.presentation.ui.search.component.TodayEnvironmentTipComponent
@@ -44,7 +44,8 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     focusManager: FocusManager,
     viewModel: RecyclablesViewModel,
-    lifecycleScope: CoroutineScope
+    lifecycleScope: CoroutineScope,
+    onSearchableListClick: () -> Unit
 ) {
     val isKeyboardOpen by keyboardAsState()
 
@@ -98,7 +99,7 @@ fun SearchScreen(
                     text = "검색 가능 목록",
                     icon = com.miso.design_system.R.drawable.ic_menu
                 ) {
-
+                    onSearchableListClick()
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -125,11 +126,11 @@ fun SearchScreen(
             if (search.isEmpty()) SearchHistoryTitleText() else SearchTitleText()
             Spacer(modifier = Modifier.height(16.dp))
             if (search.isEmpty()) {
-                SearchHistoryList(
+                SearchList(
                     searchHistoryList = listOf("test1", "test2", "test3")
                 )
             } else {
-                SearchHistoryListItem(title = title, content = content, image = image) {
+                SearchListItem(title = title, content = content, image = image) {
                     
                 }
             }
