@@ -19,10 +19,12 @@ import com.miso.design_system.R
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
-fun CameraResultPreview() {
+fun CameraResultPreview(
+    bitmap: ImageBitmap
+) {
     MisoTheme { colors, typography ->
         Image(
-            painter = painterResource(id = R.drawable.ic_miso),
+            bitmap = bitmap,
             modifier = Modifier.size(328.dp, 400.dp),
             contentScale = ContentScale.Crop,
             contentDescription = "camera result preview"
