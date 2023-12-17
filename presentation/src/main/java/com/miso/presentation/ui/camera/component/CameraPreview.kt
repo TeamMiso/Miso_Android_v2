@@ -60,6 +60,9 @@ fun CameraPreview(
                 }
             }
         ) { innerPadding: PaddingValues ->
+
+            cameraController.enableTorch(isFlashOn)
+
             AndroidView(
                 modifier = Modifier
                     .fillMaxSize()
