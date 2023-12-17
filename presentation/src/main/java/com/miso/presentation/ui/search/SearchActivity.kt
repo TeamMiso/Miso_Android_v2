@@ -24,6 +24,7 @@ import com.miso.presentation.ui.camera.CameraActivity
 import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
+import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -90,7 +91,7 @@ class SearchActivity : BaseActivity() {
                             )
                         }
                         composable(MainPage.Shop.name) {
-                            Text(text = "Shop")
+                            ShopScreen()
                         }
                         composable(MainPage.Camera.name) {
                             Text(text = "Camera")
