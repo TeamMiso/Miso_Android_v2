@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.camera.component.CameraResultBottomButton
 import com.miso.presentation.ui.camera.component.CameraResultPreview
@@ -31,7 +32,8 @@ import com.miso.presentation.viewmodel.CameraViewModel
 @Composable
 fun CameraResultScreen(
     context: Context,
-    viewModel: CameraViewModel
+    viewModel: CameraViewModel,
+    navController: NavController
 ) {
     val imageBitmap = getBitmap(viewModel = viewModel)
 
@@ -58,7 +60,7 @@ fun CameraResultScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
             CameraResultBottomButton(
-                onRecaptureClick = {},
+                onRecaptureClick = { navController.popBackStack() },
                 onConfirmClick = {}
             )
         }
