@@ -1,6 +1,7 @@
 package com.miso.data.remote.datasource.recyclables
 
 import com.miso.data.remote.api.RecyclablesAPI
+import com.miso.data.remote.dto.recyclables.response.ResultResponse
 import com.miso.data.remote.dto.recyclables.response.SearchResponse
 import com.miso.data.remote.dto.recyclables.response.SearchableListResponse
 import com.miso.data.util.MisoApiHandler
@@ -25,6 +26,14 @@ class RecyclablesDataSourceImpl @Inject constructor(
         emit(
             MisoApiHandler<SearchableListResponse>()
                 .httpRequest { api.searchableList() }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun result(recyclablesType: String): Flow<ResultResponse> = flow {
+        emit(
+            MisoApiHandler<ResultResponse>()
+                .httpRequest { api.result(recyclablesType = recyclablesType) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
