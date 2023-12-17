@@ -50,10 +50,10 @@ fun CameraPreview(
                 ) {
                     CameraCaptureButton {
                         capturePhoto(
-                            context,
-                            cameraController,
-                            onPhotoCapturedData,
-                            onPhotoCaptured
+                            context = context,
+                            cameraController = cameraController,
+                            onPhotoCaptured = { captured -> onPhotoCaptured(captured) },
+                            onPhotoCapturedData = { bitmap -> onPhotoCapturedData(bitmap) },
                         )
                     }
                 }
