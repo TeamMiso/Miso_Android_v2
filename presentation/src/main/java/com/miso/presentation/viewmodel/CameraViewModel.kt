@@ -20,8 +20,6 @@ class CameraViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _capturedImgBitmapState.value.capturedImage?.recycle()
             _capturedImgBitmapState.value = _capturedImgBitmapState.value.copy(capturedImage = bitmap)
-
-            Log.d("testt", captureImgBitmapState.value.toString())
         }
     }
 }
