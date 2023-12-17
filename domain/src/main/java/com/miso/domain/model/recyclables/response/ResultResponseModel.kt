@@ -5,8 +5,8 @@ data class ResultResponseModel(
     val title: String,
     val subTitle: String,
     val recycleMethod: String,
-    val recyleTip: String,
-    val recylcleCaution: String,
+    val recycleTip: String,
+    val recycleCaution: String,
     val imageUrl: String,
     val recyclablesType: String,
     val recycleMark: String
