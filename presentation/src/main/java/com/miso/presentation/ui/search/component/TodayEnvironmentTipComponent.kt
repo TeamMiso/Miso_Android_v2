@@ -1,5 +1,6 @@
 package com.miso.presentation.ui.search.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -39,6 +40,10 @@ fun TodayEnvironmentTipComponent(
                     .border(
                         width = 1.dp,
                         color = colors.PRIMARY,
+                        shape = RoundedCornerShape(999.dp)
+                    )
+                    .background(
+                        color = colors.WHITE,
                         shape = RoundedCornerShape(999.dp)
                     )
                     .padding(start = 16.dp, end = 16.dp)

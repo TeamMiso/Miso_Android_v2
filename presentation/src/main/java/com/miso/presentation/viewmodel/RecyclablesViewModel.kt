@@ -59,7 +59,6 @@ class RecyclablesViewModel @Inject constructor(
     )
         private set
 
-
     fun search(search: String) = viewModelScope.launch {
         searchUseCase(search = search)
             .onSuccess {

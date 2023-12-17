@@ -24,6 +24,7 @@ fun SearchList(
                     title = listItem.title,
                     content = listItem.recycleMethod,
                     image = listItem.imageUrl,
+                    type = listItem.recyclablesType,
                     onItemClick = {}
                 )
                 Spacer(modifier = Modifier.height(32.dp))

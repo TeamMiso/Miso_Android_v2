@@ -68,12 +68,14 @@ fun SearchScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp,)
+            .padding(horizontal = 16.dp)
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
         Column(
-            modifier = Modifier.pointerInput(Unit) {
+            modifier = Modifier
+                .padding(bottom = 65.dp)
+                .pointerInput(Unit) {
                     detectTapGestures {
                         focusManager.clearFocus()
                     }
@@ -125,7 +127,8 @@ fun SearchScreen(
                 SearchListItem(
                     title = viewModel.title.value,
                     content = viewModel.recycleMethod.value,
-                    image = viewModel.imageUrl.value
+                    image = viewModel.imageUrl.value,
+                    type = viewModel.recyclablesType.value
                 ) {
                     viewModel.result(viewModel.recyclablesType.value)
                     onResultClick()
