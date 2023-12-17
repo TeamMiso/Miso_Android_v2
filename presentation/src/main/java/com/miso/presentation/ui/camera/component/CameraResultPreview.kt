@@ -19,14 +19,25 @@ import com.miso.design_system.R
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
-fun CameraResultPreview() {
+fun CameraResultPreview(
+    bitmap: ImageBitmap?
+) {
     MisoTheme { colors, typography ->
-        Image(
-            painter = painterResource(id = R.drawable.ic_miso),
-            modifier = Modifier.size(328.dp, 400.dp),
-            contentScale = ContentScale.Crop,
-            contentDescription = "camera result preview"
-        )
+        if (bitmap != null){
+            Image(
+                bitmap = bitmap,
+                modifier = Modifier.size(328.dp, 400.dp),
+                contentScale = ContentScale.Crop,
+                contentDescription = "camera result preview"
+            )
+        } else {
+            Image(
+                painter = painterResource(id = R.drawable.ic_miso),
+                modifier = Modifier.size(328.dp, 400.dp),
+                contentScale = ContentScale.Crop,
+                contentDescription = "camera result preview"
+            )
+        }
         Spacer(modifier = Modifier.height(40.dp))
         Text(
             text = "사진을 잘라 더 정확히 검색해 보아요 :)",

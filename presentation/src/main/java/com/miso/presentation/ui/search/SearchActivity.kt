@@ -1,5 +1,6 @@
 package com.miso.presentation.ui.search
 
+import android.content.Intent
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import com.example.miso.viewmodel.util.Event
 import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
+import com.miso.presentation.ui.camera.CameraActivity
 import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
@@ -106,7 +108,14 @@ class SearchActivity : BaseActivity() {
                         currentRoute = currentRoute ?: "Search",
                         onSearchClick = { navController.navigate(MainPage.Search.value) },
                         onShopClick = { navController.navigate(MainPage.Shop.value) },
-                        onCameraClick = { navController.navigate(MainPage.Camera.value) },
+                        onCameraClick = {
+                            val intent = Intent(
+                                this@SearchActivity,
+                                CameraActivity::class.java
+                            )
+                            startActivity(intent)
+                            finish()
+                        },
                         onInquiryClick = { navController.navigate(MainPage.Inquiry.value) },
                         onSettingClick = { navController.navigate(MainPage.Setting.value) }
                     )

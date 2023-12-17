@@ -3,9 +3,12 @@ package com.miso.presentation.ui.camera
 import android.Manifest
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,15 +19,22 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.miso.presentation.ui.base.BaseActivity
+import com.miso.presentation.ui.camera.screen.CameraResultScreen
 import com.miso.presentation.ui.camera.screen.CameraScreen
 import com.miso.presentation.ui.util.PermissionHandlerActions
+import com.miso.presentation.viewmodel.CameraViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
 enum class CameraPage(val value: String) {
-    Camera("Camera")
+    Camera("Camera"),
+    CameraResult("CameraResult")
 }
-
+@AndroidEntryPoint
 class CameraActivity : BaseActivity() {
     private lateinit var navController: NavController
+
+    private val cameraViewModel by viewModels<CameraViewModel>()
     @OptIn(ExperimentalPermissionsApi::class)
     override fun init() {
         setContent {
@@ -37,7 +47,7 @@ class CameraActivity : BaseActivity() {
             )
             val permissionState = rememberMultiplePermissionsState(permissions = permissionsList)
 
-            LaunchedEffect(key1 = Unit) {
+            LaunchedEffect("Permission") {
                 if (!permissionState.permissions[0].status.isGranted && !permissionState.permissions[0].status.shouldShowRationale) run {
                     permissionState.permissions[0].launchPermissionRequest()
                 }
@@ -57,9 +67,17 @@ class CameraActivity : BaseActivity() {
                     } else {
                         showPermissionDialog.value = false
                         CameraScreen(
-                            context = this@CameraActivity
+                            context = this@CameraActivity,
+                            viewModel = viewModel(LocalContext.current as CameraActivity),
+                            navController = navController
                         )
                     }
+                }
+                composable(CameraPage.CameraResult.name) {
+                    CameraResultScreen(
+                        context = this@CameraActivity,
+                        viewModel = viewModel(LocalContext.current as CameraActivity)
+                    )
                 }
             }
         }

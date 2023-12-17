@@ -1,11 +1,13 @@
 package com.miso.presentation.ui.camera.component
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,10 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.LifecycleOwner
 import com.miso.design_system.theme.MisoTheme
+import com.miso.presentation.ui.camera.util.capturePhoto
 
 @Composable
 fun CameraPreview(
-    context: Context
+    context: Context,
+    onPhotoCaptured: (Boolean) -> Unit,
+    onPhotoCapturedData: (Bitmap) -> Unit,
 ) {
 
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -36,6 +41,23 @@ fun CameraPreview(
     MisoTheme { colors, typography ->
         Scaffold(
             modifier = Modifier.fillMaxSize(),
+            floatingActionButton = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 32.dp, start = 16.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    CameraCaptureButton {
+                        capturePhoto(
+                            context = context,
+                            cameraController = cameraController,
+                            onPhotoCaptured = { captured -> onPhotoCaptured(captured) },
+                            onPhotoCapturedData = { bitmap -> onPhotoCapturedData(bitmap) },
+                        )
+                    }
+                }
+            }
         ) { innerPadding: PaddingValues ->
             AndroidView(
                 modifier = Modifier
