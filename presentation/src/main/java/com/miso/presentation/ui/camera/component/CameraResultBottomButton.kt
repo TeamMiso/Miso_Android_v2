@@ -4,6 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
@@ -26,12 +29,17 @@ fun CameraResultBottomButton(
     MisoTheme { colors, typography ->
         Row(
             modifier = Modifier
-                .size(360.dp, 64.dp)
+                .fillMaxWidth()
+                .height(64.dp)
                 .background(color = colors.GREYSCALE2)
         ) {
             CameraRecaptureButton { onRecaptureClick() }
-            Spacer(modifier = Modifier.width(72.dp))
-            CameraConfirmButton { onConfirmClick() }
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                CameraConfirmButton { onConfirmClick() }
+            }
         }
     }
 }
