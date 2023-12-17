@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
+import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.viewmodel.RecyclablesViewModel
@@ -32,7 +33,8 @@ enum class MainPage(val value: String) {
 }
 
 enum class SubPage(val value: String) {
-    SearchableList("SearchableList")
+    SearchableList("SearchableList"),
+    Result("Result")
 }
 
 @AndroidEntryPoint
@@ -59,12 +61,18 @@ class SearchActivity : BaseActivity() {
                                 focusManager = LocalFocusManager.current,
                                 viewModel = recyclablesViewModel,
                                 lifecycleScope = lifecycleScope,
-                                onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) }
+                                onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
+                                onResultClick = { navController.navigate(SubPage.Result.value) }
                             )
                         }
                         composable(SubPage.SearchableList.name) {
                             SearchableListScreen(
                                 viewModel = recyclablesViewModel,
+                                onBackClick = { navController.popBackStack() }
+                            )
+                        }
+                        composable(SubPage.Result.name) {
+                            ResultScreen(
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
