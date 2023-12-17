@@ -11,4 +11,8 @@ interface RecyclablesRepository {
     suspend fun searchableList(): Flow<SearchableListResponseModel>
 
     suspend fun result(recyclablesType: String): Flow<ResultResponseModel>
+
+    suspend fun saveSearchHistory(searchHistory: SearchResponseModel)
+
+    suspend fun getSearchHistory(): Flow<List<SearchResponseModel>>
 }
