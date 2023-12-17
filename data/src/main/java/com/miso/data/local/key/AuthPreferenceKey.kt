@@ -3,7 +3,6 @@ package com.miso.data.local.key
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 object AuthPreferenceKey {
-
     val ACCESS_TOKEN = stringPreferencesKey("access_token")
 
     val ACCESS_TIME = stringPreferencesKey("access_time")
