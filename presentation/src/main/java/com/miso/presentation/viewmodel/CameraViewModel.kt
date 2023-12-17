@@ -1,6 +1,7 @@
 package com.miso.presentation.viewmodel
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miso.presentation.ui.camera.state.CapturedState
@@ -19,6 +20,8 @@ class CameraViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _capturedImgBitmapState.value.capturedImage?.recycle()
             _capturedImgBitmapState.value = _capturedImgBitmapState.value.copy(capturedImage = bitmap)
+
+            Log.d("testt", captureImgBitmapState.value.toString())
         }
     }
 }

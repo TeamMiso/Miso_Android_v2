@@ -1,5 +1,6 @@
 package com.miso.presentation.ui.camera.screen
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,9 +13,12 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,9 +26,15 @@ import androidx.compose.ui.unit.dp
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.camera.component.CameraResultBottomButton
 import com.miso.presentation.ui.camera.component.CameraResultPreview
+import com.miso.presentation.viewmodel.CameraViewModel
 
 @Composable
-fun CameraResultScreen() {
+fun CameraResultScreen(
+    context: Context,
+    viewModel: CameraViewModel
+) {
+    val imageBitmap = getBitmap(viewModel = viewModel)
+
     MisoTheme { colors, typography ->
         Column(
             modifier = Modifier
@@ -33,7 +43,13 @@ fun CameraResultScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(136.dp))
-            CameraResultPreview()
+            CameraResultPreview(
+                if (imageBitmap != null) {
+                    imageBitmap!!
+                } else {
+                    null
+                }
+            )
         }
         Box(
             modifier = Modifier
@@ -50,8 +66,11 @@ fun CameraResultScreen() {
 }
 
 @Composable
-@Preview(showBackground = true)
-fun CameraResultScreenPreview() {
-    CameraResultScreen()
+private fun getBitmap(viewModel: CameraViewModel): ImageBitmap? {
+    val captureImgBitmapState by viewModel.captureImgBitmapState.collectAsState()
+    LaunchedEffect(captureImgBitmapState) { Log.d("testt", captureImgBitmapState.toString()) }
+    (captureImgBitmapState.capturedImage?.asImageBitmap() ?: null)?.let {
+        return it
+    }
+    return null
 }
-
