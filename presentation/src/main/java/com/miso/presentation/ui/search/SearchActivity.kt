@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.miso.viewmodel.util.Event
 import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
@@ -23,6 +24,7 @@ import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 enum class MainPage(val value: String) {
     Search("Search"),
@@ -42,6 +44,13 @@ class SearchActivity : BaseActivity() {
     private val recyclablesViewModel by viewModels<RecyclablesViewModel>()
 
     override fun init() {
+        lifecycleScope.launch {
+            recyclablesViewModel.resultResponse.collect {
+                if (it is Event.Success) {
+                    recyclablesViewModel.result.value = it.data!!
+                }
+            }
+        }
         setContent {
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -68,7 +77,8 @@ class SearchActivity : BaseActivity() {
                         composable(SubPage.SearchableList.name) {
                             SearchableListScreen(
                                 viewModel = recyclablesViewModel,
-                                onBackClick = { navController.popBackStack() }
+                                onBackClick = { navController.popBackStack() },
+                                onResultClick = { navController.navigate(SubPage.Result.value) }
                             )
                         }
                         composable(SubPage.Result.name) {

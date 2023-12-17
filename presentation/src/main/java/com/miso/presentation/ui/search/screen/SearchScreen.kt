@@ -61,10 +61,6 @@ fun SearchScreen(
         search(viewModel = viewModel)
     }
 
-    LaunchedEffect("Result") {
-        result(viewModel = viewModel)
-    }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -121,7 +117,8 @@ fun SearchScreen(
             Spacer(modifier = Modifier.height(16.dp))
             if (search.isEmpty()) {
                 SearchList(
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    onItemClick = {}
                 )
             } else {
                 SearchListItem(
@@ -149,16 +146,6 @@ suspend fun search(
     viewModel.searchResponse.collect {
         if (it is Event.Success) {
             viewModel.saveSearch(it.data!!)
-        }
-    }
-}
-
-suspend fun result(
-    viewModel: RecyclablesViewModel
-) {
-    viewModel.resultResponse.collect {
-        if (it is Event.Success) {
-            viewModel.saveResult(it.data!!)
         }
     }
 }

@@ -20,6 +20,7 @@ import com.miso.presentation.viewmodel.RecyclablesViewModel
 fun SearchableListScreen(
     viewModel: RecyclablesViewModel,
     onBackClick: () -> Unit,
+    onResultClick: () -> Unit
 ) {
     LaunchedEffect("SearchableList") {
         searchableList(viewModel = viewModel)
@@ -40,7 +41,11 @@ fun SearchableListScreen(
             MisoBlackTitleText(text = "검색 가능한 항목")
             Spacer(modifier = Modifier.height(16.dp))
             SearchList(
-                viewModel = viewModel
+                viewModel = viewModel,
+                onItemClick = { type ->
+                    viewModel.result(type)
+                    onResultClick()
+                }
             )
         }
     }

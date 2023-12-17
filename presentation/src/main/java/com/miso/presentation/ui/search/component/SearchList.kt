@@ -13,7 +13,8 @@ import com.miso.presentation.viewmodel.RecyclablesViewModel
 
 @Composable
 fun SearchList(
-    viewModel: RecyclablesViewModel
+    viewModel: RecyclablesViewModel,
+    onItemClick: (type: String) -> Unit
 ) {
     MisoTheme { _, _ ->
         LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -25,7 +26,7 @@ fun SearchList(
                     content = listItem.recycleMethod,
                     image = listItem.imageUrl,
                     type = listItem.recyclablesType,
-                    onItemClick = {}
+                    onItemClick = { onItemClick(listItem.recyclablesType) }
                 )
                 Spacer(modifier = Modifier.height(32.dp))
             }
