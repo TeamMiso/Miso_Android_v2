@@ -47,7 +47,7 @@ class SearchActivity : BaseActivity() {
         lifecycleScope.launch {
             recyclablesViewModel.resultResponse.collect {
                 if (it is Event.Success) {
-                    recyclablesViewModel.result.value = it.data!!
+                    recyclablesViewModel.saveResult(it.data!!)
                 }
             }
         }

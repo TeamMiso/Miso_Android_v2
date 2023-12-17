@@ -29,6 +29,7 @@ import com.example.miso.viewmodel.util.Event
 import com.miso.design_system.component.chip.MisoChip
 import com.miso.design_system.component.text.MisoLogoTitleText
 import com.miso.design_system.component.textfield.MisoSearchTextField
+import com.miso.domain.model.recyclables.response.SearchResponseModel
 import com.miso.presentation.ui.search.component.SearchList
 import com.miso.presentation.ui.search.component.SearchListItem
 import com.miso.presentation.ui.search.component.SearchHistoryTitleText
@@ -59,6 +60,18 @@ fun SearchScreen(
 
     LaunchedEffect("Search") {
         search(viewModel = viewModel)
+    }
+
+    LaunchedEffect("SaveSearchHistory") {
+        saveSearchHistory(
+            viewModel = viewModel
+        )
+    }
+
+    LaunchedEffect("GetSearchHistory") {
+        getSearchHistory(
+            viewModel = viewModel
+        )
     }
 
     Box(
@@ -117,17 +130,19 @@ fun SearchScreen(
             Spacer(modifier = Modifier.height(16.dp))
             if (search.isEmpty()) {
                 SearchList(
+                    isSearchHistory = true,
                     viewModel = viewModel,
                     onItemClick = {}
                 )
             } else {
                 SearchListItem(
-                    title = viewModel.title.value,
-                    content = viewModel.recycleMethod.value,
-                    image = viewModel.imageUrl.value,
-                    type = viewModel.recyclablesType.value
+                    title = viewModel.search.value.title,
+                    content = viewModel.search.value.recycleMethod,
+                    image = viewModel.search.value.imageUrl,
+                    type = viewModel.search.value.recyclablesType
                 ) {
-                    viewModel.result(viewModel.recyclablesType.value)
+                    viewModel.saveSearchHistory(viewModel.search.value)
+                    viewModel.result(viewModel.search.value.recyclablesType)
                     onResultClick()
                 }
             }
@@ -146,6 +161,26 @@ suspend fun search(
     viewModel.searchResponse.collect {
         if (it is Event.Success) {
             viewModel.saveSearch(it.data!!)
+        }
+    }
+}
+
+suspend fun saveSearchHistory(
+    viewModel: RecyclablesViewModel
+) {
+    viewModel.saveSearchHistoryResponse.collect {
+        if (it is Event.Success) {
+            viewModel.getSearchHistory()
+        }
+    }
+}
+
+suspend fun getSearchHistory(
+    viewModel: RecyclablesViewModel
+) {
+    viewModel.getSearchHistoryResponse.collect {
+        if (it is Event.Success) {
+            viewModel.saveSearchHistory(it.data!!)
         }
     }
 }

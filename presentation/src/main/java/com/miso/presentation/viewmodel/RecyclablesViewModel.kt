@@ -69,6 +69,8 @@ class RecyclablesViewModel @Inject constructor(
         )
     )
         private set
+    var searchHistory = mutableStateListOf<SearchResponseModel>()
+        private set
 
     fun search(search: String) = viewModelScope.launch {
         searchUseCase(search = search)
@@ -143,5 +145,10 @@ class RecyclablesViewModel @Inject constructor(
 
     fun saveResult(data: ResultResponseModel) {
         result.value = data
+    }
+
+    fun saveSearchHistory(data: List<SearchResponseModel>) {
+        searchHistory.clear()
+        searchHistory.addAll(data)
     }
 }
