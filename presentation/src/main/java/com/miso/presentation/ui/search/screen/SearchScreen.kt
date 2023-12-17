@@ -44,7 +44,8 @@ fun SearchScreen(
     focusManager: FocusManager,
     viewModel: RecyclablesViewModel,
     lifecycleScope: CoroutineScope,
-    onSearchableListClick: () -> Unit
+    onSearchableListClick: () -> Unit,
+    onResultClick: () -> Unit
 ) {
     val isKeyboardOpen by keyboardAsState()
 
@@ -122,7 +123,7 @@ fun SearchScreen(
                     content = viewModel.recycleMethod.value,
                     image = viewModel.imageUrl.value
                 ) {
-
+                    onResultClick()
                 }
             }
         }
