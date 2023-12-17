@@ -101,7 +101,7 @@ class SearchActivity : BaseActivity() {
                         onCameraClick = {
                             val intent = Intent(
                                 this@SearchActivity,
-                                CameraActivity :: class.java
+                                CameraActivity::class.java
                             )
                             startActivity(intent)
                             finish()
