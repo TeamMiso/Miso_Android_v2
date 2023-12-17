@@ -13,20 +13,37 @@ import com.miso.presentation.viewmodel.RecyclablesViewModel
 
 @Composable
 fun SearchList(
-    viewModel: RecyclablesViewModel
+    isSearchHistory: Boolean,
+    viewModel: RecyclablesViewModel,
+    onItemClick: (type: String) -> Unit
 ) {
     MisoTheme { _, _ ->
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(viewModel.recyclableList.size) { index ->
-                val reversedIndex = viewModel.recyclableList.size - 1 - index
-                val listItem = viewModel.recyclableList[reversedIndex]
-                SearchListItem(
-                    title = listItem.title,
-                    content = listItem.recycleMethod,
-                    image = listItem.imageUrl,
-                    onItemClick = {}
-                )
-                Spacer(modifier = Modifier.height(32.dp))
+            if (isSearchHistory) {
+                items(viewModel.searchHistory.size) { index ->
+                    val reversedIndex = viewModel.searchHistory.size - 1 - index
+                    val listItem = viewModel.searchHistory[reversedIndex]
+                    SearchListItem(
+                        title = listItem.title,
+                        content = listItem.recycleMethod,
+                        image = listItem.imageUrl,
+                        type = listItem.recyclablesType,
+                        onItemClick = { onItemClick(listItem.recyclablesType) }
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+            } else {
+                items(viewModel.recyclableList.size) { index ->
+                    val listItem = viewModel.recyclableList[index]
+                    SearchListItem(
+                        title = listItem.title,
+                        content = listItem.recycleMethod,
+                        image = listItem.imageUrl,
+                        type = listItem.recyclablesType,
+                        onItemClick = { onItemClick(listItem.recyclablesType) }
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
             }
         }
     }

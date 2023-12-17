@@ -29,6 +29,7 @@ import com.example.miso.viewmodel.util.Event
 import com.miso.design_system.component.chip.MisoChip
 import com.miso.design_system.component.text.MisoLogoTitleText
 import com.miso.design_system.component.textfield.MisoSearchTextField
+import com.miso.domain.model.recyclables.response.SearchResponseModel
 import com.miso.presentation.ui.search.component.SearchList
 import com.miso.presentation.ui.search.component.SearchListItem
 import com.miso.presentation.ui.search.component.SearchHistoryTitleText
@@ -57,23 +58,39 @@ fun SearchScreen(
 
     var search by remember { mutableStateOf("") }
 
+    LaunchedEffect("Start") {
+        lifecycleScope.launch {
+            viewModel.getSearchHistory()
+        }
+    }
+
     LaunchedEffect("Search") {
         search(viewModel = viewModel)
     }
 
-    LaunchedEffect("Result") {
-        result(viewModel = viewModel)
+    LaunchedEffect("SaveSearchHistory") {
+        saveSearchHistory(
+            viewModel = viewModel
+        )
+    }
+
+    LaunchedEffect("GetSearchHistory") {
+        getSearchHistory(
+            viewModel = viewModel
+        )
     }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp,)
+            .padding(horizontal = 16.dp)
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
         Column(
-            modifier = Modifier.pointerInput(Unit) {
+            modifier = Modifier
+                .padding(bottom = 65.dp)
+                .pointerInput(Unit) {
                     detectTapGestures {
                         focusManager.clearFocus()
                     }
@@ -119,15 +136,22 @@ fun SearchScreen(
             Spacer(modifier = Modifier.height(16.dp))
             if (search.isEmpty()) {
                 SearchList(
-                    viewModel = viewModel
+                    isSearchHistory = true,
+                    viewModel = viewModel,
+                    onItemClick = { type ->
+                        viewModel.result(type)
+                        onResultClick()
+                    }
                 )
             } else {
                 SearchListItem(
-                    title = viewModel.title.value,
-                    content = viewModel.recycleMethod.value,
-                    image = viewModel.imageUrl.value
+                    title = viewModel.search.value.title,
+                    content = viewModel.search.value.recycleMethod,
+                    image = viewModel.search.value.imageUrl,
+                    type = viewModel.search.value.recyclablesType
                 ) {
-                    viewModel.result(viewModel.recyclablesType.value)
+                    viewModel.saveSearchHistory(viewModel.search.value)
+                    viewModel.result(viewModel.search.value.recyclablesType)
                     onResultClick()
                 }
             }
@@ -150,12 +174,22 @@ suspend fun search(
     }
 }
 
-suspend fun result(
+suspend fun saveSearchHistory(
     viewModel: RecyclablesViewModel
 ) {
-    viewModel.resultResponse.collect {
+    viewModel.saveSearchHistoryResponse.collect {
         if (it is Event.Success) {
-            viewModel.saveResult(it.data!!)
+            viewModel.getSearchHistory()
+        }
+    }
+}
+
+suspend fun getSearchHistory(
+    viewModel: RecyclablesViewModel
+) {
+    viewModel.getSearchHistoryResponse.collect {
+        if (it is Event.Success) {
+            viewModel.saveSearchHistory(it.data!!)
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.miso.data.repository
 
+import com.miso.data.local.datasource.recyclables.LocalRecyclablesDataSource
 import com.miso.data.remote.datasource.recyclables.RecyclablesDataSource
+import com.miso.data.remote.dto.recyclables.response.SearchResponse
 import com.miso.data.remote.dto.recyclables.response.toResultModel
 import com.miso.data.remote.dto.recyclables.response.toSearchModel
 import com.miso.domain.model.recyclables.response.ResultResponseModel
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RecyclablesRepositoryImpl @Inject constructor(
+    private val localRecyclablesDataSource: LocalRecyclablesDataSource,
     private val remoteRecyclablesDatasource: RecyclablesDataSource
 ): RecyclablesRepository {
     override suspend fun search(search: String): Flow<SearchResponseModel> {
@@ -24,5 +27,22 @@ class RecyclablesRepositoryImpl @Inject constructor(
 
     override suspend fun result(recyclablesType: String): Flow<ResultResponseModel> {
         return remoteRecyclablesDatasource.result(recyclablesType = recyclablesType).map { it.toResultModel() }
+    }
+
+    override suspend fun saveSearchHistory(searchHistory: SearchResponseModel) {
+        searchHistory.let {
+            localRecyclablesDataSource.setSearchHistory(
+                SearchResponse(
+                    title = it.title,
+                    imageUrl = it.imageUrl,
+                    recycleMethod = it.recycleMethod,
+                    recyclablesType = it.recyclablesType
+                )
+            )
+        }
+    }
+
+    override suspend fun getSearchHistory(): Flow<List<SearchResponseModel>> {
+        return localRecyclablesDataSource.getSearchHistory().map { it.map { it.toSearchModel() } }
     }
 }

@@ -33,6 +33,7 @@ fun SearchListItem(
     title: String,
     content: String,
     image: String,
+    type: String,
     onItemClick: () -> Unit
 ) {
     MisoTheme { colors, typography ->
@@ -49,7 +50,7 @@ fun SearchListItem(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = title,
+                    text = "$title ($type)",
                     style = typography.textSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.GREYSCALE2
@@ -93,6 +94,7 @@ fun ShopProductListItemPreview() {
             title = "안녕하세요",
             content = "그아아ㅏ아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ아ㅏㅏㅏ아ㅏㅏ아ㅏ아ㅏㅏ아ㅏㅏ아ㅏㅏㅏㅏㅏㅏㅏ아ㅏㅏ아ㅏㅏㅏㅏㅏ아ㅏㅏㅏㅏ아ㅏㅏ아ㅏㅏㅏ아ㅏㅏㅏ아ㅏㅏㅏㅏㅏㅏ아ㅏㅏㅏㄱ",
             image = "https://project-miso.s3.ap-northeast-2.amazonaws.com/file/Rectangle+2083.png",
+            type = "PATE",
             onItemClick = {}
         )
     }
