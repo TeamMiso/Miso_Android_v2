@@ -10,7 +10,9 @@ import com.miso.domain.model.recyclables.response.ResultResponseModel
 import com.miso.domain.model.recyclables.response.SearchResponseModel
 import com.miso.domain.model.recyclables.response.SearchableListModel
 import com.miso.domain.model.recyclables.response.SearchableListResponseModel
+import com.miso.domain.usecase.recyclables.GetSearchHistoryUseCase
 import com.miso.domain.usecase.recyclables.ResultUseCase
+import com.miso.domain.usecase.recyclables.SaveSearchHistoryUseCase
 import com.miso.domain.usecase.recyclables.SearchUseCase
 import com.miso.domain.usecase.recyclables.SearchableListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +27,8 @@ class RecyclablesViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase,
     private val searchableListUseCase: SearchableListUseCase,
     private val resultUseCase: ResultUseCase,
+    private val saveSearchHistoryUseCase: SaveSearchHistoryUseCase,
+    private val getSearchHistoryUseCase: GetSearchHistoryUseCase,
 ) : ViewModel() {
     private val _searchResponse = MutableStateFlow<Event<SearchResponseModel>>(Event.Loading)
     val searchResponse = _searchResponse.asStateFlow()
@@ -35,13 +39,20 @@ class RecyclablesViewModel @Inject constructor(
     private val _resultResponse = MutableStateFlow<Event<ResultResponseModel>>(Event.Loading)
     val resultResponse = _resultResponse.asStateFlow()
 
-    var title = mutableStateOf("")
-        private set
-    var imageUrl = mutableStateOf("")
-        private set
-    var recycleMethod = mutableStateOf("")
-        private set
-    var recyclablesType = mutableStateOf("")
+    private val _saveSearchHistoryResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val saveSearchHistoryResponse = _saveSearchHistoryResponse.asStateFlow()
+
+    private val _getSearchHistoryResponse = MutableStateFlow<Event<List<SearchResponseModel>>>(Event.Loading)
+    val getSearchHistoryResponse = _getSearchHistoryResponse.asStateFlow()
+
+    var search = mutableStateOf(
+        SearchResponseModel(
+            title = "",
+            imageUrl = "",
+            recycleMethod = "",
+            recyclablesType = ""
+        )
+    )
         private set
     var recyclableList = mutableStateListOf<SearchableListModel>()
         private set
@@ -98,11 +109,31 @@ class RecyclablesViewModel @Inject constructor(
             }
     }
 
+    fun saveSearchHistory(searchHistory: SearchResponseModel) = viewModelScope.launch {
+        saveSearchHistoryUseCase(
+            searchHistory = searchHistory
+        ).onSuccess {
+            _saveSearchHistoryResponse.value = Event.Success()
+        }.onFailure {
+            _saveSearchHistoryResponse.value = it.errorHandling()
+        }
+    }
+
+    fun getSearchHistory() = viewModelScope.launch {
+        getSearchHistoryUseCase()
+            .onSuccess {
+                it.catch { remoteError ->
+                    _getSearchHistoryResponse.value = remoteError.errorHandling()
+                }.collect { response ->
+                    _getSearchHistoryResponse.value = Event.Success(data = response)
+                }
+            }.onFailure {
+                _getSearchHistoryResponse.value = it.errorHandling()
+            }
+    }
+
     fun saveSearch(data: SearchResponseModel) {
-        title.value = data.title
-        imageUrl.value = data.imageUrl
-        recycleMethod.value = data.recycleMethod
-        recyclablesType.value = data.recyclablesType
+        search.value = data
     }
 
     fun saveSearchableList(data: List<SearchableListModel>) {
