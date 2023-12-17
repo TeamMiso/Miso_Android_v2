@@ -61,6 +61,10 @@ fun SearchScreen(
         search(viewModel = viewModel)
     }
 
+    LaunchedEffect("Result") {
+        result(viewModel = viewModel)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -123,6 +127,7 @@ fun SearchScreen(
                     content = viewModel.recycleMethod.value,
                     image = viewModel.imageUrl.value
                 ) {
+                    viewModel.result(viewModel.recyclablesType.value)
                     onResultClick()
                 }
             }
@@ -141,6 +146,16 @@ suspend fun search(
     viewModel.searchResponse.collect {
         if (it is Event.Success) {
             viewModel.saveSearch(it.data!!)
+        }
+    }
+}
+
+suspend fun result(
+    viewModel: RecyclablesViewModel
+) {
+    viewModel.resultResponse.collect {
+        if (it is Event.Success) {
+            viewModel.saveResult(it.data!!)
         }
     }
 }
