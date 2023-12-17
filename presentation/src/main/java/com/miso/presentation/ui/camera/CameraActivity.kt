@@ -86,7 +86,8 @@ class CameraActivity : BaseActivity() {
                 composable(CameraPage.CameraResult.name) {
                     CameraResultScreen(
                         context = this@CameraActivity,
-                        viewModel = viewModel(LocalContext.current as CameraActivity)
+                        viewModel = viewModel(LocalContext.current as CameraActivity),
+                        navController = navController
                     )
                 }
             }
