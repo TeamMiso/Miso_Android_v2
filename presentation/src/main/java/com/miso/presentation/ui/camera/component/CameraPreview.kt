@@ -33,6 +33,7 @@ fun CameraPreview(
     context: Context,
     onPhotoCaptured: (Boolean) -> Unit,
     onPhotoCapturedData: (Bitmap) -> Unit,
+    isFlashOn: Boolean
 ) {
 
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
