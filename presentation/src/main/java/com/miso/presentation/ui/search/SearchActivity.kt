@@ -73,6 +73,7 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(SubPage.Result.name) {
                             ResultScreen(
+                                viewModel = recyclablesViewModel,
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
