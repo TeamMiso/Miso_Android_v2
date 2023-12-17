@@ -29,9 +29,7 @@ class CameraActivity : BaseActivity() {
     override fun init() {
         setContent {
             navController = rememberNavController()
-            navController.addOnDestinationChangedListener { controller, destination, arguments ->
 
-            }
             val showPermissionDialog = remember { mutableStateOf(false) }
 
             val permissionsList = listOfNotNull(
