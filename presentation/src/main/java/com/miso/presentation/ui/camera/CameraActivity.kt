@@ -54,7 +54,7 @@ class CameraActivity : BaseActivity() {
                             showPermissionDialog = showPermissionDialog,
                             context = this@CameraActivity
                         )
-                    }else {
+                    } else {
                         showPermissionDialog.value = false
                         CameraScreen(
                             context = this@CameraActivity
