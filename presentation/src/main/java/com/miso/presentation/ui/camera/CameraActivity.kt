@@ -1,6 +1,7 @@
 package com.miso.presentation.ui.camera
 
 import android.Manifest
+import android.content.Intent
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -21,6 +22,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.camera.screen.CameraResultScreen
 import com.miso.presentation.ui.camera.screen.CameraScreen
+import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.util.PermissionHandlerActions
 import com.miso.presentation.viewmodel.CameraViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +71,15 @@ class CameraActivity : BaseActivity() {
                         CameraScreen(
                             context = this@CameraActivity,
                             viewModel = viewModel(LocalContext.current as CameraActivity),
-                            navController = navController
+                            navController = navController,
+                            onBackClick = {
+                                val intent = Intent(
+                                    this@CameraActivity,
+                                    SearchActivity::class.java
+                                )
+                                startActivity(intent)
+                                finish()
+                            }
                         )
                     }
                 }

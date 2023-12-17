@@ -1,6 +1,7 @@
 package com.miso.presentation.ui.camera.screen
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.miso.design_system.theme.MisoTheme
+import com.miso.presentation.ui.camera.CameraActivity
 import com.miso.presentation.ui.camera.CameraPage
 import com.miso.presentation.ui.camera.component.CameraBackButton
 import com.miso.presentation.ui.camera.component.CameraCaptureButton
@@ -36,7 +38,8 @@ import com.miso.presentation.viewmodel.CameraViewModel
 fun CameraScreen(
     context: Context,
     viewModel: CameraViewModel,
-    navController: NavController
+    navController: NavController,
+    onBackClick: () -> Unit
 ) {
     var isFlashOn = remember { mutableStateOf(false) }
     MisoTheme { colors, typography ->
@@ -61,7 +64,7 @@ fun CameraScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer( modifier = Modifier.width(16.dp) )
-                CameraBackButton {}
+                CameraBackButton { onBackClick() }
                 Spacer( modifier = Modifier.width(240.dp) )
                 CameraFlashButton { flashState -> isFlashOn.value = flashState }
             }
