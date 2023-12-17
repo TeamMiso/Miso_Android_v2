@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,15 +38,16 @@ fun CameraScreen(
     viewModel: CameraViewModel,
     navController: NavController
 ) {
-
+    var isFlashOn = remember { mutableStateOf(false) }
     MisoTheme { colors, typography ->
         CameraPreview(
             context = context,
             onPhotoCaptured = { captured ->
                 if (captured) navController.navigate(CameraPage.CameraResult.value)
             },
-            onPhotoCapturedData = viewModel::loadImgBitmap
-            )
+            onPhotoCapturedData = viewModel::loadImgBitmap,
+            isFlashOn = isFlashOn.value
+        )
 
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -61,7 +63,7 @@ fun CameraScreen(
                 Spacer( modifier = Modifier.width(16.dp) )
                 CameraBackButton {}
                 Spacer( modifier = Modifier.width(240.dp) )
-                CameraFlashButton {}
+                CameraFlashButton { flashState -> isFlashOn.value = flashState }
             }
         }
     }

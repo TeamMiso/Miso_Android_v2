@@ -33,6 +33,7 @@ fun CameraPreview(
     context: Context,
     onPhotoCaptured: (Boolean) -> Unit,
     onPhotoCapturedData: (Bitmap) -> Unit,
+    isFlashOn: Boolean
 ) {
 
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -59,6 +60,9 @@ fun CameraPreview(
                 }
             }
         ) { innerPadding: PaddingValues ->
+
+            cameraController.enableTorch(isFlashOn)
+
             AndroidView(
                 modifier = Modifier
                     .fillMaxSize()
