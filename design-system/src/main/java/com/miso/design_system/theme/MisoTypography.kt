@@ -1,6 +1,7 @@
 package com.miso.design_system.theme
 
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -95,5 +96,23 @@ object MisoTypography {
         fontFamily = suit,
         fontSize = 16.sp,
         lineHeight = 24.sp
+    )
+
+    @Stable
+    val inquiryTitle = TextStyle(
+        fontFamily = suit,
+        fontSize = 32.sp,
+        lineHeight = 48.sp,
+        fontWeight = FontWeight(800),
+        color = Color.Black
+    )
+
+    @Stable
+    val inquiryText = TextStyle(
+        fontFamily = suit,
+        fontSize = 15.sp,
+        lineHeight = 24.sp,
+        fontWeight = FontWeight(600),
+        color = Color.Black
     )
 }
