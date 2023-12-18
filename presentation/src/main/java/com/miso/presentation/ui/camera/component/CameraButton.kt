@@ -60,7 +60,7 @@ fun CameraBackButton(onClick: () -> Unit){
                     fontSize = 24.sp,
                     lineHeight = 24.sp,
                     fontFamily = FontFamily(Font(com.miso.design_system.R.font.suitv1_bold, FontWeight.Bold)),
-                    fontWeight = FontWeight(800),
+                    fontWeight = FontWeight.ExtraBold,
                     color = colors.WHITE,
                     textAlign = TextAlign.Right,
                 )
