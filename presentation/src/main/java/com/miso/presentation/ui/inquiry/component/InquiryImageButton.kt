@@ -52,8 +52,8 @@ fun InquiryImageButton(
                     Image(
                         bitmap = capturedImage,
                         contentDescription = null,
-                        modifier = Modifier.size(96.dp, 96.dp),
-                        contentScale = ContentScale.Crop
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit
                     )
                 }
                 else if(selectedImageUri == Uri.EMPTY){
@@ -73,7 +73,8 @@ fun InquiryImageButton(
                     Image(
                         painter = rememberAsyncImagePainter(model = selectedImageUri),
                         contentDescription = "Gallery Logo Icon",
-                        modifier = Modifier.size(96.dp, 96.dp)
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit
                     )
                 }
             }
