@@ -67,8 +67,6 @@ object Dependency {
             "com.google.android.gms:play-services-auth:${Versions.GMS_PLAY_SERVICE_AUTH}"
         const val GMS_GOOGLE_SERVICE =
             "com.google.gms:google-services:${Versions.GMS_GOOGLE_SERVICE}"
-        const val GMS_GOOGLE_SERVICE_PLUGIN =
-            "com.google.gms.google-services"
 
         //hilt
         const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
