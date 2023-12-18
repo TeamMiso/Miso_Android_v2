@@ -20,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.miso.design_system.component.lottie.MisoLoadingLottie
 import com.miso.design_system.theme.MisoTheme
 import com.miso.domain.model.recyclables.response.AiListResponseModel
 import com.miso.presentation.ui.camera.component.CameraResultBottomButton
@@ -86,6 +88,11 @@ fun CameraResultScreen(
                     launchAi.value = true
                 }
             )
+        }
+        if (progressState.value) {
+            Dialog(onDismissRequest = {}) {
+                MisoLoadingLottie()
+            }
         }
     }
 }
