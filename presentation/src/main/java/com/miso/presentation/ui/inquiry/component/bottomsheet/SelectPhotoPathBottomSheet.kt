@@ -1,4 +1,4 @@
-package com.miso.presentation.ui.camera.component.bottomsheet
+package com.miso.presentation.ui.inquiry.component.bottomsheet
 
 import android.Manifest
 import android.net.Uri
