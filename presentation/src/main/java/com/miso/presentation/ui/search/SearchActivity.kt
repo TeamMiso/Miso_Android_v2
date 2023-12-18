@@ -1,6 +1,7 @@
 package com.miso.presentation.ui.search
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
@@ -82,6 +83,7 @@ class SearchActivity : BaseActivity() {
                         startDestination = MainPage.Search.name
                     ) {
                         composable(MainPage.Search.name) {
+                            Log.d("testt","launch")
                             SearchScreen(
                                 focusManager = LocalFocusManager.current,
                                 viewModel = recyclablesViewModel,
@@ -90,6 +92,7 @@ class SearchActivity : BaseActivity() {
                                 onResultClick = { navController.navigate(SubPage.Result.value) }
                             )
                             if(inquiryViewModel.isCamera.value) {
+                                Log.d("testt","open")
                                 navController.navigate(MainPage.Inquiry.name)
                             }
                         }
@@ -115,7 +118,14 @@ class SearchActivity : BaseActivity() {
                                     finish()
                                 },
                                 viewModel = inquiryViewModel,
-                                navController = navController
+                                lifecycleScope = lifecycleScope,
+                                navController = navController,
+                                onInquiryClick = { filePart, inquiryPart ->
+                                    inquiryViewModel.requestInquiry(
+                                        filePart = filePart,
+                                        inquiryPart = inquiryPart
+                                    )
+                                }
                             )
                         }
                         composable(MainPage.Setting.name) {

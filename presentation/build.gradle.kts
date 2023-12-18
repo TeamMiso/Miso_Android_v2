@@ -93,4 +93,7 @@ dependencies {
 
     //coil
     implementation(Dependency.Image.COIL)
+
+    //gson
+    implementation(Dependency.Google.GSON)
 }

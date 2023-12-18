@@ -28,7 +28,9 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.miso.design_system.theme.MisoTheme
+import com.miso.domain.model.inquiry.response.InquiryRequestModel
 import com.miso.presentation.ui.inquiry.component.InquiryImageButton
 import com.miso.presentation.ui.inquiry.component.InquiryTextTextField
 import com.miso.presentation.ui.inquiry.component.InquiryTitleTextField
@@ -40,18 +42,28 @@ import com.miso.presentation.ui.search.MainPage
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
+import com.miso.presentation.viewmodel.util.Event
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun InquiryScreen(
     context: Context,
     onCameraClick: () -> Unit,
+    onInquiryClick: (filePart: MultipartBody.Part?, inquiryPart: RequestBody) -> Unit,
     viewModel: InquiryViewModel,
+    lifecycleScope: CoroutineScope,
     navController: NavController
 ) {
     var bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val bottomSheetScope = rememberCoroutineScope()
+
+    val progressState = remember { mutableStateOf(false) }
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
@@ -60,6 +72,15 @@ fun InquiryScreen(
     val filePart = if (imageUri != Uri.EMPTY) {
         imageUri.toMultipartBody(context)
     } else null
+
+    val inquiryData = InquiryRequestModel(
+        title = title,
+        content = content
+    )
+
+    val inquiryJson = Gson().toJson(inquiryData)
+
+    val inquiryRequestBody = inquiryJson.toRequestBody("application/json".toMediaType())
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -84,11 +105,29 @@ fun InquiryScreen(
                     .statusBarsPadding()
             ) {
                 InquiryTopBar(
-                    onInquiryClick = {},
+                    onInquiryClick = {
+                        if (title.isNotEmpty() && content.isNotEmpty()) {
+                            lifecycleScope.launch {
+                                inquiry(
+                                    viewModel = viewModel,
+                                    navController = navController,
+                                    errorText = { text ->
+
+                                    },
+                                    progressState = { state ->
+                                        progressState.value = state
+                                    }
+                                )
+                            }
+                            onInquiryClick(filePart, inquiryRequestBody)
+                        } else {
+                            Log.d("testt","error")
+                        }
+                    },
                     onBackClick = {
                         viewModel.isCamera.value = false
-                        navController.navigate(MainPage.Search.name){
-                            popUpTo(MainPage.Search.name){
+                        navController.navigate(MainPage.Search.value){
+                            popUpTo(MainPage.Search.value){
                                 inclusive = true
                             }
                         }
@@ -116,9 +155,36 @@ fun InquiryScreen(
                 InquiryTextTextField(
                     content = content,
                     onValueChange = {
-                        title = it
+                        content = it
                     }
                 )
+            }
+        }
+    }
+}
+suspend fun inquiry(
+    viewModel: InquiryViewModel,
+    navController: NavController,
+    errorText: (errorText: String) -> Unit,
+    progressState: (progressState: Boolean) -> Unit
+) {
+    viewModel.requestInquiryResponse.collect {
+        when (it) {
+            is Event.Loading -> {
+                Log.d("testt","Loading")
+                progressState(true)
+            }
+
+            is Event.Success -> {
+                Log.d("testt","sucess")
+                navController.navigate(MainPage.Search.value)
+                progressState(false)
+            }
+
+            else -> {
+                Log.d("testt","Fail")
+                errorText("알 수 없는 에러가 발생했습니다!")
+                progressState(false)
             }
         }
     }
