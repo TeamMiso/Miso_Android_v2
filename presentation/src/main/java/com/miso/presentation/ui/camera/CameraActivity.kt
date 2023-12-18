@@ -87,6 +87,7 @@ class CameraActivity : BaseActivity() {
                                     this@CameraActivity,
                                     SearchActivity::class.java
                                 )
+                                intent.putExtra("isCamera",true)
                                 startActivity(intent)
                                 finish()
                             }

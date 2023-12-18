@@ -27,6 +27,7 @@ import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
+import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
 import com.miso.presentation.viewmodel.UserViewModel
@@ -52,6 +53,7 @@ class SearchActivity : BaseActivity() {
     private val recyclablesViewModel by viewModels<RecyclablesViewModel>()
     private val shopViewModel by viewModels<ShopViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
+    private val cameraViewModel by viewModels<CameraViewModel>()
 
     override fun init() {
         lifecycleScope.launch {
@@ -62,6 +64,8 @@ class SearchActivity : BaseActivity() {
             }
         }
         setContent {
+            cameraViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
+
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
@@ -76,13 +80,17 @@ class SearchActivity : BaseActivity() {
                         startDestination = MainPage.Search.name
                     ) {
                         composable(MainPage.Search.name) {
-                            SearchScreen(
-                                focusManager = LocalFocusManager.current,
-                                viewModel = recyclablesViewModel,
-                                lifecycleScope = lifecycleScope,
-                                onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
-                                onResultClick = { navController.navigate(SubPage.Result.value) }
-                            )
+                            if(cameraViewModel.isCamera.value ) {
+                                navController.navigate(MainPage.Inquiry.name)
+                            } else {
+                                SearchScreen(
+                                    focusManager = LocalFocusManager.current,
+                                    viewModel = recyclablesViewModel,
+                                    lifecycleScope = lifecycleScope,
+                                    onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
+                                    onResultClick = { navController.navigate(SubPage.Result.value) }
+                                )
+                            }
                         }
                         composable(MainPage.Shop.name) {
                             ShopScreen(
