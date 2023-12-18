@@ -32,6 +32,10 @@ fun ShopScreen(
         shopList(viewModel = viewModel)
     }
 
+    LaunchedEffect("ShopListDetail") {
+        shopListDetail(viewModel = viewModel)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,6 +59,7 @@ fun ShopScreen(
         ShopList(
             viewModel = viewModel,
             onItemClick = { id ->
+                viewModel.shopListDetail(id = id)
                 onShopDetailClick()
             }
         )
@@ -67,6 +72,16 @@ suspend fun shopList(
     viewModel.shopListResponse.collect {
         if (it is Event.Success) {
             viewModel.saveShopList(it.data!!.itemList)
+        }
+    }
+}
+
+suspend fun shopListDetail(
+    viewModel: ShopViewModel
+) {
+    viewModel.shopListDetailResponse.collect {
+        if (it is Event.Success) {
+            viewModel.saveShopListDetail(it.data!!)
         }
     }
 }

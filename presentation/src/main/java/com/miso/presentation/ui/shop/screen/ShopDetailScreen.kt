@@ -16,9 +16,14 @@ import com.miso.design_system.component.text.MisoBlackTitleText
 import com.miso.presentation.ui.shop.component.DetailContentText
 import com.miso.presentation.ui.shop.component.DetailImage
 import com.miso.presentation.ui.shop.component.UserPointText
+import com.miso.presentation.ui.util.formatNumber
+import com.miso.presentation.viewmodel.ShopViewModel
+import com.miso.presentation.viewmodel.UserViewModel
 
 @Composable
 fun ShopDetailScreen(
+    shopViewModel: ShopViewModel,
+    userViewModel: UserViewModel,
     onBackClick: () -> Unit
 ) {
     Column(
@@ -33,24 +38,24 @@ fun ShopDetailScreen(
             }
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                 Spacer(modifier = Modifier.height(16.dp))
-                MisoBlackTitleText(text = "테스트")
+                MisoBlackTitleText(text = shopViewModel.shopListDetail.value.name)
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
-        DetailImage(imageUrl = "https://image.utoimage.com/preview/cp872722/2022/12/202212008462_500.jpg")
+        DetailImage(imageUrl = shopViewModel.shopListDetail.value.imageUrl)
         Spacer(modifier = Modifier.height(16.dp))
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DetailContentText(text = "안녕하세요")
+            DetailContentText(text = shopViewModel.shopListDetail.value.content)
             Spacer(modifier = Modifier.weight(1f))
             MisoButton(
                 modifier = Modifier,
-                text = "100 포인트로 구매하기"
+                text = "${formatNumber(shopViewModel.shopListDetail.value.price)} 포인트로 구매하기"
             ) {}
             Spacer(modifier = Modifier.height(8.dp))
-            UserPointText(text = "1000000000 포인트")
+            UserPointText(text = "${formatNumber(userViewModel.userInfo.value.point)} 포인트")
             Spacer(modifier = Modifier.height(20.dp))
         }
     }
