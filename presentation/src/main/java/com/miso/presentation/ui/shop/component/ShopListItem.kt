@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.miso.design_system.theme.MisoTheme
+import com.miso.presentation.ui.util.formatNumber
 
 @Composable
 fun ShopListItem(
@@ -57,7 +58,7 @@ fun ShopListItem(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "$price Point",
+                text = "${formatNumber(price)} Point",
                 style = typography.textSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.GREYSCALE2

@@ -28,6 +28,7 @@ import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
+import com.miso.presentation.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,6 +50,7 @@ enum class SubPage(val value: String) {
 class SearchActivity : BaseActivity() {
     private val recyclablesViewModel by viewModels<RecyclablesViewModel>()
     private val shopViewModel by viewModels<ShopViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
 
     override fun init() {
         lifecycleScope.launch {
@@ -111,7 +113,9 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(SubPage.ShopDetail.name) {
                             ShopDetailScreen(
-                                onBackClick = { navController.popBackStack() }
+                                onBackClick = { navController.popBackStack() },
+                                shopViewModel = shopViewModel,
+                                userViewModel = userViewModel
                             )
                         }
                     }

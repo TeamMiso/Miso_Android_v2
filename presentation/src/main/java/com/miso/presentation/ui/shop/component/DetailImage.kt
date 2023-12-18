@@ -13,7 +13,7 @@ fun DetailImage(imageUrl: String) {
         model = imageUrl,
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.28f),
+            .fillMaxHeight(0.34f),
         contentScale = ContentScale.Crop,
         contentDescription = null,
     )

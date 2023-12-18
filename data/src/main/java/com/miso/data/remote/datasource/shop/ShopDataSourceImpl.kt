@@ -1,6 +1,7 @@
 package com.miso.data.remote.datasource.shop
 
 import com.miso.data.remote.api.ShopAPI
+import com.miso.data.remote.dto.shop.response.ShopListDetailResponse
 import com.miso.data.remote.dto.shop.response.ShopListResponse
 import com.miso.data.util.MisoApiHandler
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,14 @@ class ShopDataSourceImpl @Inject constructor(
         emit(
             MisoApiHandler<ShopListResponse>()
                 .httpRequest { api.shopList() }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun shopListDetail(id: Long): Flow<ShopListDetailResponse> = flow {
+        emit(
+            MisoApiHandler<ShopListDetailResponse>()
+                .httpRequest { api.shopListDetail(id = id) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
