@@ -39,7 +39,7 @@ fun CameraResultPreview(
         Text(
             text = "사진을 잘라 더 정확히 검색해 보아요 :)",
             style = typography.textSmall,
-            fontWeight = FontWeight(400),
+            fontWeight = FontWeight.Normal,
             color = colors.GREYSCALE3
         )
     }
