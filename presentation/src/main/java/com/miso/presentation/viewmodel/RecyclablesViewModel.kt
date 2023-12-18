@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.miso.viewmodel.util.Event
-import com.example.miso.viewmodel.util.errorHandling
+import com.miso.presentation.viewmodel.util.Event
+import com.miso.presentation.viewmodel.util.errorHandling
 import com.miso.domain.model.recyclables.response.ResultResponseModel
 import com.miso.domain.model.recyclables.response.SearchResponseModel
 import com.miso.domain.model.recyclables.response.SearchableListModel

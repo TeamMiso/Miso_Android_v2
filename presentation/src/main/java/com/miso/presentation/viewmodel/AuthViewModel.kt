@@ -2,8 +2,8 @@ package com.miso.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.miso.viewmodel.util.Event
-import com.example.miso.viewmodel.util.errorHandling
+import com.miso.presentation.viewmodel.util.Event
+import com.miso.presentation.viewmodel.util.errorHandling
 import com.miso.domain.model.auth.request.AuthLogInRequestModel
 import com.miso.domain.model.auth.request.AuthSignUpRequestModel
 import com.miso.domain.model.auth.response.AuthLogInResponseModel

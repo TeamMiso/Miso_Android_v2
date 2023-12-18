@@ -20,9 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.miso.viewmodel.util.Event
+import com.miso.presentation.viewmodel.util.Event
 import com.miso.design_system.component.button.MisoButton
 import com.miso.design_system.component.textfield.MisoPasswordTextField
 import com.miso.design_system.component.textfield.MisoTextField
@@ -34,10 +33,7 @@ import com.miso.presentation.ui.login.component.MoveSignUpText
 import com.miso.presentation.ui.util.keyboardAsState
 import com.miso.presentation.viewmodel.AuthViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun LoginScreen(
