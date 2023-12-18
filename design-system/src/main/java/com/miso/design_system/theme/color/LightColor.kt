@@ -18,4 +18,6 @@ object LightColor : ColorTheme() {
 
     override val BLACK = Color(0xFF000000)
     override val WHITE = Color(0xFFFFFFFF)
+
+    override val DIALOG_BG = Color(0xD9FFFFFF)
 }
