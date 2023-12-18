@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ShopViewModel @Inject constructor(
     private val shopListUseCase: ShopListUseCase,
-): ViewModel() {
+) : ViewModel() {
     private val _shopListResponse = MutableStateFlow<Event<ShopListResponseModel>>(Event.Loading)
     val shopListResponse = _shopListResponse.asStateFlow()
 
@@ -28,7 +28,7 @@ class ShopViewModel @Inject constructor(
     fun shopList() = viewModelScope.launch {
         shopListUseCase()
             .onSuccess {
-                it.catch {remoteError ->
+                it.catch { remoteError ->
                     _shopListResponse.value = remoteError.errorHandling()
                 }.collect { response ->
                     _shopListResponse.value = Event.Success(data = response)

@@ -17,6 +17,7 @@ import com.miso.presentation.ui.sign_up.screen.SignUpScreen
 import com.miso.presentation.ui.sign_up.screen.VerificationScreen
 import com.miso.presentation.viewmodel.AuthViewModel
 import com.miso.presentation.viewmodel.EmailViewModel
+import com.miso.presentation.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,9 +31,22 @@ enum class LoginPage(val value: String) {
 class LoginActivity : BaseActivity() {
     private val authViewModel by viewModels<AuthViewModel>()
     private val emailViewModel by viewModels<EmailViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
 
     override fun init() {
-        installSplashScreen()
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                userViewModel.getUserInfoResponse.value is Event.Loading
+            }
+        }
+        userViewModel.getUserInfo()
+        lifecycleScope.launch {
+            userViewModel.getUserInfoResponse.collect {
+                if (it is Event.Success) {
+                    pageSearch()
+                }
+            }
+        }
         lifecycleScope.launch {
             authViewModel.saveTokenResponse.collect {
                 if (it is Event.Success) {
