@@ -8,6 +8,8 @@ import com.miso.data.remote.datasource.recyclables.RecyclablesDataSource
 import com.miso.data.remote.datasource.recyclables.RecyclablesDataSourceImpl
 import com.miso.data.remote.datasource.shop.ShopDataSource
 import com.miso.data.remote.datasource.shop.ShopDataSourceImpl
+import com.miso.data.remote.datasource.user.UserDataSource
+import com.miso.data.remote.datasource.user.UserDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,4 +37,9 @@ abstract class RemoteDatasourceModule {
     abstract fun provideShopDataSource(
         shopDataSourceImpl: ShopDataSourceImpl
     ): ShopDataSource
+
+    @Binds
+    abstract fun provideUserDataSource(
+        userDataSourceImpl: UserDataSourceImpl
+    ): UserDataSource
 }

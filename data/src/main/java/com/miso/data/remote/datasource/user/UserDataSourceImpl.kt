@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class UserDatasourceImpl @Inject constructor(
+class UserDataSourceImpl @Inject constructor(
     private val api: UserAPI
-): UserDatasource {
+): UserDataSource {
     override suspend fun getUserInfo(): Flow<UserInfoResponse> = flow {
         emit(
             MisoApiHandler<UserInfoResponse>()

@@ -4,10 +4,12 @@ import com.miso.data.repository.AuthRepositoryImpl
 import com.miso.data.repository.EmailRepositoryImpl
 import com.miso.data.repository.RecyclablesRepositoryImpl
 import com.miso.data.repository.ShopRepositoryImpl
+import com.miso.data.repository.UserRepositoryImpl
 import com.miso.domain.repository.AuthRepository
 import com.miso.domain.repository.EmailRepository
 import com.miso.domain.repository.RecyclablesRepository
 import com.miso.domain.repository.ShopRepository
+import com.miso.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,4 +37,9 @@ abstract class RepositoryModule {
     abstract fun provideShopRepository(
         shopRepositoryImpl: ShopRepositoryImpl
     ): ShopRepository
+
+    @Binds
+    abstract fun provideUserRepository(
+        userRepositoryImpl: UserRepositoryImpl
+    ): UserRepository
 }
