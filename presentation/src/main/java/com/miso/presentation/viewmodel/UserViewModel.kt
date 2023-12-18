@@ -57,7 +57,7 @@ class UserViewModel @Inject constructor(
             .onSuccess {
                 it.catch { remoteError ->
                     _getPointResponse.value = remoteError.errorHandling()
-                }.collect{response ->
+                }.collect { response ->
                     _getPointResponse.value = Event.Success(data = response)
                 }
             }.onFailure { error ->
