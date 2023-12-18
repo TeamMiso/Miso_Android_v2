@@ -6,7 +6,6 @@ import com.miso.data.remote.dto.recyclables.response.SearchResponse
 import com.miso.data.remote.dto.recyclables.response.SearchableListResponse
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
-import retrofit2.http.Multipart
 
 interface RecyclablesDataSource {
     suspend fun search(search: String): Flow<SearchResponse>

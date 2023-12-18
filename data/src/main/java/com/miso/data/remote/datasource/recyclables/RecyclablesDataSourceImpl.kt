@@ -1,6 +1,5 @@
 package com.miso.data.remote.datasource.recyclables
 
-import android.util.Log
 import com.miso.data.remote.api.RecyclablesAPI
 import com.miso.data.remote.dto.recyclables.response.AiListResponse
 import com.miso.data.remote.dto.recyclables.response.ResultResponse
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
-import retrofit2.http.Multipart
 import javax.inject.Inject
 
 class RecyclablesDataSourceImpl @Inject constructor(

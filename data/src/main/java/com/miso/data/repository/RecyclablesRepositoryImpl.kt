@@ -1,6 +1,5 @@
 package com.miso.data.repository
 
-import android.util.Log
 import com.miso.data.local.datasource.recyclables.LocalRecyclablesDataSource
 import com.miso.data.remote.datasource.recyclables.RecyclablesDataSource
 import com.miso.data.remote.dto.recyclables.response.SearchResponse
