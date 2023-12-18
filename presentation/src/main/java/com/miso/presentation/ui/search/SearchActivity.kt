@@ -94,7 +94,17 @@ class SearchActivity : BaseActivity() {
                             Text(text = "Camera")
                         }
                         composable(MainPage.Inquiry.name) {
-                            InquiryScreen()
+                            InquiryScreen(
+                                onCameraClick = {
+                                    val intent = Intent(
+                                        this@SearchActivity,
+                                        CameraActivity::class.java
+                                    )
+                                    intent.putExtra("isInquiry",true)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                            )
                         }
                         composable(MainPage.Setting.name) {
                             Text(text = "Setting")
