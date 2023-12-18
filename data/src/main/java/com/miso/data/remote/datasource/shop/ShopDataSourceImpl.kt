@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class ShopDatasourceImpl @Inject constructor(
+class ShopDataSourceImpl @Inject constructor(
     private val api: ShopAPI
-): ShopDatasource {
+): ShopDataSource{
     override suspend fun shopList(): Flow<ShopListResponse> = flow {
         emit(
             MisoApiHandler<ShopListResponse>()
