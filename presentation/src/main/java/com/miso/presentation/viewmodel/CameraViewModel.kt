@@ -1,6 +1,7 @@
 package com.miso.presentation.viewmodel
 
 import android.graphics.Bitmap
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miso.domain.model.recyclables.response.AiListResponseModel
@@ -29,6 +30,8 @@ class CameraViewModel @Inject constructor(
 
     private val _aiListResponse = MutableStateFlow<Event<AiListResponseModel>>(Event.Loading)
     val aiListResponse = _aiListResponse.asStateFlow()
+
+    var isInquiry = mutableStateOf(false)
 
     fun loadImgBitmap(bitmap: Bitmap){
         viewModelScope.launch {

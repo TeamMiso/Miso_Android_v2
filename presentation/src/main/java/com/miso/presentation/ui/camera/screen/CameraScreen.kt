@@ -27,14 +27,19 @@ fun CameraScreen(
     context: Context,
     viewModel: CameraViewModel,
     navController: NavController,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onInquiryCapture: () -> Unit
 ) {
     var isFlashOn = remember { mutableStateOf(false) }
     MisoTheme { colors, typography ->
         CameraPreview(
             context = context,
             onPhotoCaptured = { captured ->
-                if (captured) navController.navigate(CameraPage.CameraResult.value)
+                if (captured && !viewModel.isInquiry.value) {
+                    navController.navigate(CameraPage.CameraResult.value)
+                } else {
+                    onInquiryCapture()
+                }
             },
             onPhotoCapturedData = viewModel::loadImgBitmap,
             isFlashOn = isFlashOn.value

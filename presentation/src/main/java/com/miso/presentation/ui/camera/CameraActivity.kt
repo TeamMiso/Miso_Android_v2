@@ -42,6 +42,8 @@ class CameraActivity : BaseActivity() {
         setContent {
             navController = rememberNavController()
 
+            cameraViewModel.isInquiry.value = intent.getBooleanExtra("isInquiry",false)
+
             val showPermissionDialog = remember { mutableStateOf(false) }
 
             val permissionsList = listOfNotNull(
@@ -64,7 +66,7 @@ class CameraActivity : BaseActivity() {
                         PermissionHandlerActions(
                             permissionState = permissionState,
                             showPermissionDialog = showPermissionDialog,
-                            context = this@CameraActivity
+                            context = this@CameraActivity,
                         )
                     } else {
                         showPermissionDialog.value = false
@@ -73,6 +75,14 @@ class CameraActivity : BaseActivity() {
                             viewModel = cameraViewModel,
                             navController = navController,
                             onBackClick = {
+                                val intent = Intent(
+                                    this@CameraActivity,
+                                    SearchActivity::class.java
+                                )
+                                startActivity(intent)
+                                finish()
+                            },
+                            onInquiryCapture = {
                                 val intent = Intent(
                                     this@CameraActivity,
                                     SearchActivity::class.java
