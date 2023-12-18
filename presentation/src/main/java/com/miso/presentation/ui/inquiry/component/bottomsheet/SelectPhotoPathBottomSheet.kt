@@ -53,26 +53,25 @@ fun SelectPhotoPathBottomSheet(
         bottomSheetState = bottomSheetState,
         onGalleryLaunchButtonClick = {
             isCamera.value = false
-            if(!showPermissionDialog.value && permissionState.permissions[0].status.isGranted) {
-                galleryLauncher.launch("image/*")
+            if (!permissionState.permissions[0].status.isGranted) {
+                if (!showPermissionDialog.value) {
+                    showPermissionDialog.value = true
+                }
             } else {
-                showPermissionDialog.value = true
+                galleryLauncher.launch("image/*")
             }
         },
         onCameraLaunchButtonClick = {
             isCamera.value = true
-
             onCameraClick()
         }
     )
 
-    if (!isCamera.value && permissionState.permissions[0].status.isGranted) {
-        galleryLauncher.launch("image/*")
-    } else if(!isCamera.value){
+    if (!isCamera.value && !permissionState.permissions[0].status.isGranted && showPermissionDialog.value) {
         PermissionHandlerActions(
             permissionState = permissionState,
             showPermissionDialog = showPermissionDialog,
-            context = LocalContext.current
+            context = LocalContext.current,
         )
     }
 }
