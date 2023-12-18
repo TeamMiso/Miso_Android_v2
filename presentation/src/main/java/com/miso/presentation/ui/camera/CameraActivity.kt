@@ -24,6 +24,8 @@ import com.miso.presentation.ui.camera.screen.CameraScreen
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.util.PermissionHandlerActions
 import com.miso.presentation.viewmodel.CameraViewModel
+import com.miso.presentation.viewmodel.RecyclablesViewModel
+import com.miso.presentation.viewmodel.ShopViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 enum class CameraPage(val value: String) {
@@ -68,7 +70,7 @@ class CameraActivity : BaseActivity() {
                         showPermissionDialog.value = false
                         CameraScreen(
                             context = this@CameraActivity,
-                            viewModel = viewModel(LocalContext.current as CameraActivity),
+                            viewModel = cameraViewModel,
                             navController = navController,
                             onBackClick = {
                                 val intent = Intent(
@@ -83,9 +85,9 @@ class CameraActivity : BaseActivity() {
                 }
                 composable(CameraPage.CameraResult.name) {
                     CameraResultScreen(
-                        context = this@CameraActivity,
-                        viewModel = viewModel(LocalContext.current as CameraActivity),
-                        navController = navController
+                        viewModel = cameraViewModel,
+                        navController = navController,
+                        onSearch = {}
                     )
                 }
             }

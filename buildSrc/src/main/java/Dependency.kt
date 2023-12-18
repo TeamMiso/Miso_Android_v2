@@ -95,4 +95,8 @@ object Dependency {
     object Github {
         const val MARKDOWN = "com.github.jeziellago:compose-markdown:${Versions.MARKDOWN}"
     }
+
+    object Lottie {
+        const val LOTTIE = "com.airbnb.android:lottie-compose:${Versions.LOTTIE}"
+    }
 }
