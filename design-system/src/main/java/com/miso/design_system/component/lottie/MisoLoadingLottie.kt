@@ -17,7 +17,7 @@ import com.miso.design_system.R
 
 @Composable
 fun MisoLoadingLottie(modifier: Modifier = Modifier) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.flow_3))
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.miso_loading))
     val lottieAnimatable = rememberLottieAnimatable()
     val progress by animateLottieCompositionAsState(
         composition = composition,

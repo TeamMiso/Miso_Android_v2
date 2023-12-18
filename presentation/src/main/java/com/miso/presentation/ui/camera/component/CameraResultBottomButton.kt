@@ -58,7 +58,7 @@ fun CameraRecaptureButton(
             Text(
                 text = "다시 찍기",
                 style = typography.buttonLarge,
-                fontWeight = FontWeight(500),
+                fontWeight = FontWeight.Medium,
                 color = colors.WHITE
             )
         }
@@ -85,7 +85,7 @@ fun CameraConfirmButton(
                 Text(
                     text = "확인",
                     style = typography.buttonLarge,
-                    fontWeight = FontWeight(500),
+                    fontWeight = FontWeight.Medium,
                     color = colors.WHITE
                 )
             }
