@@ -46,9 +46,9 @@ fun InquiryTopBar(
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color.Transparent
                 ),
-                onClick = { onBackClick() }
+                onClick = {}
             ) {
-                MisoBackButton {}
+                MisoBackButton { onBackClick() }
             }
             InquiryText()
             InquiryButton { onInquiryClick() }

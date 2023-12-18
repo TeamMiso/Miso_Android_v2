@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.inquiry.component.InquiryImageButton
 import com.miso.presentation.ui.inquiry.component.InquiryTextTextField
@@ -35,6 +36,7 @@ import com.miso.presentation.ui.inquiry.component.InquiryTopBar
 import com.miso.presentation.ui.inquiry.component.bottomsheet.SelectPhotoPathBottomSheet
 import com.miso.presentation.ui.inquiry.util.getMultipartFile
 import com.miso.presentation.ui.inquiry.util.toMultipartBody
+import com.miso.presentation.ui.search.MainPage
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
@@ -45,7 +47,8 @@ import kotlinx.coroutines.launch
 fun InquiryScreen(
     context: Context,
     onCameraClick: () -> Unit,
-    viewModel: InquiryViewModel
+    viewModel: InquiryViewModel,
+    navController: NavController
 ) {
     var bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val bottomSheetScope = rememberCoroutineScope()
@@ -80,7 +83,17 @@ fun InquiryScreen(
                     .background(colors.WHITE)
                     .statusBarsPadding()
             ) {
-                InquiryTopBar(onInquiryClick = {}, onBackClick = {})
+                InquiryTopBar(
+                    onInquiryClick = {},
+                    onBackClick = {
+                        viewModel.isCamera.value = false
+                        navController.navigate(MainPage.Search.name){
+                            popUpTo(MainPage.Search.name){
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
                 InquiryTitleTextField(
                     title = title,
                     onValueChange = {

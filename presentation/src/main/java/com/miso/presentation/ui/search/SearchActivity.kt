@@ -82,16 +82,15 @@ class SearchActivity : BaseActivity() {
                         startDestination = MainPage.Search.name
                     ) {
                         composable(MainPage.Search.name) {
-                            if(inquiryViewModel.isCamera.value ) {
+                            SearchScreen(
+                                focusManager = LocalFocusManager.current,
+                                viewModel = recyclablesViewModel,
+                                lifecycleScope = lifecycleScope,
+                                onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
+                                onResultClick = { navController.navigate(SubPage.Result.value) }
+                            )
+                            if(inquiryViewModel.isCamera.value) {
                                 navController.navigate(MainPage.Inquiry.name)
-                            } else {
-                                SearchScreen(
-                                    focusManager = LocalFocusManager.current,
-                                    viewModel = recyclablesViewModel,
-                                    lifecycleScope = lifecycleScope,
-                                    onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
-                                    onResultClick = { navController.navigate(SubPage.Result.value) }
-                                )
                             }
                         }
                         composable(MainPage.Shop.name) {
@@ -115,7 +114,8 @@ class SearchActivity : BaseActivity() {
                                     startActivity(intent)
                                     finish()
                                 },
-                                viewModel = inquiryViewModel
+                                viewModel = inquiryViewModel,
+                                navController = navController
                             )
                         }
                         composable(MainPage.Setting.name) {
