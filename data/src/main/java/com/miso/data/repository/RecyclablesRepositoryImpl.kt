@@ -7,7 +7,6 @@ import com.miso.data.remote.dto.recyclables.response.SearchResponse
 import com.miso.data.remote.dto.recyclables.response.toAiListResponseModel
 import com.miso.data.remote.dto.recyclables.response.toResultModel
 import com.miso.data.remote.dto.recyclables.response.toSearchModel
-import com.miso.domain.model.recyclables.request.AiRequestModel
 import com.miso.domain.model.recyclables.response.AiListResponseModel
 import com.miso.domain.model.recyclables.response.ResultResponseModel
 import com.miso.domain.model.recyclables.response.SearchResponseModel

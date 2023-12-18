@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.miso.viewmodel.util.Event
 import com.example.miso.viewmodel.util.errorHandling
-import com.miso.domain.model.recyclables.request.AiRequestModel
 import com.miso.domain.model.recyclables.response.AiListResponseModel
 import com.miso.domain.usecase.recyclables.GetAiListUseCase
 import com.miso.presentation.ui.camera.state.CapturedState
@@ -47,10 +46,8 @@ class CameraViewModel @Inject constructor(
         ).onSuccess {
             it.catch { remoteError ->
                 _aiListResponse.value = remoteError.errorHandling()
-                Log.d("testt",remoteError.toString())
             }.collect {response ->
                 _aiListResponse.value = Event.Success(data = response)
-                Log.d("testt",response.toString())
             }
         }.onFailure {
             _aiListResponse.value = Event.Loading
@@ -62,8 +59,7 @@ class CameraViewModel @Inject constructor(
         val mediaType = "image/jpeg"
         val byteArray = swapBitmapToJpeg().toRequestBody(mediaType.toMediaType())
 
-        Log.d("testt",MultipartBody.Part.createFormData("file", fileName, byteArray).toString())
-        return MultipartBody.Part.createFormData("file", fileName, byteArray)
+        return MultipartBody.Part.createFormData("recyclables", fileName, byteArray)
     }
 
     private fun swapBitmapToJpeg(): ByteArray {

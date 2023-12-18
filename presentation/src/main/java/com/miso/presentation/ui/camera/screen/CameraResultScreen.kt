@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.miso.design_system.theme.MisoTheme
-import com.miso.domain.model.recyclables.request.AiRequestModel
 import com.miso.presentation.ui.camera.component.CameraResultBottomButton
 import com.miso.presentation.ui.camera.component.CameraResultPreview
 import com.miso.presentation.viewmodel.CameraViewModel
