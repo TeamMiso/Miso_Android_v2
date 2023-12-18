@@ -57,9 +57,19 @@ class CameraViewModel @Inject constructor(
     fun getMultipartFile(): MultipartBody.Part {
         val fileName = "capturedImage.jpg"
         val mediaType = "image/jpeg"
-        val byteArray = swapBitmapToJpeg().toRequestBody(mediaType.toMediaType())
+        val byteArray = swapBitmapToJpegWithMultipartFile().toRequestBody(mediaType.toMediaType())
 
         return MultipartBody.Part.createFormData("recyclables", fileName, byteArray)
+    }
+
+    private fun swapBitmapToJpegWithMultipartFile(): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+
+        val swapBitmap = _capturedImgBitmapState.value.capturedImage
+
+        swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+
+        return byteArrayOutputStream.toByteArray()
     }
 
     fun swapBitmapToJpeg(): ByteArray {
@@ -67,7 +77,7 @@ class CameraViewModel @Inject constructor(
 
         val swapBitmap = _capturedImgBitmapState.value.capturedImage
 
-        swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
 
         return byteArrayOutputStream.toByteArray()
     }
