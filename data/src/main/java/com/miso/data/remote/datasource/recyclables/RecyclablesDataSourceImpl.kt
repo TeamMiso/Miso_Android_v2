@@ -43,7 +43,6 @@ class RecyclablesDataSourceImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun getAiAnswerList(recyclables: MultipartBody.Part): Flow<AiListResponse> = flow {
-        Log.d("testt",recyclables.toString())
         emit(
             MisoApiHandler<AiListResponse>()
                 .httpRequest { api.getAiAnswerList(recyclables = recyclables) }

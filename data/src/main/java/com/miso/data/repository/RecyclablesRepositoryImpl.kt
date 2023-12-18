@@ -51,7 +51,6 @@ class RecyclablesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAiAnswerList(recyclables: MultipartBody.Part): Flow<AiListResponseModel> {
-        Log.d("testt",recyclables.toString())
         return remoteRecyclablesDatasource.getAiAnswerList(recyclables = recyclables).map { it.toAiListResponseModel() }
     }
 }
