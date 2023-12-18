@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ShopDatasourceImpl @Inject constructor(
     private val api: ShopAPI
 ): ShopDatasource {
-    override suspend fun getShopList(): Flow<ShopListResponse> = flow {
+    override suspend fun shopList(): Flow<ShopListResponse> = flow {
         emit(
             MisoApiHandler<ShopListResponse>()
                 .httpRequest { api.shopList() }

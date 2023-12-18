@@ -4,5 +4,5 @@ import com.miso.data.remote.dto.shop.response.ShopListResponse
 import kotlinx.coroutines.flow.Flow
 
 interface ShopDatasource {
-    suspend fun getShopList(): Flow<ShopListResponse>
+    suspend fun shopList(): Flow<ShopListResponse>
 }
