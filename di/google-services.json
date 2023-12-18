@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "863891456435",
+    "project_id": "miso-v2",
+    "storage_bucket": "miso-v2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863891456435:android:15caa11533f8d8158bcbc6",
+        "android_client_info": {
+          "package_name": "com.miso.miso_android_v2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLfna0xSWpKPFk7bv-UMbGlBBFtpIcZ6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
