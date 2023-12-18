@@ -25,6 +25,7 @@ import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.util.PermissionHandlerActions
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
+import com.miso.presentation.viewmodel.ShopViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 enum class CameraPage(val value: String) {
@@ -35,6 +36,7 @@ enum class CameraPage(val value: String) {
 class CameraActivity : BaseActivity() {
     private lateinit var navController: NavController
 
+    private val cameraViewModel by viewModels<CameraViewModel>()
     @OptIn(ExperimentalPermissionsApi::class)
     override fun init() {
         setContent {
@@ -68,7 +70,7 @@ class CameraActivity : BaseActivity() {
                         showPermissionDialog.value = false
                         CameraScreen(
                             context = this@CameraActivity,
-                            viewModel = viewModel(LocalContext.current as CameraActivity),
+                            viewModel = cameraViewModel,
                             navController = navController,
                             onBackClick = {
                                 val intent = Intent(
@@ -83,17 +85,9 @@ class CameraActivity : BaseActivity() {
                 }
                 composable(CameraPage.CameraResult.name) {
                     CameraResultScreen(
-                        viewModel = viewModel(LocalContext.current as CameraActivity),
+                        viewModel = cameraViewModel,
                         navController = navController,
-                        onSearch = {
-                            val intent = Intent(
-                                this@CameraActivity,
-                                SearchActivity::class.java
-                            )
-                            intent.putExtra("aiResult","aiResult-true")
-                            startActivity(intent)
-                            finish()
-                        }
+                        onSearch = {}
                     )
                 }
             }
