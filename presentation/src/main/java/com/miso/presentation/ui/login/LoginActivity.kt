@@ -43,7 +43,9 @@ class LoginActivity : BaseActivity() {
         lifecycleScope.launch {
             userViewModel.getUserInfoResponse.collect {
                 if (it is Event.Success) {
+                    userViewModel.saveUserInfo(it.data!!)
                     pageSearch()
+                    finish()
                 }
             }
         }
@@ -51,6 +53,7 @@ class LoginActivity : BaseActivity() {
             authViewModel.saveTokenResponse.collect {
                 if (it is Event.Success) {
                     pageSearch()
+                    finish()
                 }
             }
         }

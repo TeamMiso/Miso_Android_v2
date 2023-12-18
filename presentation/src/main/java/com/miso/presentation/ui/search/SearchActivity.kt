@@ -27,6 +27,7 @@ import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
+import com.miso.presentation.viewmodel.PurchaseViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
 import com.miso.presentation.viewmodel.UserViewModel
@@ -52,12 +53,21 @@ class SearchActivity : BaseActivity() {
     private val recyclablesViewModel by viewModels<RecyclablesViewModel>()
     private val shopViewModel by viewModels<ShopViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
+    private val purchaseViewModel by viewModels<PurchaseViewModel>()
 
     override fun init() {
+        userViewModel.getPoint()
         lifecycleScope.launch {
             recyclablesViewModel.resultResponse.collect {
                 if (it is Event.Success) {
                     recyclablesViewModel.saveResult(it.data!!)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            userViewModel.getPointResponse.collect {
+                if (it is Event.Success) {
+                    userViewModel.savePoint(it.data!!)
                 }
             }
         }
@@ -114,9 +124,17 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(SubPage.ShopDetail.name) {
                             ShopDetailScreen(
-                                onBackClick = { navController.popBackStack() },
                                 shopViewModel = shopViewModel,
-                                userViewModel = userViewModel
+                                userViewModel = userViewModel,
+                                purchaseViewModel = purchaseViewModel,
+                                onBackClick = { navController.popBackStack() },
+                                onSearchClick = {
+                                    navController.navigate(MainPage.Search.value){
+                                        popUpTo(MainPage.Search.value){
+                                            inclusive = true
+                                        }
+                                    }
+                                }
                             )
                         }
                     }

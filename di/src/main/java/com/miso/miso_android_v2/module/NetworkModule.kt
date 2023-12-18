@@ -2,6 +2,7 @@ package com.miso.miso_android_v2.module
 
 import com.miso.data.remote.api.AuthAPI
 import com.miso.data.remote.api.EmailAPI
+import com.miso.data.remote.api.PurchaseAPI
 import com.miso.data.remote.api.RecyclablesAPI
 import com.miso.data.remote.api.ShopAPI
 import com.miso.data.remote.api.UserAPI
@@ -83,5 +84,11 @@ object NetworkModule {
     @Singleton
     fun userService(retrofit: Retrofit): UserAPI {
         return retrofit.create(UserAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun purchaseService(retrofit: Retrofit): PurchaseAPI {
+        return retrofit.create(PurchaseAPI::class.java)
     }
 }
