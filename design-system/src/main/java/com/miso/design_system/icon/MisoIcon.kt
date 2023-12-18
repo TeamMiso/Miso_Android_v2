@@ -162,3 +162,25 @@ fun NavBackgroundIcon(
         modifier = modifier
     )
 }
+
+@Composable
+fun GalleryIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_gallery_bottom_sheet),
+        contentDescription = "Gallery Icon Button",
+        modifier = modifier
+    )
+}
+
+@Composable
+fun BottomSheetCameraIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_camera_bottm_sheet),
+        contentDescription = "Camera Icon",
+        modifier = modifier
+    )
+}

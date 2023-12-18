@@ -21,6 +21,7 @@ import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.camera.CameraActivity
+import com.miso.presentation.ui.inquiry.screen.InquiryScreen
 import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
@@ -93,7 +94,7 @@ class SearchActivity : BaseActivity() {
                             Text(text = "Camera")
                         }
                         composable(MainPage.Inquiry.name) {
-                            Text(text = "Inquiry")
+                            InquiryScreen()
                         }
                         composable(MainPage.Setting.name) {
                             Text(text = "Setting")
