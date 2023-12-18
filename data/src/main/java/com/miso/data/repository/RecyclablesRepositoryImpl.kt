@@ -3,14 +3,17 @@ package com.miso.data.repository
 import com.miso.data.local.datasource.recyclables.LocalRecyclablesDataSource
 import com.miso.data.remote.datasource.recyclables.RecyclablesDataSource
 import com.miso.data.remote.dto.recyclables.response.SearchResponse
+import com.miso.data.remote.dto.recyclables.response.toAiListResponseModel
 import com.miso.data.remote.dto.recyclables.response.toResultModel
 import com.miso.data.remote.dto.recyclables.response.toSearchModel
+import com.miso.domain.model.recyclables.response.AiListResponseModel
 import com.miso.domain.model.recyclables.response.ResultResponseModel
 import com.miso.domain.model.recyclables.response.SearchResponseModel
 import com.miso.domain.model.recyclables.response.SearchableListResponseModel
 import com.miso.domain.repository.RecyclablesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class RecyclablesRepositoryImpl @Inject constructor(
@@ -44,5 +47,9 @@ class RecyclablesRepositoryImpl @Inject constructor(
 
     override suspend fun getSearchHistory(): Flow<List<SearchResponseModel>> {
         return localRecyclablesDataSource.getSearchHistory().map { it.map { it.toSearchModel() } }
+    }
+
+    override suspend fun getAiAnswerList(recyclables: MultipartBody.Part): Flow<AiListResponseModel> {
+        return remoteRecyclablesDatasource.getAiAnswerList(recyclables = recyclables).map { it.toAiListResponseModel() }
     }
 }
