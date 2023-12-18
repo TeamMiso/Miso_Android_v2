@@ -1,5 +1,6 @@
 package com.miso.presentation.ui.inquiry.screen
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -32,6 +33,7 @@ import com.miso.presentation.ui.inquiry.component.InquiryTextTextField
 import com.miso.presentation.ui.inquiry.component.InquiryTitleTextField
 import com.miso.presentation.ui.inquiry.component.InquiryTopBar
 import com.miso.presentation.ui.inquiry.component.bottomsheet.SelectPhotoPathBottomSheet
+import com.miso.presentation.ui.inquiry.util.toMultipartBody
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
@@ -40,6 +42,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun InquiryScreen(
+    context: Context,
     onCameraClick: () -> Unit,
     viewModel: InquiryViewModel
 ) {
@@ -47,6 +50,9 @@ fun InquiryScreen(
     val bottomSheetScope = rememberCoroutineScope()
 
     var imageUri by remember { mutableStateOf(Uri.EMPTY) }
+    val filePart = if (imageUri != Uri.EMPTY) {
+        imageUri.toMultipartBody(context)
+    } else null
 
     ModalBottomSheetLayout(
         sheetContent = {

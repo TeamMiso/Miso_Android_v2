@@ -105,6 +105,7 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(MainPage.Inquiry.name) {
                             InquiryScreen(
+                                context = this@SearchActivity,
                                 onCameraClick = {
                                     val intent = Intent(
                                         this@SearchActivity,
