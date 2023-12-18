@@ -120,10 +120,8 @@ suspend fun getAiResponse(
     onError: () -> Unit
 ) {
     viewModel.aiListResponse.collect { response ->
-        Log.d("cameraAi", "작동")
         when (response) {
             is Event.Success -> {
-                Log.d("cameraAi","이벤트 성공${response.data!!}")
                 progressState(false)
                 onSuccess(response.data!!)
             }
@@ -134,12 +132,10 @@ suspend fun getAiResponse(
             }
 
             is Event.Loading -> {
-                Log.d("cameraAi","이벤트 중")
                 progressState(true)
             }
 
             else -> {
-                Log.d("cameraAi","이벤트 실패")
                 progressState(false)
                 onError()
             }
