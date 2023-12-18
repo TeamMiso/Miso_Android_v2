@@ -31,8 +31,7 @@ class CameraViewModel @Inject constructor(
     private val _aiListResponse = MutableStateFlow<Event<AiListResponseModel>>(Event.Loading)
     val aiListResponse = _aiListResponse.asStateFlow()
 
-    var isInquiry = mutableStateOf(false) //CameraActivity용
-    var isCamera = mutableStateOf(false) // SearchActivity용
+    var isInquiry = mutableStateOf(false)
 
     fun loadImgBitmap(bitmap: Bitmap){
         viewModelScope.launch {
@@ -63,7 +62,7 @@ class CameraViewModel @Inject constructor(
         return MultipartBody.Part.createFormData("recyclables", fileName, byteArray)
     }
 
-    private fun swapBitmapToJpeg(): ByteArray {
+    fun swapBitmapToJpeg(): ByteArray {
         val byteArrayOutputStream = ByteArrayOutputStream()
 
         val swapBitmap = _capturedImgBitmapState.value.capturedImage

@@ -88,6 +88,7 @@ class CameraActivity : BaseActivity() {
                                     SearchActivity::class.java
                                 )
                                 intent.putExtra("isCamera",true)
+                                intent.putExtra("byteArray",it)
                                 startActivity(intent)
                                 finish()
                             }
