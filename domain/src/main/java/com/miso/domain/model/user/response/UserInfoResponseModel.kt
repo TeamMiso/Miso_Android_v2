@@ -6,6 +6,6 @@ data class UserInfoResponseModel(
     val id: UUID,
     val email: String,
     val password: String,
-    val point: Int,
+    var point: Int,
     val role: String
 )
