@@ -1,5 +1,6 @@
 package com.miso.design_system.component.chip
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -57,10 +58,9 @@ fun MisoChip(
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
+                Image(
                     painter = painterResource(id = icon),
                     contentDescription = "Chip Component Icon",
-                    tint = colors.GREYSCALE3
                 )
                 Spacer(modifier = Modifier.size(4.dp))
                 Text(
