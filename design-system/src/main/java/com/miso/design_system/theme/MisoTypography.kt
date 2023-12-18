@@ -106,4 +106,13 @@ object MisoTypography {
         fontWeight = FontWeight(800),
         color = Color.Black
     )
+
+    @Stable
+    val inquiryText = TextStyle(
+        fontFamily = suit,
+        fontSize = 15.sp,
+        lineHeight = 24.sp,
+        fontWeight = FontWeight(600),
+        color = Color.Black
+    )
 }
