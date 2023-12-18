@@ -1,4 +1,4 @@
-package com.example.miso.viewmodel.util
+package com.miso.presentation.viewmodel.util
 
 import android.util.Log
 import com.miso.domain.exception.*

@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.miso.viewmodel.util.Event
+import com.miso.presentation.viewmodel.util.Event
 import com.miso.design_system.component.button.MisoBackButton
 import com.miso.design_system.component.text.MisoBlackTitleText
 import com.miso.presentation.ui.search.component.SearchList

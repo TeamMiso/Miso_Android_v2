@@ -3,9 +3,8 @@ package com.miso.presentation.viewmodel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.miso.viewmodel.util.Event
-import com.example.miso.viewmodel.util.errorHandling
-import com.miso.domain.model.recyclables.response.SearchResponseModel
+import com.miso.presentation.viewmodel.util.Event
+import com.miso.presentation.viewmodel.util.errorHandling
 import com.miso.domain.model.shop.response.ShopListModel
 import com.miso.domain.model.shop.response.ShopListResponseModel
 import com.miso.domain.usecase.shop.ShopListUseCase

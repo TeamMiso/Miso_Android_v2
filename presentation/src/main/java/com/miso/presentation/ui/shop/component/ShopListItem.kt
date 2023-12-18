@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,9 +43,10 @@ fun ShopListItem(
                 model = image,
                 modifier = Modifier
                     .fillMaxSize(0.95f)
+                    .aspectRatio(1f)
                     .clip(shape = RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
-                contentDescription = null
+                contentDescription = null,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(

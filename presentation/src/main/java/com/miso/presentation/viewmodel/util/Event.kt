@@ -1,4 +1,4 @@
-package com.example.miso.viewmodel.util
+package com.miso.presentation.viewmodel.util
 
 sealed class Event<out T>(
     val data: T? = null

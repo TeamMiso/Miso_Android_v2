@@ -25,11 +25,11 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.miso.viewmodel.util.Event
+import com.miso.presentation.viewmodel.util.Event
 import com.miso.design_system.component.chip.MisoChip
 import com.miso.design_system.component.text.MisoLogoTitleText
 import com.miso.design_system.component.textfield.MisoSearchTextField
-import com.miso.domain.model.recyclables.response.SearchResponseModel
+import com.miso.presentation.ui.search.component.NoSearchText
 import com.miso.presentation.ui.search.component.SearchList
 import com.miso.presentation.ui.search.component.SearchListItem
 import com.miso.presentation.ui.search.component.SearchHistoryTitleText
@@ -57,9 +57,15 @@ fun SearchScreen(
     }
 
     var search by remember { mutableStateOf("") }
+    var notFound by remember { mutableStateOf(false) }
 
     LaunchedEffect("Search") {
-        search(viewModel = viewModel)
+        search(
+            viewModel = viewModel,
+            notFound = {
+                notFound = it
+            }
+        )
     }
 
     LaunchedEffect("SaveSearchHistory") {
@@ -135,15 +141,19 @@ fun SearchScreen(
                     }
                 )
             } else {
-                SearchListItem(
-                    title = viewModel.search.value.title,
-                    content = viewModel.search.value.recycleMethod,
-                    image = viewModel.search.value.imageUrl,
-                    type = viewModel.search.value.recyclablesType
-                ) {
-                    viewModel.saveSearchHistory(viewModel.search.value)
-                    viewModel.result(viewModel.search.value.recyclablesType)
-                    onResultClick()
+                if (notFound) {
+                    NoSearchText()
+                } else {
+                    SearchListItem(
+                        title = viewModel.search.value.title,
+                        content = viewModel.search.value.recycleMethod,
+                        image = viewModel.search.value.imageUrl,
+                        type = viewModel.search.value.recyclablesType
+                    ) {
+                        viewModel.saveSearchHistory(viewModel.search.value)
+                        viewModel.result(viewModel.search.value.recyclablesType)
+                        onResultClick()
+                    }
                 }
             }
         }
@@ -156,11 +166,23 @@ fun SearchScreen(
 }
 
 suspend fun search(
-    viewModel: RecyclablesViewModel
+    viewModel: RecyclablesViewModel,
+    notFound: (notFound: Boolean) -> Unit
 ) {
     viewModel.searchResponse.collect {
-        if (it is Event.Success) {
-            viewModel.saveSearch(it.data!!)
+        when (it) {
+            is Event.Success -> {
+                notFound(false)
+                viewModel.saveSearch(it.data!!)
+            }
+
+            is Event.NotFound -> {
+                notFound(true)
+            }
+
+            else -> {
+                notFound(true)
+            }
         }
     }
 }
