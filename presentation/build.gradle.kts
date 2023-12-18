@@ -93,7 +93,4 @@ dependencies {
 
     //coil
     implementation(Dependency.Image.COIL)
-
-    //lottie
-    implementation(Dependency.Lottie.LOTTIE)
 }

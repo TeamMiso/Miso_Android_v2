@@ -69,4 +69,7 @@ dependencies {
     //androidTest
     androidTestImplementation(Dependency.Test.ANDROID_JUNIT)
     androidTestImplementation(Dependency.Test.ESPRESSO_CORE)
+
+    //lottie
+    implementation(Dependency.Lottie.LOTTIE)
 }

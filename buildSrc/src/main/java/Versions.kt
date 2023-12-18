@@ -72,5 +72,5 @@ object Versions {
     const val SPLASH = "1.0.1"
 
     //lottie
-    const val LOTTIE = "6.2.0"
+    const val LOTTIE = "6.1.0"
 }

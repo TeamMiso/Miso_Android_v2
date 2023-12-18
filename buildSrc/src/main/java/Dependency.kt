@@ -97,6 +97,6 @@ object Dependency {
     }
 
     object Lottie {
-        const val LOTTIE = "com.airbnb.android:lottie-compse:${Versions.LOTTIE}"
+        const val LOTTIE = "com.airbnb.android:lottie-compose:${Versions.LOTTIE}"
     }
 }
