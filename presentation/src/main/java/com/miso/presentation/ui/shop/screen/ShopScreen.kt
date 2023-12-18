@@ -24,7 +24,8 @@ import com.miso.presentation.viewmodel.ShopViewModel
 
 @Composable
 fun ShopScreen(
-    viewModel: ShopViewModel
+    viewModel: ShopViewModel,
+    onShopDetailClick: () -> Unit
 ) {
     LaunchedEffect("ShopList") {
         viewModel.shopList()
@@ -51,7 +52,12 @@ fun ShopScreen(
             ) {}
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ShopList(viewModel = viewModel)
+        ShopList(
+            viewModel = viewModel,
+            onItemClick = { id ->
+                onShopDetailClick()
+            }
+        )
     }
 }
 

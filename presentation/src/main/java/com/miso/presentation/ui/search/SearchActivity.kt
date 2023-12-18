@@ -24,6 +24,7 @@ import com.miso.presentation.ui.camera.CameraActivity
 import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
+import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
@@ -40,7 +41,8 @@ enum class MainPage(val value: String) {
 
 enum class SubPage(val value: String) {
     SearchableList("SearchableList"),
-    Result("Result")
+    Result("Result"),
+    ShopDetail("ShopDetail")
 }
 
 @AndroidEntryPoint
@@ -79,6 +81,21 @@ class SearchActivity : BaseActivity() {
                                 onResultClick = { navController.navigate(SubPage.Result.value) }
                             )
                         }
+                        composable(MainPage.Shop.name) {
+                            ShopScreen(
+                                viewModel = shopViewModel,
+                                onShopDetailClick = { navController.navigate(SubPage.ShopDetail.value) }
+                            )
+                        }
+                        composable(MainPage.Camera.name) {
+                            Text(text = "Camera")
+                        }
+                        composable(MainPage.Inquiry.name) {
+                            Text(text = "Inquiry")
+                        }
+                        composable(MainPage.Setting.name) {
+                            Text(text = "Setting")
+                        }
                         composable(SubPage.SearchableList.name) {
                             SearchableListScreen(
                                 viewModel = recyclablesViewModel,
@@ -92,19 +109,10 @@ class SearchActivity : BaseActivity() {
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
-                        composable(MainPage.Shop.name) {
-                            ShopScreen(
-                                viewModel = shopViewModel
+                        composable(SubPage.ShopDetail.name) {
+                            ShopDetailScreen(
+                                onBackClick = { navController.popBackStack() }
                             )
-                        }
-                        composable(MainPage.Camera.name) {
-                            Text(text = "Camera")
-                        }
-                        composable(MainPage.Inquiry.name) {
-                            Text(text = "Inquiry")
-                        }
-                        composable(MainPage.Setting.name) {
-                            Text(text = "Setting")
                         }
                     }
                     MisoBottomNavigationBar(

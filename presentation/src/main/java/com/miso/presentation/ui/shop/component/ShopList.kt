@@ -7,7 +7,8 @@ import com.miso.presentation.viewmodel.ShopViewModel
 
 @Composable
 fun ShopList(
-    viewModel: ShopViewModel
+    viewModel: ShopViewModel,
+    onItemClick: (id: Long) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2)
@@ -18,7 +19,7 @@ fun ShopList(
                 name = listItem.name,
                 price = listItem.price,
                 image = listItem.imageUrl,
-                onItemClick = {}
+                onItemClick = { onItemClick(listItem.id) }
             )
         }
     }
