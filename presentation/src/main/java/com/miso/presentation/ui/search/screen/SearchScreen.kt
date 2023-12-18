@@ -58,26 +58,17 @@ fun SearchScreen(
 
     var search by remember { mutableStateOf("") }
 
-    LaunchedEffect("Start") {
-        lifecycleScope.launch {
-            viewModel.getSearchHistory()
-        }
-    }
-
     LaunchedEffect("Search") {
         search(viewModel = viewModel)
     }
 
     LaunchedEffect("SaveSearchHistory") {
-        saveSearchHistory(
-            viewModel = viewModel
-        )
+        saveSearchHistory(viewModel = viewModel)
     }
 
     LaunchedEffect("GetSearchHistory") {
-        getSearchHistory(
-            viewModel = viewModel
-        )
+        viewModel.getSearchHistory()
+        getSearchHistory(viewModel = viewModel)
     }
 
     Box(
