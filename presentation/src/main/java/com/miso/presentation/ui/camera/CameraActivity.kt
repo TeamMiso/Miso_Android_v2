@@ -2,7 +2,6 @@ package com.miso.presentation.ui.camera
 
 import android.Manifest
 import android.content.Intent
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
@@ -26,7 +25,6 @@ import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.util.PermissionHandlerActions
 import com.miso.presentation.viewmodel.CameraViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 
 enum class CameraPage(val value: String) {
     Camera("Camera"),
