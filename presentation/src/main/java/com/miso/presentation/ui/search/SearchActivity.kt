@@ -16,7 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.miso.viewmodel.util.Event
+import com.miso.presentation.viewmodel.util.Event
 import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
@@ -26,6 +26,7 @@ import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.RecyclablesViewModel
+import com.miso.presentation.viewmodel.ShopViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -45,6 +46,7 @@ enum class SubPage(val value: String) {
 @AndroidEntryPoint
 class SearchActivity : BaseActivity() {
     private val recyclablesViewModel by viewModels<RecyclablesViewModel>()
+    private val shopViewModel by viewModels<ShopViewModel>()
 
     override fun init() {
         lifecycleScope.launch {
@@ -91,7 +93,9 @@ class SearchActivity : BaseActivity() {
                             )
                         }
                         composable(MainPage.Shop.name) {
-                            ShopScreen()
+                            ShopScreen(
+                                viewModel = shopViewModel
+                            )
                         }
                         composable(MainPage.Camera.name) {
                             Text(text = "Camera")

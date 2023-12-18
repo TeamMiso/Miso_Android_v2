@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.miso.viewmodel.util.Event
+import com.miso.presentation.viewmodel.util.Event
 import com.miso.presentation.ui.login.screen.LoginScreen
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.search.SearchActivity

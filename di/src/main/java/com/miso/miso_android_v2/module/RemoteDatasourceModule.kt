@@ -6,6 +6,8 @@ import com.miso.data.remote.datasource.email.EmailDataSource
 import com.miso.data.remote.datasource.email.EmailDataSourceImpl
 import com.miso.data.remote.datasource.recyclables.RecyclablesDataSource
 import com.miso.data.remote.datasource.recyclables.RecyclablesDataSourceImpl
+import com.miso.data.remote.datasource.shop.ShopDataSource
+import com.miso.data.remote.datasource.shop.ShopDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,4 +30,9 @@ abstract class RemoteDatasourceModule {
     abstract fun provideRecyclablesDataSource(
         recyclablesDataSourceImpl: RecyclablesDataSourceImpl
     ): RecyclablesDataSource
+
+    @Binds
+    abstract fun provideShopDataSource(
+        shopDataSourceImpl: ShopDataSourceImpl
+    ): ShopDataSource
 }
