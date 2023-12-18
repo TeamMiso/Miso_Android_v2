@@ -28,6 +28,7 @@ import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.CameraViewModel
+import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
 import com.miso.presentation.viewmodel.UserViewModel
@@ -53,7 +54,7 @@ class SearchActivity : BaseActivity() {
     private val recyclablesViewModel by viewModels<RecyclablesViewModel>()
     private val shopViewModel by viewModels<ShopViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
-    private val cameraViewModel by viewModels<CameraViewModel>()
+    private val inquiryViewModel by viewModels<InquiryViewModel>()
 
     override fun init() {
         lifecycleScope.launch {
@@ -64,7 +65,8 @@ class SearchActivity : BaseActivity() {
             }
         }
         setContent {
-            cameraViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
+            inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
+            inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
 
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -80,7 +82,7 @@ class SearchActivity : BaseActivity() {
                         startDestination = MainPage.Search.name
                     ) {
                         composable(MainPage.Search.name) {
-                            if(cameraViewModel.isCamera.value ) {
+                            if(inquiryViewModel.isCamera.value ) {
                                 navController.navigate(MainPage.Inquiry.name)
                             } else {
                                 SearchScreen(
@@ -111,7 +113,8 @@ class SearchActivity : BaseActivity() {
                                     intent.putExtra("isInquiry",true)
                                     startActivity(intent)
                                     finish()
-                                }
+                                },
+                                viewModel = inquiryViewModel
                             )
                         }
                         composable(MainPage.Setting.name) {
