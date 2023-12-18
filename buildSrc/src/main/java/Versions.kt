@@ -70,4 +70,7 @@ object Versions {
 
     //splash
     const val SPLASH = "1.0.1"
+
+    //lottie
+    const val LOTTIE = "6.2.0"
 }
