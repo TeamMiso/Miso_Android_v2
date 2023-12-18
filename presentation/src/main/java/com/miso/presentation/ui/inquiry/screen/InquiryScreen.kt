@@ -33,6 +33,7 @@ import com.miso.presentation.ui.inquiry.component.InquiryTextTextField
 import com.miso.presentation.ui.inquiry.component.InquiryTitleTextField
 import com.miso.presentation.ui.inquiry.component.InquiryTopBar
 import com.miso.presentation.ui.inquiry.component.bottomsheet.SelectPhotoPathBottomSheet
+import com.miso.presentation.ui.inquiry.util.getMultipartFile
 import com.miso.presentation.ui.inquiry.util.toMultipartBody
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.viewmodel.CameraViewModel
@@ -49,7 +50,10 @@ fun InquiryScreen(
     var bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val bottomSheetScope = rememberCoroutineScope()
 
+    var title by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf(Uri.EMPTY) }
+
     val filePart = if (imageUri != Uri.EMPTY) {
         imageUri.toMultipartBody(context)
     } else null
@@ -77,7 +81,12 @@ fun InquiryScreen(
                     .statusBarsPadding()
             ) {
                 InquiryTopBar(onInquiryClick = {}, onBackClick = {})
-                InquiryTitleTextField()
+                InquiryTitleTextField(
+                    title = title,
+                    onValueChange = {
+                        title = it
+                    }
+                )
                 InquiryImageButton(
                     onClick = {
                         bottomSheetScope.launch {
@@ -91,7 +100,12 @@ fun InquiryScreen(
                         null
                     }
                 )
-                InquiryTextTextField()
+                InquiryTextTextField(
+                    content = content,
+                    onValueChange = {
+                        title = it
+                    }
+                )
             }
         }
     }
