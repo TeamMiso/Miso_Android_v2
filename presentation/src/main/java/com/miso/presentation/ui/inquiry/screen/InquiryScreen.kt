@@ -127,7 +127,8 @@ fun InquiryScreen(
                                 inclusive = true
                             }
                         }
-                    }
+                    },
+                    isUser = true
                 )
                 InquiryTitleTextField(
                     title = title,
