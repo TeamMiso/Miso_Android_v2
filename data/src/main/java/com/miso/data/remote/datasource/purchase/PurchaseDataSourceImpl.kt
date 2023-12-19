@@ -1,6 +1,7 @@
 package com.miso.data.remote.datasource.purchase
 
 import com.miso.data.remote.api.PurchaseAPI
+import com.miso.data.remote.dto.purchase.response.PurchaseListResponse
 import com.miso.data.util.MisoApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +16,14 @@ class PurchaseDataSourceImpl @Inject constructor(
         emit(
             MisoApiHandler<Unit>()
                 .httpRequest { api.purchase(id = id) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getPurchaseList(): Flow<PurchaseListResponse> = flow {
+        emit(
+            MisoApiHandler<PurchaseListResponse>()
+                .httpRequest { api.getPurchaseList() }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)

@@ -36,7 +36,9 @@ fun ShopDetailScreen(
     userViewModel: UserViewModel,
     purchaseViewModel: PurchaseViewModel,
     onBackClick: () -> Unit,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onCameraClick: () -> Unit,
+    onPurchaseListClick: () -> Unit
 ) {
     var openDialog by remember { mutableStateOf(false) }
     var openSuccessDialog by remember { mutableStateOf(false) }
@@ -89,6 +91,7 @@ fun ShopDetailScreen(
             },
             onCheckClick = {
                 purchaseViewModel.initPurchase()
+                onCameraClick()
             }
         )
     }
@@ -110,6 +113,7 @@ fun ShopDetailScreen(
             },
             onCheckClick = {
                 purchaseViewModel.initPurchase()
+                onPurchaseListClick()
             }
         )
     }

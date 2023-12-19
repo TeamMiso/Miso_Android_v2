@@ -8,20 +8,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.theme.MisoTheme
+import com.miso.presentation.ui.util.toDateString
+import com.miso.presentation.viewmodel.PurchaseViewModel
 
 @Composable
 fun PurchaseList(
-    list: List<String>,
+    viewModel: PurchaseViewModel,
     onItemClick: () -> Unit
 ) {
     MisoTheme { _, _ ->
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(list.size) { index ->
-                val listItem = list[index]
+            items(viewModel.purchaseList.size) { index ->
+                val listItem = viewModel.purchaseList[index]
                 PurchaseListItem(
-                    title = listItem,
-                    date = listItem,
-                    imageUrl = listItem,
+                    title = listItem.name,
+                    date = listItem.createdDate.toDateString(),
+                    imageUrl = listItem.imageUrl,
                     onItemClick = { onItemClick() }
                 )
                 Spacer(modifier = Modifier.height(32.dp))
