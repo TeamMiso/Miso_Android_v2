@@ -1,6 +1,7 @@
 package com.miso.presentation.ui.camera.screen
 
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,14 +28,19 @@ fun CameraScreen(
     context: Context,
     viewModel: CameraViewModel,
     navController: NavController,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onInquiryCapture: (ByteArray) -> Unit
 ) {
     var isFlashOn = remember { mutableStateOf(false) }
     MisoTheme { colors, typography ->
         CameraPreview(
             context = context,
             onPhotoCaptured = { captured ->
-                if (captured) navController.navigate(CameraPage.CameraResult.value)
+                if (captured && !viewModel.isInquiry.value) {
+                    navController.navigate(CameraPage.CameraResult.value)
+                } else if(captured && viewModel.isInquiry.value){
+                    onInquiryCapture(viewModel.swapBitmapToJpeg())
+                }
             },
             onPhotoCapturedData = viewModel::loadImgBitmap,
             isFlashOn = isFlashOn.value
@@ -59,3 +65,4 @@ fun CameraScreen(
         }
     }
 }
+

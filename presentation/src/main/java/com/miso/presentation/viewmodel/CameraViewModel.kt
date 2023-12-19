@@ -1,6 +1,7 @@
 package com.miso.presentation.viewmodel
 
 import android.graphics.Bitmap
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miso.domain.model.recyclables.response.AiListResponseModel
@@ -30,6 +31,8 @@ class CameraViewModel @Inject constructor(
     private val _aiListResponse = MutableStateFlow<Event<AiListResponseModel>>(Event.Loading)
     val aiListResponse = _aiListResponse.asStateFlow()
 
+    var isInquiry = mutableStateOf(false)
+
     fun loadImgBitmap(bitmap: Bitmap){
         viewModelScope.launch {
             _capturedImgBitmapState.value.capturedImage?.recycle()
@@ -54,17 +57,27 @@ class CameraViewModel @Inject constructor(
     fun getMultipartFile(): MultipartBody.Part {
         val fileName = "capturedImage.jpg"
         val mediaType = "image/jpeg"
-        val byteArray = swapBitmapToJpeg().toRequestBody(mediaType.toMediaType())
+        val byteArray = swapBitmapToJpegWithMultipartFile().toRequestBody(mediaType.toMediaType())
 
         return MultipartBody.Part.createFormData("recyclables", fileName, byteArray)
     }
 
-    private fun swapBitmapToJpeg(): ByteArray {
+    private fun swapBitmapToJpegWithMultipartFile(): ByteArray {
         val byteArrayOutputStream = ByteArrayOutputStream()
 
         val swapBitmap = _capturedImgBitmapState.value.capturedImage
 
         swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+
+        return byteArrayOutputStream.toByteArray()
+    }
+
+    fun swapBitmapToJpeg(): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+
+        val swapBitmap = _capturedImgBitmapState.value.capturedImage
+
+        swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
 
         return byteArrayOutputStream.toByteArray()
     }

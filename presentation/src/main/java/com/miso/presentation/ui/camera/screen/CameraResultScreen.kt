@@ -105,7 +105,6 @@ fun CameraResultScreen(
 @Composable
 private fun getBitmap(viewModel: CameraViewModel): ImageBitmap? {
     val captureImgBitmapState by viewModel.captureImgBitmapState.collectAsState()
-    LaunchedEffect(captureImgBitmapState) { Log.d("testt", captureImgBitmapState.toString()) }
     (captureImgBitmapState.capturedImage?.asImageBitmap() ?: null)?.let {
         return it
     }

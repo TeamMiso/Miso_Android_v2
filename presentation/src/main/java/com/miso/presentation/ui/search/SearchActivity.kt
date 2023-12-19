@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -27,6 +29,7 @@ import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
+import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.PurchaseViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
@@ -53,7 +56,10 @@ class SearchActivity : BaseActivity() {
     private val recyclablesViewModel by viewModels<RecyclablesViewModel>()
     private val shopViewModel by viewModels<ShopViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
+    private val inquiryViewModel by viewModels<InquiryViewModel>()
     private val purchaseViewModel by viewModels<PurchaseViewModel>()
+
+    private lateinit var navController: NavController
 
     override fun init() {
         userViewModel.getPoint()
@@ -72,7 +78,7 @@ class SearchActivity : BaseActivity() {
             }
         }
         setContent {
-            val navController = rememberNavController()
+            navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
             MisoTheme { _, _ ->
@@ -82,16 +88,18 @@ class SearchActivity : BaseActivity() {
                         .navigationBarsPadding()
                 ) {
                     NavHost(
-                        navController = navController,
+                        navController = navController as NavHostController,
                         startDestination = MainPage.Search.name
                     ) {
                         composable(MainPage.Search.name) {
                             SearchScreen(
                                 focusManager = LocalFocusManager.current,
                                 viewModel = recyclablesViewModel,
+                                inquiryViewModel = inquiryViewModel,
                                 lifecycleScope = lifecycleScope,
                                 onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
-                                onResultClick = { navController.navigate(SubPage.Result.value) }
+                                onResultClick = { navController.navigate(SubPage.Result.value) },
+                                onInquiryCamera = { navController.navigate(MainPage.Inquiry.name) }
                             )
                         }
                         composable(MainPage.Shop.name) {
@@ -104,7 +112,27 @@ class SearchActivity : BaseActivity() {
                             Text(text = "Camera")
                         }
                         composable(MainPage.Inquiry.name) {
-                            InquiryScreen()
+                            InquiryScreen(
+                                context = this@SearchActivity,
+                                onCameraClick = {
+                                    val intent = Intent(
+                                        this@SearchActivity,
+                                        CameraActivity::class.java
+                                    )
+                                    intent.putExtra("isInquiry",true)
+                                    startActivity(intent)
+                                    finish()
+                                },
+                                viewModel = inquiryViewModel,
+                                lifecycleScope = lifecycleScope,
+                                navController = navController,
+                                onInquiryClick = { filePart, inquiryPart ->
+                                    inquiryViewModel.requestInquiry(
+                                        filePart = filePart,
+                                        inquiryPart = inquiryPart
+                                    )
+                                }
+                            )
                         }
                         composable(MainPage.Setting.name) {
                             Text(text = "Setting")

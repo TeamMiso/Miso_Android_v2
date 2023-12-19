@@ -19,8 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
-fun InquiryTextTextField() {
+fun InquiryContentTextField(
+    content: String,
+    onValueChange: (String) -> Unit
+) {
     var text by remember { mutableStateOf("") }
+    text = content
     MisoTheme { colors, typography ->
         TextField(
             modifier = Modifier
@@ -29,6 +33,7 @@ fun InquiryTextTextField() {
             value = text,
             onValueChange = {
                 text = it
+                onValueChange(it)
             },
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
@@ -57,6 +62,6 @@ fun InquiryTextTextFieldPreview() {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        InquiryTextTextField()
+        InquiryContentTextField("Miso",{})
     }
 }
