@@ -8,22 +8,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.theme.MisoTheme
+import com.miso.presentation.ui.util.toDateString
+import com.miso.presentation.viewmodel.InquiryViewModel
 
 @Composable
 fun InquiryList(
-    list: List<String>,
-    onItemClick: () -> Unit
+    viewModel: InquiryViewModel,
+    onItemClick: (id: Long) -> Unit
 ) {
     MisoTheme { _, _ ->
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(list.size) { index ->
-                val listItem = list[index]
+            items(viewModel.inquiryList.size) { index ->
+                val listItem = viewModel.inquiryList[index]
                 InquiryListItem(
-                    title = listItem,
-                    date = "24.01.01",
-                    status = "WAIT",
-                    imageUrl = "",
-                    onItemClick = { onItemClick() }
+                    title = listItem.title,
+                    date = listItem.inquiryDate.toDateString(),
+                    status = listItem.inquiryStatus,
+                    imageUrl = listItem.imageUrl ?: "",
+                    onItemClick = { onItemClick(listItem.id) }
                 )
                 Spacer(modifier = Modifier.height(32.dp))
             }
