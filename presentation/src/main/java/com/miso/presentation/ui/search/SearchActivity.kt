@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -27,6 +29,8 @@ import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
+import com.miso.presentation.viewmodel.InquiryViewModel
+import com.miso.presentation.viewmodel.PurchaseViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
 import com.miso.presentation.viewmodel.UserViewModel
@@ -53,6 +57,7 @@ class SearchActivity : BaseActivity() {
     private val shopViewModel by viewModels<ShopViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
     private val inquiryViewModel by viewModels<InquiryViewModel>()
+    private val purchaseViewModel by viewModels<PurchaseViewModel>()
 
     private lateinit var navController: NavController
 
@@ -90,6 +95,7 @@ class SearchActivity : BaseActivity() {
                             SearchScreen(
                                 focusManager = LocalFocusManager.current,
                                 viewModel = recyclablesViewModel,
+                                inquiryViewModel = inquiryViewModel,
                                 lifecycleScope = lifecycleScope,
                                 onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
                                 onResultClick = { navController.navigate(SubPage.Result.value) },
@@ -146,7 +152,6 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(SubPage.ShopDetail.name) {
                             ShopDetailScreen(
-                                onBackClick = { navController.popBackStack() },
                                 shopViewModel = shopViewModel,
                                 userViewModel = userViewModel,
                                 purchaseViewModel = purchaseViewModel,
