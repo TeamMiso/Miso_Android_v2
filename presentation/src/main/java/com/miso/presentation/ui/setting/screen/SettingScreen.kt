@@ -29,7 +29,8 @@ import com.miso.presentation.viewmodel.UserViewModel
 
 @Composable
 fun SettingScreen(
-    viewModel: UserViewModel
+    viewModel: UserViewModel,
+    onLogoutClick: () -> Unit
 ) {
     var isToggle by remember { mutableStateOf(false) }
     var openDialog by remember { mutableStateOf(false) }
@@ -46,7 +47,7 @@ fun SettingScreen(
             dismissText = "취소",
             checkText = "로그아웃",
             onDismissClick = {},
-            onCheckClick = {}
+            onCheckClick = { onLogoutClick() }
         )
     }
 

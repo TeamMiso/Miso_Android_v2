@@ -24,12 +24,14 @@ import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.camera.CameraActivity
 import com.miso.presentation.ui.inquiry.screen.InquiryScreen
+import com.miso.presentation.ui.login.LoginActivity
 import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.setting.screen.SettingScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
+import com.miso.presentation.viewmodel.AuthViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.PurchaseViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
@@ -54,6 +56,7 @@ enum class SubPage(val value: String) {
 
 @AndroidEntryPoint
 class SearchActivity : BaseActivity() {
+    private val authViewModel by viewModels<AuthViewModel>()
     private val recyclablesViewModel by viewModels<RecyclablesViewModel>()
     private val shopViewModel by viewModels<ShopViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
@@ -82,6 +85,14 @@ class SearchActivity : BaseActivity() {
             userViewModel.getPointResponse.collect {
                 if (it is Event.Success) {
                     userViewModel.savePoint(it.data!!)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            authViewModel.logoutResponse.collect {
+                if (it is Event.Success) {
+                    pageLogIn()
+                    finish()
                 }
             }
         }
@@ -144,7 +155,8 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(MainPage.Setting.name) {
                             SettingScreen(
-                                viewModel = userViewModel
+                                viewModel = userViewModel,
+                                onLogoutClick = { authViewModel.logout() }
                             )
                         }
                         composable(SubPage.SearchableList.name) {
@@ -196,5 +208,13 @@ class SearchActivity : BaseActivity() {
                 }
             }
         }
+    }
+    private fun pageLogIn() {
+        startActivity(
+            Intent(
+                this,
+                LoginActivity::class.java
+            )
+        )
     }
 }
