@@ -1,11 +1,14 @@
 package com.miso.presentation.ui.util
 
 import android.content.Context
+import com.miso.presentation.R
 
 interface PermissionDescriptionProvider {
     fun getTitle(context: Context): String
 
     fun getDescription(context: Context, isPermissionPermanentDenial: Boolean): String
+
+    fun getIcon(context: Context): Int
 }
 
 class CameraPermissionDescriptionProvider : PermissionDescriptionProvider {
@@ -21,6 +24,10 @@ class CameraPermissionDescriptionProvider : PermissionDescriptionProvider {
             description
         }
     }
+
+    override fun getIcon(context: Context): Int {
+        return com.miso.design_system.R.drawable.ic_premission_camera
+    }
 }
 
 class ReadMediaImagesPermissionDescriptionProvider : PermissionDescriptionProvider {
@@ -35,5 +42,9 @@ class ReadMediaImagesPermissionDescriptionProvider : PermissionDescriptionProvid
         } else {
             description
         }
+    }
+
+    override fun getIcon(context: Context): Int {
+        return com.miso.design_system.R.drawable.ic_permission_gallery
     }
 }
