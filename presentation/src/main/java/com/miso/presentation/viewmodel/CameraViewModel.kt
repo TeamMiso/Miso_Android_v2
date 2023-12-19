@@ -102,6 +102,5 @@ class CameraViewModel @Inject constructor(
 
     fun setResult(index: Int,aiAnswerList: AiListResponseModel){
         result.value = aiAnswerList.recyclablesList[index]
-        Log.d("testt", aiAnswerList.recyclablesList[index].toString())
     }
 }

@@ -120,7 +120,6 @@ suspend fun givePoint(
     onSuccess: () -> Unit,
 ) {
     viewModel.givePointResponse.collect { response ->
-        Log.d("givePoint", "작동")
         when (response) {
             is Event.Success -> {
                 Log.d("givePoint", "이벤트 성공")
