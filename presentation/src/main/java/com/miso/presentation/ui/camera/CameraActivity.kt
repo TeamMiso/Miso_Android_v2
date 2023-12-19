@@ -101,9 +101,10 @@ class CameraActivity : BaseActivity() {
                     )
                 }
                 composable(CameraPage.CameraResult.name){
-                    CameraResultScreen(viewModel = cameraViewModel) {
-                        
-                    }
+                    CameraResultScreen(
+                        viewModel = cameraViewModel,
+                        onBackClick = {}
+                    )
                 }
             }
         }
