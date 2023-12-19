@@ -1,6 +1,7 @@
 package com.miso.data.remote.datasource.inquiry
 
 import com.miso.data.remote.api.InquiryAPI
+import com.miso.data.remote.dto.inquiry.response.InquiryListResponse
 import com.miso.data.util.MisoApiHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -28,4 +29,19 @@ class InquiryDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getInquiryList(): Flow<InquiryListResponse> = flow {
+        emit(
+            MisoApiHandler<InquiryListResponse>()
+                .httpRequest { api.getInquiryList() }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun getInquiryListAll(): Flow<InquiryListResponse> = flow {
+        emit(
+            MisoApiHandler<InquiryListResponse>()
+                .httpRequest { api.getInquiryListAll() }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
 }
