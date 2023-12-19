@@ -1,5 +1,6 @@
 package com.miso.presentation.ui.camera.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,14 +32,30 @@ import com.miso.presentation.ui.result.component.ResultSubTitleText
 import com.miso.presentation.ui.result.component.ResultTitleText
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
+import com.miso.presentation.viewmodel.UserViewModel
+import com.miso.presentation.viewmodel.util.Event
 
 @Composable
 fun CameraResultScreen(
     viewModel: CameraViewModel,
+    userViewModel: UserViewModel,
     onBackClick: () -> Unit,
+    onPointClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
+    val givePointState = remember { mutableStateOf(false) }
+    val progressState = remember { mutableStateOf(false) }
+
+    LaunchedEffect(givePointState.value){
+        if(givePointState.value){
+            givePoint(
+                viewModel = userViewModel,
+                progressState = { progressState.value = it },
+                onSuccess = { onPointClick() }
+            )
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,8 +96,11 @@ fun CameraResultScreen(
             Spacer(modifier = Modifier.height(56.dp))
             MisoButton(
                 modifier = Modifier,
-                text = "10 포인트 받기"
-            ) {}
+                text = "100 포인트 받기"
+            ) {
+                userViewModel.givePoint()
+                givePointState.value = true
+            }
             Spacer(modifier = Modifier.height(8.dp))
             Column(
                 modifier = Modifier
@@ -86,6 +109,33 @@ fun CameraResultScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CameraWrongAnswerButton( onClick = {})
+            }
+        }
+    }
+}
+
+suspend fun givePoint(
+    viewModel: UserViewModel,
+    progressState: (Boolean) -> Unit,
+    onSuccess: () -> Unit,
+) {
+    viewModel.givePointResponse.collect { response ->
+        Log.d("givePoint", "작동")
+        when (response) {
+            is Event.Success -> {
+                Log.d("givePoint", "이벤트 성공")
+                onSuccess()
+                progressState(false)
+            }
+
+            is Event.Loading -> {
+                Log.d("givePoint", "이벤트 중")
+                progressState(true)
+            }
+
+            else -> {
+                Log.d("givePoint", "이벤트 실패")
+                progressState(false)
             }
         }
     }
