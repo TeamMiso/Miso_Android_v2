@@ -11,4 +11,8 @@ interface AuthRepository {
     suspend fun authLogIn(body: AuthLogInRequestModel): Flow<AuthLogInResponseModel>
 
     suspend fun saveToken(token: AuthLogInResponseModel)
+
+    suspend fun logout(): Flow<Unit>
+
+    suspend fun deleteToken()
 }
