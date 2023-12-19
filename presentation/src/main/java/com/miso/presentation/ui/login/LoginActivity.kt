@@ -44,6 +44,8 @@ class LoginActivity : BaseActivity() {
             userViewModel.getUserInfoResponse.collect {
                 if (it is Event.Success) {
                     userViewModel.saveUserInfo(it.data!!)
+                    pageSearch()
+                    finish()
                 }
             }
         }

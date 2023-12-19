@@ -23,6 +23,7 @@ import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.camera.CameraActivity
+import com.miso.presentation.ui.inquiry.screen.InquiryListScreen
 import com.miso.presentation.ui.inquiry.screen.InquiryScreen
 import com.miso.presentation.ui.login.LoginActivity
 import com.miso.presentation.ui.result.screen.ResultScreen
@@ -44,14 +45,15 @@ enum class MainPage(val value: String) {
     Search("Search"),
     Shop("Shop"),
     Camera("Camera"),
-    Inquiry("Inquiry"),
+    InquiryList("InquiryList"),
     Setting("Setting")
 }
 
 enum class SubPage(val value: String) {
     SearchableList("SearchableList"),
     Result("Result"),
-    ShopDetail("ShopDetail")
+    ShopDetail("ShopDetail"),
+    Inquiry("Inquiry")
 }
 
 @AndroidEntryPoint
@@ -118,7 +120,7 @@ class SearchActivity : BaseActivity() {
                                 lifecycleScope = lifecycleScope,
                                 onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
                                 onResultClick = { navController.navigate(SubPage.Result.value) },
-                                onInquiryCamera = { navController.navigate(MainPage.Inquiry.name) }
+                                onInquiryCamera = { navController.navigate(SubPage.Inquiry.name) }
                             )
                         }
                         composable(MainPage.Shop.name) {
@@ -130,7 +132,18 @@ class SearchActivity : BaseActivity() {
                         composable(MainPage.Camera.name) {
                             Text(text = "Camera")
                         }
-                        composable(MainPage.Inquiry.name) {
+                        composable(MainPage.InquiryList.name) {
+                            InquiryListScreen(
+                                onInquiryClick = { navController.navigate(SubPage.Inquiry.value) }
+                            )
+                        }
+                        composable(MainPage.Setting.name) {
+                            SettingScreen(
+                                viewModel = userViewModel,
+                                onLogoutClick = { authViewModel.logout() }
+                            )
+                        }
+                        composable(SubPage.Inquiry.name) {
                             InquiryScreen(
                                 context = this@SearchActivity,
                                 onCameraClick = {
@@ -151,12 +164,6 @@ class SearchActivity : BaseActivity() {
                                         inquiryPart = inquiryPart
                                     )
                                 }
-                            )
-                        }
-                        composable(MainPage.Setting.name) {
-                            SettingScreen(
-                                viewModel = userViewModel,
-                                onLogoutClick = { authViewModel.logout() }
                             )
                         }
                         composable(SubPage.SearchableList.name) {
@@ -202,7 +209,7 @@ class SearchActivity : BaseActivity() {
                             startActivity(intent)
                             finish()
                         },
-                        onInquiryClick = { navController.navigate(MainPage.Inquiry.value) },
+                        onInquiryClick = { navController.navigate(MainPage.InquiryList.value) },
                         onSettingClick = { navController.navigate(MainPage.Setting.value) }
                     )
                 }

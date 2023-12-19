@@ -88,7 +88,7 @@ fun SearchListItem(
 
 @Composable
 @Preview(showBackground = true)
-fun ShopProductListItemPreview() {
+fun ShopListItemPreview() {
     Box(modifier = Modifier.fillMaxSize()) {
         SearchListItem(
             title = "안녕하세요",

@@ -103,12 +103,12 @@ fun MisoBottomNavigationBar(
                             ) { onInquiryClick() },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        InquiryIcon(isClick = currentRoute == "Inquiry")
+                        InquiryIcon(isClick = currentRoute == "InquiryList")
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "문의",
                             style = typography.captionLarge,
-                            color = if (currentRoute == "Inquiry") colors.PRIMARY else colors.GREYSCALE3
+                            color = if (currentRoute == "InquiryList") colors.PRIMARY else colors.GREYSCALE3
                         )
                     }
                     Column(
