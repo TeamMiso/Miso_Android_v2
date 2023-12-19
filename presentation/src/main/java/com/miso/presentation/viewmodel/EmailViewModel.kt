@@ -17,7 +17,6 @@ import javax.inject.Inject
 class EmailViewModel @Inject constructor(
     private val emailUseCase: EmailUseCase
 ): ViewModel() {
-
     private val _emailResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val emailResponse = _emailResponse.asStateFlow()
 

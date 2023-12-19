@@ -23,7 +23,6 @@ import javax.inject.Inject
 class InquiryViewModel @Inject constructor(
     private val requestInquiryUseCase: RequestInquiryUseCase,
 ) : ViewModel() {
-
     private val _requestInquiryResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val requestInquiryResponse = _requestInquiryResponse.asStateFlow()
 

@@ -9,7 +9,10 @@ import com.miso.domain.model.auth.request.AuthSignUpRequestModel
 import com.miso.domain.model.auth.response.AuthLogInResponseModel
 import com.miso.domain.usecase.auth.AuthLogInUseCase
 import com.miso.domain.usecase.auth.AuthSignUpUseCase
+import com.miso.domain.usecase.auth.DeleteTokenUseCase
+import com.miso.domain.usecase.auth.LogoutUseCase
 import com.miso.domain.usecase.auth.SaveTokenUseCase
+import com.miso.domain.usecase.recyclables.DeleteSearchHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +25,10 @@ class AuthViewModel @Inject constructor(
     private val authSignUpUseCase: AuthSignUpUseCase,
     private val authLogInUseCase: AuthLogInUseCase,
     private val saveTokenUseCase: SaveTokenUseCase,
+    private val logoutUseCase: LogoutUseCase,
+    private val deleteTokenUseCase: DeleteTokenUseCase,
+    private val deleteSearchHistoryUseCase: DeleteSearchHistoryUseCase
 ) : ViewModel() {
-
     private val _authSignUpResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val authSignUpResponse = _authSignUpResponse.asStateFlow()
 
@@ -32,6 +37,9 @@ class AuthViewModel @Inject constructor(
 
     private val _saveTokenResponse = MutableStateFlow<Event<Nothing>>(Event.Loading)
     val saveTokenResponse = _saveTokenResponse.asStateFlow()
+
+    private val _logoutResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val logoutResponse = _logoutResponse.asStateFlow()
 
     fun authSignUp(body: AuthSignUpRequestModel) = viewModelScope.launch {
         authSignUpUseCase(
@@ -73,5 +81,20 @@ class AuthViewModel @Inject constructor(
         }.onFailure {
             _saveTokenResponse.value = it.errorHandling()
         }
+    }
+
+    fun logout() = viewModelScope.launch {
+        logoutUseCase()
+            .onSuccess {
+                it.catch { remoteError ->
+                    _logoutResponse.value = remoteError.errorHandling()
+                }.collect { response ->
+                    _logoutResponse.value = Event.Success(data = response)
+                    deleteTokenUseCase()
+                    deleteSearchHistoryUseCase()
+                }
+            }.onFailure {
+                _logoutResponse.value = it.errorHandling()
+            }
     }
 }
