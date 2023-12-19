@@ -184,3 +184,14 @@ fun BottomSheetCameraIcon(
         modifier = modifier
     )
 }
+
+@Composable
+fun LogoutIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_logout),
+        contentDescription = "Logout Icon",
+        modifier = modifier
+    )
+}

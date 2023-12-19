@@ -23,6 +23,7 @@ import androidx.compose.ui.window.Dialog
 fun MisoDialog(
     openDialog: Boolean,
     onStateChange: (Boolean) -> Unit,
+    isRed: Boolean = false,
     title: String,
     content: String,
     dismissText: String,
@@ -95,7 +96,7 @@ fun MisoDialog(
                             ) {
                                 Text(
                                     text = checkText,
-                                    color = colors.PRIMARY,
+                                    color = if (!isRed) colors.PRIMARY else colors.RED1,
                                     style = typography.buttonLarge,
                                     fontWeight = FontWeight.Medium,
                                 )
