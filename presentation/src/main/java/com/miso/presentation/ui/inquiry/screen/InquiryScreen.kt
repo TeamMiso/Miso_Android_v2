@@ -1,14 +1,12 @@
 package com.miso.presentation.ui.inquiry.screen
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -16,7 +14,6 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,22 +22,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.miso.design_system.theme.MisoTheme
 import com.miso.domain.model.inquiry.response.InquiryRequestModel
+import com.miso.presentation.ui.inquiry.component.InquiryContentTextField
 import com.miso.presentation.ui.inquiry.component.InquiryImageButton
-import com.miso.presentation.ui.inquiry.component.InquiryTextTextField
 import com.miso.presentation.ui.inquiry.component.InquiryTitleTextField
 import com.miso.presentation.ui.inquiry.component.InquiryTopBar
 import com.miso.presentation.ui.inquiry.component.bottomsheet.SelectPhotoPathBottomSheet
 import com.miso.presentation.ui.inquiry.util.getMultipartFile
 import com.miso.presentation.ui.inquiry.util.toMultipartBody
 import com.miso.presentation.ui.search.MainPage
-import com.miso.presentation.ui.search.SearchActivity
-import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.util.Event
 import kotlinx.coroutines.CoroutineScope
@@ -124,8 +118,6 @@ fun InquiryScreen(
                             } else {
                                 onInquiryClick(filePart, inquiryRequestBody)
                             }
-                        } else {
-                            Log.d("testt","error")
                         }
                     },
                     onBackClick = {
@@ -157,7 +149,7 @@ fun InquiryScreen(
                         null
                     }
                 )
-                InquiryTextTextField(
+                InquiryContentTextField(
                     content = content,
                     onValueChange = {
                         content = it
@@ -176,18 +168,15 @@ suspend fun inquiry(
     viewModel.requestInquiryResponse.collect {
         when (it) {
             is Event.Loading -> {
-                Log.d("testt","Loading")
                 progressState(true)
             }
 
             is Event.Success -> {
-                Log.d("testt","sucess")
                 navController.navigate(MainPage.Search.value)
                 progressState(false)
             }
 
             else -> {
-                Log.d("testt","Fail")
                 errorText("알 수 없는 에러가 발생했습니다!")
                 progressState(false)
             }
