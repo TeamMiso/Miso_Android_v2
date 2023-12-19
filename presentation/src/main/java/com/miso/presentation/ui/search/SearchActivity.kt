@@ -1,6 +1,7 @@
 package com.miso.presentation.ui.search
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.camera.CameraActivity
+import com.miso.presentation.ui.inquiry.screen.InquiryListDetailScreen
 import com.miso.presentation.ui.inquiry.screen.InquiryListScreen
 import com.miso.presentation.ui.inquiry.screen.InquiryScreen
 import com.miso.presentation.ui.login.LoginActivity
@@ -55,7 +57,8 @@ enum class SubPage(val value: String) {
     Result("Result"),
     ShopDetail("ShopDetail"),
     Inquiry("Inquiry"),
-    PurchaseList("PurchaseList")
+    PurchaseList("PurchaseList"),
+    InquiryListDetail("InquiryListDetail")
 }
 
 @AndroidEntryPoint
@@ -140,7 +143,8 @@ class SearchActivity : BaseActivity() {
                             InquiryListScreen(
                                 userViewModel = userViewModel,
                                 inquiryViewModel = inquiryViewModel,
-                                onInquiryClick = { navController.navigate(SubPage.Inquiry.value) }
+                                onInquiryClick = { navController.navigate(SubPage.Inquiry.value) },
+                                onInquiryListDetailClick = { navController.navigate(SubPage.InquiryListDetail.value) }
                             )
                         }
                         composable(MainPage.Setting.name) {
@@ -182,7 +186,14 @@ class SearchActivity : BaseActivity() {
                         composable(SubPage.Result.name) {
                             ResultScreen(
                                 viewModel = recyclablesViewModel,
-                                onBackClick = { navController.popBackStack() }
+                                onBackClick = { navController.popBackStack() },
+                                onSearchClick = {
+                                    navController.navigate(MainPage.Search.value) {
+                                        popUpTo(MainPage.Search.value) {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
                             )
                         }
                         composable(SubPage.ShopDetail.name) {
@@ -208,6 +219,11 @@ class SearchActivity : BaseActivity() {
                         composable(SubPage.PurchaseList.name) {
                             PurchaseListScreen(
                                 viewModel = purchaseViewModel,
+                                onBackClick = { navController.popBackStack() }
+                            )
+                        }
+                        composable(SubPage.InquiryListDetail.name) {
+                            InquiryListDetailScreen(
                                 onBackClick = { navController.popBackStack() }
                             )
                         }

@@ -28,7 +28,8 @@ import com.miso.presentation.viewmodel.util.Event
 fun InquiryListScreen(
     userViewModel: UserViewModel,
     inquiryViewModel: InquiryViewModel,
-    onInquiryClick: () -> Unit
+    onInquiryClick: () -> Unit,
+    onInquiryListDetailClick: () -> Unit
 ) {
     LaunchedEffect("InquiryList") {
         if (userViewModel.userInfo.value.role == "ROLE_USER") {
@@ -67,7 +68,7 @@ fun InquiryListScreen(
         InquiryList(
             viewModel = inquiryViewModel,
             onItemClick = { id ->
-
+                onInquiryListDetailClick()
             }
         )
     }
