@@ -30,6 +30,7 @@ import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.setting.screen.SettingScreen
+import com.miso.presentation.ui.shop.screen.PurchaseListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.AuthViewModel
@@ -53,7 +54,8 @@ enum class SubPage(val value: String) {
     SearchableList("SearchableList"),
     Result("Result"),
     ShopDetail("ShopDetail"),
-    Inquiry("Inquiry")
+    Inquiry("Inquiry"),
+    PurchaseList("PurchaseList")
 }
 
 @AndroidEntryPoint
@@ -126,7 +128,8 @@ class SearchActivity : BaseActivity() {
                         composable(MainPage.Shop.name) {
                             ShopScreen(
                                 viewModel = shopViewModel,
-                                onShopDetailClick = { navController.navigate(SubPage.ShopDetail.value) }
+                                onShopDetailClick = { navController.navigate(SubPage.ShopDetail.value) },
+                                onPurchaseListClick = { navController.navigate(SubPage.PurchaseList.value) }
                             )
                         }
                         composable(MainPage.Camera.name) {
@@ -194,6 +197,11 @@ class SearchActivity : BaseActivity() {
                                         }
                                     }
                                 }
+                            )
+                        }
+                        composable(SubPage.PurchaseList.name) {
+                            PurchaseListScreen(
+                                onBackClick = { navController.popBackStack() }
                             )
                         }
                     }
