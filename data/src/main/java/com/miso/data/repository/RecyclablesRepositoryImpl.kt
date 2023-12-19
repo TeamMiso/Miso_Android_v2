@@ -49,6 +49,10 @@ class RecyclablesRepositoryImpl @Inject constructor(
         return localRecyclablesDataSource.getSearchHistory().map { it.map { it.toSearchModel() } }
     }
 
+    override suspend fun deleteSearchHistory() {
+        localRecyclablesDataSource.removeSearchHistory()
+    }
+
     override suspend fun getAiAnswerList(recyclables: MultipartBody.Part): Flow<AiListResponseModel> {
         return remoteRecyclablesDatasource.getAiAnswerList(recyclables = recyclables).map { it.toAiListResponseModel() }
     }

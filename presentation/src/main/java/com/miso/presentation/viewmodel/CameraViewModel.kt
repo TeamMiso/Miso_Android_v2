@@ -24,7 +24,6 @@ import javax.inject.Inject
 class CameraViewModel @Inject constructor(
     private val getAiListUseCase: GetAiListUseCase
 ) : ViewModel() {
-
     private val _capturedImgBitmapState = MutableStateFlow(CapturedState())
     val captureImgBitmapState = _capturedImgBitmapState.asStateFlow()
 

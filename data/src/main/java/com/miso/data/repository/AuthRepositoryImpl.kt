@@ -44,4 +44,15 @@ class AuthRepositoryImpl @Inject constructor(
             localAuthDataSource.setRefreshTime(it.refreshExp)
         }
     }
+
+    override suspend fun logout(): Flow<Unit> {
+        return remoteAuthDatasource.logout()
+    }
+
+    override suspend fun deleteToken() {
+        localAuthDataSource.removeAccessToken()
+        localAuthDataSource.removeRefreshToken()
+        localAuthDataSource.removeAccessTime()
+        localAuthDataSource.removeRefreshTime()
+    }
 }

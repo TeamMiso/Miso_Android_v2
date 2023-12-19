@@ -18,5 +18,7 @@ interface RecyclablesRepository {
 
     suspend fun getSearchHistory(): Flow<List<SearchResponseModel>>
 
+    suspend fun deleteSearchHistory()
+
     suspend fun getAiAnswerList(recyclables: MultipartBody.Part): Flow<AiListResponseModel>
 }
