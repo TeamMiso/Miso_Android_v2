@@ -28,6 +28,7 @@ import com.miso.presentation.viewmodel.RecyclablesViewModel
 fun ResultScreen(
     viewModel: RecyclablesViewModel,
     onBackClick: () -> Unit,
+    onSearchClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -72,7 +73,9 @@ fun ResultScreen(
             MisoButton(
                 modifier = Modifier,
                 text = "홈으로"
-            ) {}
+            ) {
+                onSearchClick()
+            }
             Spacer(modifier = Modifier.height(40.dp))
         }
     }
