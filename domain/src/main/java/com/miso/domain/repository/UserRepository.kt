@@ -8,4 +8,6 @@ interface UserRepository {
     suspend fun getUserInfo(): Flow<UserInfoResponseModel>
 
     suspend fun getPoint(): Flow<PointResponseModel>
+
+    suspend fun givePoint(): Flow<Unit>
 }
