@@ -25,6 +25,7 @@ import com.miso.presentation.ui.inquiry.screen.InquiryScreen
 import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
+import com.miso.presentation.ui.setting.screen.SettingScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.PurchaseViewModel
@@ -56,11 +57,18 @@ class SearchActivity : BaseActivity() {
     private val purchaseViewModel by viewModels<PurchaseViewModel>()
 
     override fun init() {
-        userViewModel.getPoint()
+        userViewModel.getUserInfo()
         lifecycleScope.launch {
             recyclablesViewModel.resultResponse.collect {
                 if (it is Event.Success) {
                     recyclablesViewModel.saveResult(it.data!!)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            userViewModel.getUserInfoResponse.collect {
+                if (it is Event.Success) {
+                    userViewModel.saveUserInfo(it.data!!)
                 }
             }
         }
@@ -107,7 +115,9 @@ class SearchActivity : BaseActivity() {
                             InquiryScreen()
                         }
                         composable(MainPage.Setting.name) {
-                            Text(text = "Setting")
+                            SettingScreen(
+                                viewModel = userViewModel
+                            )
                         }
                         composable(SubPage.SearchableList.name) {
                             SearchableListScreen(
