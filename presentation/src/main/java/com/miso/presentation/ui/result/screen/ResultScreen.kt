@@ -71,7 +71,7 @@ fun ResultScreen(
             Spacer(modifier = Modifier.height(56.dp))
             MisoButton(
                 modifier = Modifier,
-                text = "10 포인트 받기"
+                text = "홈으로"
             ) {}
             Spacer(modifier = Modifier.height(40.dp))
         }

@@ -7,8 +7,6 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,17 +17,17 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.miso.presentation.ui.base.BaseActivity
+import com.miso.presentation.ui.camera.screen.CameraCaptureResultScreen
 import com.miso.presentation.ui.camera.screen.CameraResultScreen
 import com.miso.presentation.ui.camera.screen.CameraScreen
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.util.PermissionHandlerActions
 import com.miso.presentation.viewmodel.CameraViewModel
-import com.miso.presentation.viewmodel.RecyclablesViewModel
-import com.miso.presentation.viewmodel.ShopViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 enum class CameraPage(val value: String) {
     Camera("Camera"),
+    CameraCaptureResult("CameraCaptureResult"),
     CameraResult("CameraResult")
 }
 @AndroidEntryPoint
@@ -95,11 +93,17 @@ class CameraActivity : BaseActivity() {
                         )
                     }
                 }
-                composable(CameraPage.CameraResult.name) {
-                    CameraResultScreen(
+                composable(CameraPage.CameraCaptureResult.name) {
+                    CameraCaptureResultScreen(
                         viewModel = cameraViewModel,
                         navController = navController,
                         onSearch = {}
+                    )
+                }
+                composable(CameraPage.CameraResult.name){
+                    CameraResultScreen(
+                        viewModel = cameraViewModel,
+                        onBackClick = {}
                     )
                 }
             }

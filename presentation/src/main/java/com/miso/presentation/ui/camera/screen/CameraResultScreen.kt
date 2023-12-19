@@ -1,142 +1,88 @@
 package com.miso.presentation.ui.camera.screen
 
-import android.content.Context
-import android.content.Intent
-import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.navigation.NavController
-import com.miso.design_system.component.lottie.MisoLoadingLottie
-import com.miso.design_system.theme.MisoTheme
-import com.miso.domain.model.recyclables.response.AiListResponseModel
-import com.miso.presentation.ui.camera.component.CameraResultBottomButton
-import com.miso.presentation.ui.camera.component.CameraResultPreview
-import com.miso.presentation.ui.search.SearchActivity
+import com.miso.design_system.component.button.MisoBackButton
+import com.miso.design_system.component.button.MisoButton
+import com.miso.design_system.component.text.MisoBlackTitleText
+import com.miso.presentation.ui.camera.component.result.CameraWrongAnswerButton
+import com.miso.presentation.ui.result.component.RecycleCautionText
+import com.miso.presentation.ui.result.component.RecycleContentText
+import com.miso.presentation.ui.result.component.RecycleImage
+import com.miso.presentation.ui.result.component.RecycleMethodText
+import com.miso.presentation.ui.result.component.RecycleTipText
+import com.miso.presentation.ui.result.component.ResultRecyclablesTypeText
+import com.miso.presentation.ui.result.component.ResultSubTitleText
+import com.miso.presentation.ui.result.component.ResultTitleText
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
-import com.miso.presentation.viewmodel.util.Event
 
 @Composable
 fun CameraResultScreen(
     viewModel: CameraViewModel,
-    navController: NavController,
-    onSearch: () -> Unit
+    onBackClick: () -> Unit,
 ) {
-    val imageBitmap = getBitmap(viewModel = viewModel)
+    val scrollState = rememberScrollState()
 
-    val launchAi = remember { mutableStateOf(false) }
-
-    var progressState = remember { mutableStateOf(false) }
-
-    LaunchedEffect(launchAi.value){
-        if(launchAi.value){
-            getAiResponse(
-                viewModel = viewModel,
-                progressState = { progressState.value = it },
-                onSuccess = {
-                    onSearch()
-                },
-                onFailure = {
-                    launchAi.value = false
-                },
-                onError = {
-                    launchAi.value = false
-                }
-            )
-        }
-    }
-
-    MisoTheme { colors, typography ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colors.BLACK),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(modifier = Modifier.height(136.dp))
-            CameraResultPreview(
-                if (imageBitmap != null) {
-                    imageBitmap!!
-                } else {
-                    null
-                }
-            )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            CameraResultBottomButton(
-                onRecaptureClick = { navController.popBackStack() },
-                onConfirmClick = {
-                    val sendMultipartFile = viewModel.getMultipartFile()
-                    viewModel.getAiList(sendMultipartFile)
-                    launchAi.value = true
-                }
-            )
-        }
-        if (progressState.value) {
-            Dialog(onDismissRequest = {}) {
-                MisoLoadingLottie()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .verticalScroll(scrollState)
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+            Spacer(modifier = Modifier.height(8.dp))
+            MisoBackButton {
+                onBackClick()
+            }
+            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                Spacer(modifier = Modifier.height(16.dp))
+                MisoBlackTitleText(text = "")
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
-    }
-}
-
-@Composable
-private fun getBitmap(viewModel: CameraViewModel): ImageBitmap? {
-    val captureImgBitmapState by viewModel.captureImgBitmapState.collectAsState()
-    (captureImgBitmapState.capturedImage?.asImageBitmap() ?: null)?.let {
-        return it
-    }
-    return null
-}
-
-suspend fun getAiResponse(
-    viewModel: CameraViewModel,
-    progressState: (Boolean) -> Unit,
-    onSuccess: (aiAnswer: AiListResponseModel) -> Unit,
-    onFailure: () -> Unit,
-    onError: () -> Unit
-) {
-    viewModel.aiListResponse.collect { response ->
-        when (response) {
-            is Event.Success -> {
-                progressState(false)
-                onSuccess(response.data!!)
-            }
-
-            is Event.NotFound -> {
-                progressState(false)
-                onFailure()
-            }
-
-            is Event.Loading -> {
-                progressState(true)
-            }
-
-            else -> {
-                progressState(false)
-                onError()
+        RecycleImage(imageUrl = "")
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            ResultTitleText()
+            Spacer(modifier = Modifier.height(16.dp))
+            ResultSubTitleText(text = "")
+            Spacer(modifier = Modifier.height(8.dp))
+            ResultRecyclablesTypeText(text = "", imageUrl = "")
+            Spacer(modifier = Modifier.height(16.dp))
+            RecycleMethodText()
+            Spacer(modifier = Modifier.height(16.dp))
+            RecycleContentText(text = "")
+            Spacer(modifier = Modifier.height(16.dp))
+            RecycleTipText()
+            Spacer(modifier = Modifier.height(16.dp))
+            RecycleContentText(text = "")
+            Spacer(modifier = Modifier.height(16.dp))
+            RecycleCautionText()
+            Spacer(modifier = Modifier.height(16.dp))
+            RecycleContentText(text = "")
+            Spacer(modifier = Modifier.height(56.dp))
+            MisoButton(
+                modifier = Modifier,
+                text = "10 포인트 받기"
+            ) {}
+            Spacer(modifier = Modifier.height(8.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CameraWrongAnswerButton( onClick = {})
             }
         }
     }
