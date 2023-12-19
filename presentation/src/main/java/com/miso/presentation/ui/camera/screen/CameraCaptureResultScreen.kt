@@ -1,8 +1,5 @@
 package com.miso.presentation.ui.camera.screen
 
-import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,13 +25,11 @@ import com.miso.design_system.theme.MisoTheme
 import com.miso.domain.model.recyclables.response.AiListResponseModel
 import com.miso.presentation.ui.camera.component.CameraResultBottomButton
 import com.miso.presentation.ui.camera.component.CameraResultPreview
-import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.viewmodel.CameraViewModel
-import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.util.Event
 
 @Composable
-fun CameraResultScreen(
+fun CameraCaptureResultScreen(
     viewModel: CameraViewModel,
     navController: NavController,
     onSearch: () -> Unit
