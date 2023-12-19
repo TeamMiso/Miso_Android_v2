@@ -13,7 +13,6 @@ import com.miso.design_system.theme.MisoTheme
 
 @Composable
 fun EmailText(text: String) {
-
     MisoTheme { colors, typography ->
         Row(modifier = Modifier.fillMaxWidth()) {
             Text(
