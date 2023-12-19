@@ -1,4 +1,4 @@
-package com.miso.presentation.ui.search.component
+package com.miso.presentation.ui.inquiry.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,13 +27,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.miso.design_system.theme.MisoTheme
+import com.miso.presentation.ui.search.component.SearchListItem
 
 @Composable
-fun SearchListItem(
+fun InquiryListItem(
     title: String,
-    content: String,
-    image: String,
-    type: String,
+    date: String,
+    status: String,
+    imageUrl: String,
     onItemClick: () -> Unit
 ) {
     MisoTheme { colors, typography ->
@@ -49,25 +50,44 @@ fun SearchListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
+                Row {
+                    Text(
+                        text = date,
+                        style = typography.captionLarge,
+                        fontWeight = FontWeight.Normal,
+                        color = colors.GREYSCALE2
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    if (status == "WAIT") {
+                        Text(
+                            text = "검토 중",
+                            style = typography.captionLarge,
+                            fontWeight = FontWeight.Normal,
+                            color = colors.GREYSCALE3
+                        )
+                    } else {
+                        Text(
+                            text = "답변 완료",
+                            style = typography.captionLarge,
+                            fontWeight = FontWeight.Normal,
+                            color = colors.PRIMARY
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "$title ($type)",
-                    style = typography.textSmall,
+                    text = title,
+                    style = typography.textMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = colors.GREYSCALE2
-                )
-                Text(
-                    text = content,
-                    style = typography.captionLarge,
-                    fontWeight = FontWeight.Normal,
-                    color = colors.GREYSCALE2,
+                    color = colors.BLACK,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
-            if (image.isNotBlank()) {
+            if (imageUrl.isNotBlank()) {
                 AsyncImage(
-                    model = image,
+                    model = imageUrl,
                     modifier = Modifier
                         .size(48.dp)
                         .clip(shape = RoundedCornerShape(8.dp)),
@@ -88,13 +108,13 @@ fun SearchListItem(
 
 @Composable
 @Preview(showBackground = true)
-fun ShopListItemPreview() {
+fun InquiryListItemPreview() {
     Box(modifier = Modifier.fillMaxSize()) {
-        SearchListItem(
+        InquiryListItem(
             title = "안녕하세요",
-            content = "그아아ㅏ아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ아ㅏㅏㅏ아ㅏㅏ아ㅏ아ㅏㅏ아ㅏㅏ아ㅏㅏㅏㅏㅏㅏㅏ아ㅏㅏ아ㅏㅏㅏㅏㅏ아ㅏㅏㅏㅏ아ㅏㅏ아ㅏㅏㅏ아ㅏㅏㅏ아ㅏㅏㅏㅏㅏㅏ아ㅏㅏㅏㄱ",
-            image = "https://project-miso.s3.ap-northeast-2.amazonaws.com/file/Rectangle+2083.png",
-            type = "PATE",
+            date = "24.01.01",
+            status = "WAIT",
+            imageUrl = "https://project-miso.s3.ap-northeast-2.amazonaws.com/file/Rectangle+2083.png",
             onItemClick = {}
         )
     }
