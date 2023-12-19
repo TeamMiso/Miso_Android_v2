@@ -56,7 +56,7 @@ class CameraActivity : BaseActivity() {
             }
             NavHost(
                 navController = navController as NavHostController,
-                startDestination = CameraPage.CameraResult.value
+                startDestination = CameraPage.Camera.value
             ) {
                 composable(CameraPage.Camera.name) {
                     if (!permissionState.permissions[0].status.isGranted) {
