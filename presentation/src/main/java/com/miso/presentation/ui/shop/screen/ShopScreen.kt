@@ -25,7 +25,8 @@ import com.miso.presentation.viewmodel.ShopViewModel
 @Composable
 fun ShopScreen(
     viewModel: ShopViewModel,
-    onShopDetailClick: () -> Unit
+    onShopDetailClick: () -> Unit,
+    onPurchaseListClick: () -> Unit
 ) {
     LaunchedEffect("ShopList") {
         viewModel.shopList()
@@ -53,7 +54,9 @@ fun ShopScreen(
             MisoChip(
                 text = "구매내역",
                 icon = R.drawable.ic_purchase
-            ) {}
+            ) {
+                onPurchaseListClick()
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         ShopList(
