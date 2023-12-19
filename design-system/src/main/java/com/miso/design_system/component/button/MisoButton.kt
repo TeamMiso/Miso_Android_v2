@@ -1,5 +1,6 @@
 package com.miso.design_system.component.button
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,24 +13,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.miso.design_system.component.textfield.MisoTextField
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
 fun MisoButton(
     modifier: Modifier = Modifier,
     text: String,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     MisoTheme { colors, typography ->
+        val backgroundColor = if (enabled) {
+            colors.PRIMARY
+        } else {
+            colors.PRIMARY.copy(0.38f)
+        }
+
         Row(modifier = modifier) {
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(colors.PRIMARY),
-                onClick = { onClick() }
+                colors = ButtonDefaults.buttonColors(backgroundColor),
+                onClick = { if (enabled) onClick() }
             ) {
                 Text(
                     text = text,
@@ -45,8 +52,15 @@ fun MisoButton(
 @Composable
 @Preview(showBackground = true)
 fun MisoButtonPreview() {
-    MisoButton(
-        text = "버튼",
-        onClick = {}
-    )
+    Column {
+        MisoButton(
+            text = "버튼",
+            onClick = {}
+        )
+        MisoButton(
+            text = "버튼",
+            enabled = false,
+            onClick = {}
+        )
+    }
 }

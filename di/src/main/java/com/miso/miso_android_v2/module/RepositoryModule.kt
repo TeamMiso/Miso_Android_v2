@@ -2,13 +2,11 @@ package com.miso.miso_android_v2.module
 
 import com.miso.data.repository.AuthRepositoryImpl
 import com.miso.data.repository.EmailRepositoryImpl
-import com.miso.data.repository.InquiryRepositoryImpl
 import com.miso.data.repository.RecyclablesRepositoryImpl
 import com.miso.data.repository.ShopRepositoryImpl
 import com.miso.data.repository.UserRepositoryImpl
 import com.miso.domain.repository.AuthRepository
 import com.miso.domain.repository.EmailRepository
-import com.miso.domain.repository.InquiryRepository
 import com.miso.domain.repository.RecyclablesRepository
 import com.miso.domain.repository.ShopRepository
 import com.miso.domain.repository.UserRepository
@@ -30,10 +28,6 @@ abstract class RepositoryModule {
         emailRepositoryImpl: EmailRepositoryImpl
     ): EmailRepository
 
-    @Binds
-    abstract fun provideInquiryRepository(
-        inquiryRepositoryImpl: InquiryRepositoryImpl
-    ): InquiryRepository
     @Binds
     abstract fun provideRecyclablesRepository(
         recyclablesRepositoryImpl: RecyclablesRepositoryImpl

@@ -1,7 +1,6 @@
 package com.miso.presentation.ui.search
 
 import android.content.Intent
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
@@ -13,8 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -30,8 +27,6 @@ import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
-import com.miso.presentation.viewmodel.CameraViewModel
-import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
 import com.miso.presentation.viewmodel.UserViewModel
@@ -62,9 +57,21 @@ class SearchActivity : BaseActivity() {
     private lateinit var navController: NavController
 
     override fun init() {
-        inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
-        inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
-
+        userViewModel.getPoint()
+        lifecycleScope.launch {
+            recyclablesViewModel.resultResponse.collect {
+                if (it is Event.Success) {
+                    recyclablesViewModel.saveResult(it.data!!)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            userViewModel.getPointResponse.collect {
+                if (it is Event.Success) {
+                    userViewModel.savePoint(it.data!!)
+                }
+            }
+        }
         setContent {
             navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -78,14 +85,11 @@ class SearchActivity : BaseActivity() {
                     NavHost(
                         navController = navController as NavHostController,
                         startDestination = MainPage.Search.name
-
                     ) {
                         composable(MainPage.Search.name) {
-                            Log.d("testt","launch")
                             SearchScreen(
                                 focusManager = LocalFocusManager.current,
                                 viewModel = recyclablesViewModel,
-                                inquiryViewModel = inquiryViewModel,
                                 lifecycleScope = lifecycleScope,
                                 onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
                                 onResultClick = { navController.navigate(SubPage.Result.value) },
@@ -144,7 +148,16 @@ class SearchActivity : BaseActivity() {
                             ShopDetailScreen(
                                 onBackClick = { navController.popBackStack() },
                                 shopViewModel = shopViewModel,
-                                userViewModel = userViewModel
+                                userViewModel = userViewModel,
+                                purchaseViewModel = purchaseViewModel,
+                                onBackClick = { navController.popBackStack() },
+                                onSearchClick = {
+                                    navController.navigate(MainPage.Search.value){
+                                        popUpTo(MainPage.Search.value){
+                                            inclusive = true
+                                        }
+                                    }
+                                }
                             )
                         }
                     }
