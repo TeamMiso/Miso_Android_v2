@@ -106,7 +106,14 @@ class CameraActivity : BaseActivity() {
                 composable(CameraPage.CameraResult.name){
                     CameraResultScreen(
                         viewModel = cameraViewModel,
-                        onBackClick = {}
+                        onBackClick = {
+                            val intent = Intent(
+                                this@CameraActivity,
+                                SearchActivity::class.java
+                            )
+                            startActivity(intent)
+                            finish()
+                        }
                     )
                 }
             }
