@@ -99,6 +99,7 @@ class CameraActivity : BaseActivity() {
                         navController = navController,
                         onSearch = { response ->
                             cameraViewModel.setResult(0,response)
+                            navController.navigate(CameraPage.CameraResult.name)
                         }
                     )
                 }

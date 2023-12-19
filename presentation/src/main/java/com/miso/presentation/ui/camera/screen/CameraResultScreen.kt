@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -52,26 +53,26 @@ fun CameraResultScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
-        RecycleImage(imageUrl = "")
+        RecycleImage(imageUrl = viewModel.result.value.imageUrl)
         Spacer(modifier = Modifier.height(16.dp))
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             ResultTitleText()
             Spacer(modifier = Modifier.height(16.dp))
-            ResultSubTitleText(text = "")
+            ResultSubTitleText(text = viewModel.result.value.subTitle)
             Spacer(modifier = Modifier.height(8.dp))
-            ResultRecyclablesTypeText(text = "", imageUrl = "")
+            ResultRecyclablesTypeText(text = viewModel.result.value.recyclablesType, imageUrl = viewModel.result.value.recycleMark)
             Spacer(modifier = Modifier.height(16.dp))
             RecycleMethodText()
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleContentText(text = "")
+            RecycleContentText(text = viewModel.result.value.recycleMethod)
             Spacer(modifier = Modifier.height(16.dp))
             RecycleTipText()
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleContentText(text = "")
+            RecycleContentText(text = viewModel.result.value.recycleTip)
             Spacer(modifier = Modifier.height(16.dp))
             RecycleCautionText()
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleContentText(text = "")
+            RecycleContentText(text = viewModel.result.value.recycleCaution)
             Spacer(modifier = Modifier.height(56.dp))
             MisoButton(
                 modifier = Modifier,
@@ -79,7 +80,9 @@ fun CameraResultScreen(
             ) {}
             Spacer(modifier = Modifier.height(8.dp))
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CameraWrongAnswerButton( onClick = {})
