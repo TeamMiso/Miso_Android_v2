@@ -133,7 +133,8 @@ class SearchActivity : BaseActivity() {
                             )
                         }
                         composable(MainPage.Camera.name) {
-                            Text(text = "Camera")
+                            pageCamera()
+                            finish()
                         }
                         composable(MainPage.InquiryList.name) {
                             InquiryListScreen(
@@ -156,7 +157,7 @@ class SearchActivity : BaseActivity() {
                                         this@SearchActivity,
                                         CameraActivity::class.java
                                     )
-                                    intent.putExtra("isInquiry",true)
+                                    intent.putExtra("isInquiry", true)
                                     startActivity(intent)
                                     finish()
                                 },
@@ -191,16 +192,22 @@ class SearchActivity : BaseActivity() {
                                 purchaseViewModel = purchaseViewModel,
                                 onBackClick = { navController.popBackStack() },
                                 onSearchClick = {
-                                    navController.navigate(MainPage.Search.value){
-                                        popUpTo(MainPage.Search.value){
+                                    navController.navigate(MainPage.Search.value) {
+                                        popUpTo(MainPage.Search.value) {
                                             inclusive = true
                                         }
                                     }
-                                }
+                                },
+                                onCameraClick = {
+                                    pageCamera()
+                                    finish()
+                                },
+                                onPurchaseListClick = { navController.navigate(SubPage.PurchaseList.value) }
                             )
                         }
                         composable(SubPage.PurchaseList.name) {
                             PurchaseListScreen(
+                                viewModel = purchaseViewModel,
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
@@ -211,14 +218,7 @@ class SearchActivity : BaseActivity() {
                         currentRoute = currentRoute ?: "Search",
                         onSearchClick = { navController.navigate(MainPage.Search.value) },
                         onShopClick = { navController.navigate(MainPage.Shop.value) },
-                        onCameraClick = {
-                            val intent = Intent(
-                                this@SearchActivity,
-                                CameraActivity::class.java
-                            )
-                            startActivity(intent)
-                            finish()
-                        },
+                        onCameraClick = { navController.navigate(MainPage.Camera.value) },
                         onInquiryClick = { navController.navigate(MainPage.InquiryList.value) },
                         onSettingClick = { navController.navigate(MainPage.Setting.value) }
                     )
@@ -226,11 +226,21 @@ class SearchActivity : BaseActivity() {
             }
         }
     }
+
     private fun pageLogIn() {
         startActivity(
             Intent(
                 this,
                 LoginActivity::class.java
+            )
+        )
+    }
+
+    private fun pageCamera() {
+        startActivity(
+            Intent(
+                this,
+                CameraActivity::class.java
             )
         )
     }
