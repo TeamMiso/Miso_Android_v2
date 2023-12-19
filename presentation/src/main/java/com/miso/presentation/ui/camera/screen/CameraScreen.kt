@@ -37,7 +37,7 @@ fun CameraScreen(
             context = context,
             onPhotoCaptured = { captured ->
                 if (captured && !viewModel.isInquiry.value) {
-                    navController.navigate(CameraPage.CameraResult.value)
+                    navController.navigate(CameraPage.CameraCaptureResult.value)
                 } else if(captured && viewModel.isInquiry.value){
                     onInquiryCapture(viewModel.swapBitmapToJpeg())
                 }
