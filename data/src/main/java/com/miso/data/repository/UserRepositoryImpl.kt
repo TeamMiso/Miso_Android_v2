@@ -19,4 +19,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getPoint(): Flow<PointResponseModel> {
         return remoteUserDatasource.getPoint().map { it.toUserModel() }
     }
+
+    override suspend fun givePoint(): Flow<Unit> {
+        return remoteUserDatasource.givePoint()
+    }
 }

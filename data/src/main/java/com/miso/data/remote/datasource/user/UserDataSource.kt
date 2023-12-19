@@ -8,4 +8,6 @@ interface UserDataSource {
     suspend fun getUserInfo(): Flow<UserInfoResponse>
 
     suspend fun getPoint(): Flow<PointResponse>
+
+    suspend fun givePoint(): Flow<Unit>
 }

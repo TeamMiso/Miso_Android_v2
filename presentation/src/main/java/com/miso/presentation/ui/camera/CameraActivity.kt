@@ -23,6 +23,7 @@ import com.miso.presentation.ui.camera.screen.CameraScreen
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.util.PermissionHandlerActions
 import com.miso.presentation.viewmodel.CameraViewModel
+import com.miso.presentation.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 enum class CameraPage(val value: String) {
@@ -35,6 +36,7 @@ class CameraActivity : BaseActivity() {
     private lateinit var navController: NavController
 
     private val cameraViewModel by viewModels<CameraViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
     @OptIn(ExperimentalPermissionsApi::class)
     override fun init() {
         setContent {
@@ -97,13 +99,32 @@ class CameraActivity : BaseActivity() {
                     CameraCaptureResultScreen(
                         viewModel = cameraViewModel,
                         navController = navController,
-                        onSearch = {}
+                        onSearch = { response ->
+                            cameraViewModel.setResult(0,response)
+                            navController.navigate(CameraPage.CameraResult.name)
+                        }
                     )
                 }
                 composable(CameraPage.CameraResult.name){
                     CameraResultScreen(
                         viewModel = cameraViewModel,
-                        onBackClick = {}
+                        userViewModel = userViewModel,
+                        onBackClick = {
+                            val intent = Intent(
+                                this@CameraActivity,
+                                SearchActivity::class.java
+                            )
+                            startActivity(intent)
+                            finish()
+                        },
+                        onPointClick = {
+                            val intent = Intent(
+                                this@CameraActivity,
+                                SearchActivity::class.java
+                            )
+                            startActivity(intent)
+                            finish()
+                        }
                     )
                 }
             }
