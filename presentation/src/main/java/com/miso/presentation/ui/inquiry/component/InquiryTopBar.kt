@@ -28,7 +28,8 @@ import com.miso.design_system.theme.MisoTheme
 @Composable
 fun InquiryTopBar(
     onInquiryClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    isUser: Boolean
 ) {
     MisoTheme { colors, typography ->
         Row(
@@ -51,7 +52,7 @@ fun InquiryTopBar(
                 MisoBackButton { onBackClick() }
             }
             InquiryText()
-            InquiryButton { onInquiryClick() }
+            InquiryButton(onClick = { onInquiryClick() }, isUser = isUser)
         }
     }
 }
@@ -70,7 +71,8 @@ fun InquiryText() {
 
 @Composable
 fun InquiryButton(
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isUser: Boolean
 ) {
     MisoTheme { colors, typography ->
         Button(
@@ -85,12 +87,21 @@ fun InquiryButton(
                 modifier = Modifier.size(87.dp, 32.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
-                Text(
-                    text = "문의하기",
-                    style = typography.textMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = colors.PRIMARY
-                )
+                if(isUser){
+                    Text(
+                        text = "문의하기",
+                        style = typography.textMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colors.PRIMARY
+                    )
+                } else {
+                    Text(
+                        text = "답변하기",
+                        style = typography.textMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colors.PRIMARY
+                    )
+                }
             }
         }
     }
@@ -102,6 +113,6 @@ fun InquiryTopBarPreview() {
     Box(
         modifier = Modifier.background(Color.White)
     ) {
-        InquiryTopBar( onInquiryClick = {}, onBackClick = {} )
+        InquiryTopBar( onInquiryClick = {}, onBackClick = {}, false)
     }
 }
