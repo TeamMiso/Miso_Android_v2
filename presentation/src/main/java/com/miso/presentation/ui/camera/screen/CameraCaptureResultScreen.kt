@@ -32,7 +32,7 @@ import com.miso.presentation.viewmodel.util.Event
 fun CameraCaptureResultScreen(
     viewModel: CameraViewModel,
     navController: NavController,
-    onSearch: () -> Unit
+    onSearch: (aiAnswer: AiListResponseModel) -> Unit
 ) {
     val imageBitmap = getBitmap(viewModel = viewModel)
 
@@ -45,8 +45,8 @@ fun CameraCaptureResultScreen(
             getAiResponse(
                 viewModel = viewModel,
                 progressState = { progressState.value = it },
-                onSuccess = {
-                    onSearch()
+                onSuccess = {response ->
+                    onSearch(response)
                 },
                 onFailure = {
                     launchAi.value = false

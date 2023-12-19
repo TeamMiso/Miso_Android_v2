@@ -97,7 +97,9 @@ class CameraActivity : BaseActivity() {
                     CameraCaptureResultScreen(
                         viewModel = cameraViewModel,
                         navController = navController,
-                        onSearch = {}
+                        onSearch = { response ->
+                            cameraViewModel.setResult(0,response)
+                        }
                     )
                 }
                 composable(CameraPage.CameraResult.name){

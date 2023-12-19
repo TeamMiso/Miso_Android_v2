@@ -1,10 +1,15 @@
 package com.miso.presentation.viewmodel
 
 import android.graphics.Bitmap
+import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.miso.domain.model.recyclables.response.AiListModel
 import com.miso.domain.model.recyclables.response.AiListResponseModel
+import com.miso.domain.model.recyclables.response.ResultResponseModel
+import com.miso.domain.model.shop.response.ShopListModel
 import com.miso.domain.usecase.recyclables.GetAiListUseCase
 import com.miso.presentation.ui.camera.state.CapturedState
 import com.miso.presentation.viewmodel.util.Event
@@ -32,6 +37,19 @@ class CameraViewModel @Inject constructor(
     val aiListResponse = _aiListResponse.asStateFlow()
 
     var isInquiry = mutableStateOf(false)
+
+    var result = mutableStateOf(
+        AiListModel(
+            id = 0L,
+            title = "", subTitle = "",
+            recycleMethod = "",
+            recycleTip = "",
+            recycleCaution = "",
+            imageUrl = "",
+            recyclablesType = "",
+            recycleMark = ""
+        )
+    )
 
     fun loadImgBitmap(bitmap: Bitmap){
         viewModelScope.launch {
@@ -80,5 +98,10 @@ class CameraViewModel @Inject constructor(
         swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
 
         return byteArrayOutputStream.toByteArray()
+    }
+
+    fun setResult(index: Int,aiAnswerList: AiListResponseModel){
+        result.value = aiAnswerList.recyclablesList[index]
+        Log.d("testt", aiAnswerList.recyclablesList[index].toString())
     }
 }
