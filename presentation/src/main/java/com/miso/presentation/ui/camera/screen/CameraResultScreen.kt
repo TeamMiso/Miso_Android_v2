@@ -3,12 +3,14 @@ package com.miso.presentation.ui.camera.screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.component.button.MisoBackButton
@@ -23,11 +25,12 @@ import com.miso.presentation.ui.result.component.RecycleTipText
 import com.miso.presentation.ui.result.component.ResultRecyclablesTypeText
 import com.miso.presentation.ui.result.component.ResultSubTitleText
 import com.miso.presentation.ui.result.component.ResultTitleText
+import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 
 @Composable
 fun CameraResultScreen(
-    viewModel: RecyclablesViewModel,
+    viewModel: CameraViewModel,
     onBackClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -75,7 +78,12 @@ fun CameraResultScreen(
                 text = "10 포인트 받기"
             ) {}
             Spacer(modifier = Modifier.height(8.dp))
-            CameraWrongAnswerButton( onClick = {})
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CameraWrongAnswerButton( onClick = {})
+            }
         }
     }
 }

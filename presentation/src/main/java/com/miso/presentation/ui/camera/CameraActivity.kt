@@ -18,6 +18,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.camera.screen.CameraCaptureResultScreen
+import com.miso.presentation.ui.camera.screen.CameraResultScreen
 import com.miso.presentation.ui.camera.screen.CameraScreen
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.util.PermissionHandlerActions
@@ -26,7 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 enum class CameraPage(val value: String) {
     Camera("Camera"),
-    CameraCaptureResult("CameraCaptureResult")
+    CameraCaptureResult("CameraCaptureResult"),
+    CameraResult("CameraResult")
 }
 @AndroidEntryPoint
 class CameraActivity : BaseActivity() {
@@ -54,7 +56,7 @@ class CameraActivity : BaseActivity() {
             }
             NavHost(
                 navController = navController as NavHostController,
-                startDestination = CameraPage.Camera.value
+                startDestination = CameraPage.CameraResult.value
             ) {
                 composable(CameraPage.Camera.name) {
                     if (!permissionState.permissions[0].status.isGranted) {
@@ -97,6 +99,11 @@ class CameraActivity : BaseActivity() {
                         navController = navController,
                         onSearch = {}
                     )
+                }
+                composable(CameraPage.CameraResult.name){
+                    CameraResultScreen(viewModel = cameraViewModel) {
+                        
+                    }
                 }
             }
         }
