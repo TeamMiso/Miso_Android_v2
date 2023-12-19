@@ -28,4 +28,12 @@ class UserDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }
+
+    override suspend fun givePoint(): Flow<Unit> = flow {
+        emit(
+            MisoApiHandler<Unit>()
+                .httpRequest { api.givePoint() }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
 }
