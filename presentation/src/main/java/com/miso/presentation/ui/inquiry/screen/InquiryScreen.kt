@@ -3,7 +3,6 @@ package com.miso.presentation.ui.inquiry.screen
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.miso.design_system.theme.MisoTheme
-import com.miso.domain.model.inquiry.response.InquiryRequestModel
+import com.miso.domain.model.inquiry.request.InquiryRequestModel
 import com.miso.presentation.ui.inquiry.component.InquiryContentTextField
 import com.miso.presentation.ui.inquiry.component.InquiryImageButton
 import com.miso.presentation.ui.inquiry.component.InquiryTitleTextField

@@ -134,6 +134,8 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(MainPage.InquiryList.name) {
                             InquiryListScreen(
+                                userViewModel = userViewModel,
+                                inquiryViewModel = inquiryViewModel,
                                 onInquiryClick = { navController.navigate(SubPage.Inquiry.value) }
                             )
                         }
