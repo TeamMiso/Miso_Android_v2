@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -57,19 +59,14 @@ class SearchActivity : BaseActivity() {
     private val userViewModel by viewModels<UserViewModel>()
     private val inquiryViewModel by viewModels<InquiryViewModel>()
 
-    override fun init() {
-        lifecycleScope.launch {
-            recyclablesViewModel.resultResponse.collect {
-                if (it is Event.Success) {
-                    recyclablesViewModel.saveResult(it.data!!)
-                }
-            }
-        }
-        setContent {
-            inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
-            inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
+    private lateinit var navController: NavController
 
-            val navController = rememberNavController()
+    override fun init() {
+        inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
+        inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
+
+        setContent {
+            navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
             MisoTheme { _, _ ->
@@ -79,22 +76,21 @@ class SearchActivity : BaseActivity() {
                         .navigationBarsPadding()
                 ) {
                     NavHost(
-                        navController = navController,
+                        navController = navController as NavHostController,
                         startDestination = MainPage.Search.name
+
                     ) {
                         composable(MainPage.Search.name) {
                             Log.d("testt","launch")
                             SearchScreen(
                                 focusManager = LocalFocusManager.current,
                                 viewModel = recyclablesViewModel,
+                                inquiryViewModel = inquiryViewModel,
                                 lifecycleScope = lifecycleScope,
                                 onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
-                                onResultClick = { navController.navigate(SubPage.Result.value) }
+                                onResultClick = { navController.navigate(SubPage.Result.value) },
+                                onInquiryCamera = { navController.navigate(MainPage.Inquiry.name) }
                             )
-                            if(inquiryViewModel.isCamera.value) {
-                                Log.d("testt","open")
-                                navController.navigate(MainPage.Inquiry.name)
-                            }
                         }
                         composable(MainPage.Shop.name) {
                             ShopScreen(

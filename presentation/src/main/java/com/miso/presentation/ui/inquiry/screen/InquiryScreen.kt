@@ -119,12 +119,17 @@ fun InquiryScreen(
                                     }
                                 )
                             }
-                            onInquiryClick(filePart, inquiryRequestBody)
+                            if (viewModel.isCamera.value) {
+                                onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
+                            } else {
+                                onInquiryClick(filePart, inquiryRequestBody)
+                            }
                         } else {
                             Log.d("testt","error")
                         }
                     },
                     onBackClick = {
+                        viewModel.isCamera.value = false
                         viewModel.isCamera.value = false
                         navController.navigate(MainPage.Search.value){
                             popUpTo(MainPage.Search.value){

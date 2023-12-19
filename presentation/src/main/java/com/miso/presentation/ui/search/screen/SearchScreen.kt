@@ -36,6 +36,7 @@ import com.miso.presentation.ui.search.component.SearchHistoryTitleText
 import com.miso.presentation.ui.search.component.SearchTitleText
 import com.miso.presentation.ui.search.component.TodayEnvironmentTipComponent
 import com.miso.presentation.ui.util.keyboardAsState
+import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -44,10 +45,17 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     focusManager: FocusManager,
     viewModel: RecyclablesViewModel,
+    inquiryViewModel: InquiryViewModel,
+    onInquiryCamera: () -> Unit,
     lifecycleScope: CoroutineScope,
     onSearchableListClick: () -> Unit,
     onResultClick: () -> Unit
 ) {
+    LaunchedEffect(inquiryViewModel.isCamera.value) {
+        if (inquiryViewModel.isCamera.value) {
+            onInquiryCamera()
+        }
+    }
     val isKeyboardOpen by keyboardAsState()
 
     LaunchedEffect(isKeyboardOpen) {
