@@ -6,6 +6,8 @@ import com.miso.data.remote.datasource.email.EmailDataSource
 import com.miso.data.remote.datasource.email.EmailDataSourceImpl
 import com.miso.data.remote.datasource.inquiry.InquiryDataSource
 import com.miso.data.remote.datasource.inquiry.InquiryDataSourceImpl
+import com.miso.data.remote.datasource.notification.NotificationDataSource
+import com.miso.data.remote.datasource.notification.NotificationDataSourceImpl
 import com.miso.data.remote.datasource.purchase.PurchaseDataSource
 import com.miso.data.remote.datasource.purchase.PurchaseDataSourceImpl
 import com.miso.data.remote.datasource.recyclables.RecyclablesDataSource
@@ -56,4 +58,9 @@ abstract class RemoteDatasourceModule {
     abstract fun providePurchaseDataSource(
         purchaseDataSourceImpl: PurchaseDataSourceImpl
     ): PurchaseDataSource
+
+    @Binds
+    abstract fun provideNotificationDataSource(
+        notificationDataSourceImpl: NotificationDataSourceImpl
+    ): NotificationDataSource
 }
