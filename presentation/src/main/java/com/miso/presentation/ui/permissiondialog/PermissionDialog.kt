@@ -1,6 +1,7 @@
 package com.miso.presentation.ui.permissiondialog
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,13 +25,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.util.PermissionDescriptionProvider
-
 @Composable
 fun PermissionDialog(
     modifier: Modifier = Modifier,
@@ -44,75 +46,63 @@ fun PermissionDialog(
     Dialog(onDismissRequest = { onDismiss() }) {
         MisoTheme { colors, typography ->
             Card(
-                shape = RoundedCornerShape(14.dp),
+                shape = RoundedCornerShape(28.dp),
                 modifier = Modifier
-                    .size(400.dp, 300.dp)
-                    .padding(top = 5.dp, bottom = 10.dp),
+                    .width(328.dp),
                 elevation = 8.dp
             ) {
-                Column(modifier = Modifier.background(colors.GREYSCALE1)) {
-                    Column(modifier = Modifier
-                        .background(colors.GREYSCALE1)
-                        .padding(top = 16.dp, bottom = 20.dp)) {
+                Column(modifier = Modifier.background(colors.DIALOG_BG)) {
+                    Column(
+                        modifier = Modifier
+                            .background(colors.DIALOG_BG)
+                            .padding(top = 24.dp, start = 24.dp, end = 24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(id = permissionDescriptionProvider.getIcon(context)),
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = permissionDescriptionProvider.getTitle(context = context),
-                            textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth(),
-                            color = colors.WHITE,
-                            style = typography.textMedium,
-                            fontWeight = FontWeight.Normal,
+                            color = colors.BLACK,
+                            style = typography.textLarge,
+                            fontWeight = FontWeight.SemiBold,
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = permissionDescriptionProvider.getDescription(
-                                context = context,
-                                isPermissionPermanentDenial = isPermissionPermanentDenial
-                            ),
-                            textAlign = TextAlign.Center,
+                            text = permissionDescriptionProvider.getDescription(context = context, isPermissionPermanentDenial = isPermissionPermanentDenial),
                             modifier = Modifier.fillMaxWidth(),
                             color = colors.GREYSCALE2,
-                            style = typography.titleSmall,
+                            style = typography.textSmall,
                             fontWeight = FontWeight.Normal,
                         )
                     }
-                    Divider(
-                        color = colors.GREYSCALE2,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(0.5.dp)
-                    )
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .background(colors.GREYSCALE1),
-                        horizontalArrangement = Arrangement.SpaceAround,
+                            .height(64.dp)
+                            .padding(end = 8.dp)
+                            .background(colors.DIALOG_BG),
+                        horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextButton(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .weight(1f),
+                            modifier = Modifier.height(48.dp),
                             onClick = {
                                 onDismiss()
                             }
                         ) {
                             Text(
-                                "취소",
-                                color = colors.WHITE,
-                                style = typography.textMedium,
-                                fontWeight = FontWeight.Normal,
+                                text = "거부",
+                                color = colors.GREYSCALE2,
+                                style = typography.buttonLarge,
+                                fontWeight = FontWeight.Medium,
                             )
                         }
-                        Divider(
-                            color = colors.GREYSCALE2,
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .width(0.5.dp)
-                        )
                         TextButton(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .weight(1f),
+                            modifier = Modifier.height(48.dp),
                             onClick = {
                                 if (isPermissionPermanentDenial) {
                                     onGoToAppSettingsClick()
@@ -122,10 +112,10 @@ fun PermissionDialog(
                             }
                         ) {
                             Text(
-                                "권한 승인",
-                                color = colors.BULE1,
-                                style = typography.textMedium,
-                                fontWeight = FontWeight.Normal,
+                                text = "승인",
+                                color = colors.PRIMARY,
+                                style = typography.buttonLarge,
+                                fontWeight = FontWeight.Medium,
                             )
                         }
                     }
@@ -134,3 +124,4 @@ fun PermissionDialog(
         }
     }
 }
+
