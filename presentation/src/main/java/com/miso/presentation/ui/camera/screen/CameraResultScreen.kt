@@ -30,16 +30,7 @@ import com.miso.presentation.ui.camera.component.result.CameraResultRecyclablesT
 import com.miso.presentation.ui.camera.component.result.CameraResultSubTitleText
 import com.miso.presentation.ui.camera.component.result.CameraResultTitleText
 import com.miso.presentation.ui.camera.component.result.CameraWrongAnswerButton
-import com.miso.presentation.ui.result.component.RecycleCautionText
-import com.miso.presentation.ui.result.component.RecycleContentText
-import com.miso.presentation.ui.result.component.RecycleImage
-import com.miso.presentation.ui.result.component.RecycleMethodText
-import com.miso.presentation.ui.result.component.RecycleTipText
-import com.miso.presentation.ui.result.component.ResultRecyclablesTypeText
-import com.miso.presentation.ui.result.component.ResultSubTitleText
-import com.miso.presentation.ui.result.component.ResultTitleText
 import com.miso.presentation.viewmodel.CameraViewModel
-import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.UserViewModel
 import com.miso.presentation.viewmodel.util.Event
 
@@ -82,7 +73,7 @@ fun CameraResultScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
-        CameraRecycleImage(imageUrl = viewModel.result.value.imageUrl)
+        CameraRecycleImage(viewModel.getBitmap()!!)
         Spacer(modifier = Modifier.height(16.dp))
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             CameraResultTitleText()
