@@ -120,7 +120,7 @@ class CameraViewModel @Inject constructor(
         aiList.addAll(data)
     }
 
-    fun setResult(index: Int,aiAnswerList: AiListResponseModel){
-        result.value = aiAnswerList.recyclablesList[index]
+    fun setResult(index: Int){
+        result.value = aiList[index]
     }
 }
