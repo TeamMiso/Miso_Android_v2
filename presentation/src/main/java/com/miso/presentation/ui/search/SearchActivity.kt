@@ -239,7 +239,7 @@ class SearchActivity : BaseActivity() {
                         currentRoute = currentRoute ?: "Search",
                         onSearchClick = { navController.navigate(MainPage.Search.value) },
                         onShopClick = { navController.navigate(MainPage.Shop.value) },
-                        onCameraClick = { navController.navigate(MainPage.Camera.value) },
+                        onCameraClick = { pageCamera() },
                         onInquiryClick = { navController.navigate(MainPage.InquiryList.value) },
                         onSettingClick = { navController.navigate(MainPage.Setting.value) }
                     )
