@@ -13,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -20,12 +21,14 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import com.miso.design_system.component.dialog.MisoDialog
 import com.miso.design_system.component.lottie.MisoLoadingLottie
 import com.miso.design_system.theme.MisoTheme
 import com.miso.domain.model.recyclables.response.AiListResponseModel
 import com.miso.presentation.ui.camera.CameraPage
 import com.miso.presentation.ui.camera.component.CameraResultBottomButton
 import com.miso.presentation.ui.camera.component.CameraResultPreview
+import com.miso.presentation.ui.util.formatNumber
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.util.Event
 
@@ -33,13 +36,17 @@ import com.miso.presentation.viewmodel.util.Event
 fun CameraCaptureResultScreen(
     viewModel: CameraViewModel,
     navController: NavController,
-    onSearch: (aiAnswer: AiListResponseModel) -> Unit
+    onSearch: (aiAnswer: AiListResponseModel) -> Unit,
+    onDismissClick: () -> Unit,
+    onGoInquiry: (byteArray: ByteArray) -> Unit
 ) {
     val imageBitmap = viewModel.getBitmap()
 
     val launchAi = remember { mutableStateOf(false) }
 
     var progressState = remember { mutableStateOf(false) }
+
+    var openDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(launchAi.value){
         if(launchAi.value){
@@ -94,6 +101,21 @@ fun CameraCaptureResultScreen(
             Dialog(onDismissRequest = {}) {
                 MisoLoadingLottie()
             }
+        }
+        if (openDialog.value) {
+            MisoDialog(
+                openDialog = openDialog.value,
+                onStateChange = {
+                    openDialog.value = it
+                },
+                title = "검색 결과 없음",
+                content = "미소가 아직 본 적 없는 쓰레기에요.\n" +
+                        "문의하기로 미소에게 가르쳐주실래요?",
+                dismissText = "홈으로",
+                checkText = "문의하러 가기",
+                onDismissClick = { onDismissClick() },
+                onCheckClick = { onGoInquiry(viewModel.swapBitmapToJpeg()) }
+            )
         }
     }
 }

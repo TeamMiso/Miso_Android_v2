@@ -94,8 +94,10 @@ class CameraActivity : BaseActivity() {
                             cameraViewModel.setResult(0,response)
                             navController.navigate(CameraPage.CameraResult.name)
                         },
-                        onDismissClick = {},
-                        onGoInquiry = {}
+                        onDismissClick = { intentSearch() },
+                        onGoInquiry = {
+                            intentInquiry(it)
+                        }
                     )
                 }
                 composable(CameraPage.CameraResult.name) {
