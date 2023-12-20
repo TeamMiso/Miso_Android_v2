@@ -9,15 +9,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.messaging.FirebaseMessaging
 import com.miso.presentation.viewmodel.util.Event
 import com.miso.presentation.ui.login.screen.LoginScreen
 import com.miso.presentation.ui.base.BaseActivity
-import com.miso.presentation.ui.search.MainPage
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.sign_up.screen.SignUpScreen
 import com.miso.presentation.ui.sign_up.screen.VerificationScreen
 import com.miso.presentation.viewmodel.AuthViewModel
 import com.miso.presentation.viewmodel.EmailViewModel
+import com.miso.presentation.viewmodel.NotificationViewModel
 import com.miso.presentation.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -33,6 +34,7 @@ class LoginActivity : BaseActivity() {
     private val authViewModel by viewModels<AuthViewModel>()
     private val emailViewModel by viewModels<EmailViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
+    private val notificationViewModel by viewModels<NotificationViewModel>()
 
     override fun init() {
         installSplashScreen().apply {
@@ -40,6 +42,7 @@ class LoginActivity : BaseActivity() {
                 userViewModel.getUserInfoResponse.value is Event.Loading
             }
         }
+        initNotification()
         userViewModel.getUserInfo()
         lifecycleScope.launch {
             userViewModel.getUserInfoResponse.collect {
@@ -110,5 +113,29 @@ class LoginActivity : BaseActivity() {
                 SearchActivity::class.java
             )
         )
+    }
+
+    private fun initNotification() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val deviceTokenSF = getSharedPreferences("deviceToken", MODE_PRIVATE)
+                val deviceToken = task.result
+                if (deviceTokenSF.getString("device", "") == deviceToken) {
+                    notificationViewModel.saveDeviceToken(deviceToken = deviceToken)
+                    setNotificationLogic(deviceToken = deviceToken)
+                }
+            }
+        }
+    }
+
+    private fun setNotificationLogic(deviceToken: String) {
+        lifecycleScope.launch {
+            notificationViewModel.saveDeviceTokenResponse.collect {
+                if (it is Event.Success) {
+                    val deviceTokenSF = getSharedPreferences("deviceToken", MODE_PRIVATE)
+                    deviceTokenSF.edit().putString("device", deviceToken).apply()
+                }
+            }
+        }
     }
 }
