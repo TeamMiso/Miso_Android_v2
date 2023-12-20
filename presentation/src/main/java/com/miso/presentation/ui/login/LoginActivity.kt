@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.miso.presentation.viewmodel.util.Event
 import com.miso.presentation.ui.login.screen.LoginScreen
 import com.miso.presentation.ui.base.BaseActivity
+import com.miso.presentation.ui.search.MainPage
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.sign_up.screen.SignUpScreen
 import com.miso.presentation.ui.sign_up.screen.VerificationScreen
@@ -86,10 +87,15 @@ class LoginActivity : BaseActivity() {
                 }
                 composable(LoginPage.Verification.name) {
                     VerificationScreen(
+                        viewModel = emailViewModel,
                         focusManager = LocalFocusManager.current,
                         onBackClick = { navController.popBackStack() },
-                        onVerificationClick = { body ->
-                            emailViewModel.email(body = body)
+                        onLoginClick = {
+                            navController.navigate(LoginPage.Login.value) {
+                                popUpTo(LoginPage.Login.value) {
+                                    inclusive = true
+                                }
+                            }
                         }
                     )
                 }

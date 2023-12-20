@@ -18,21 +18,50 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.component.button.MisoBackButton
+import com.miso.design_system.component.dialog.MisoDialog
 import com.miso.design_system.component.text.MisoBlackTitleText
 import com.miso.domain.model.email.request.EmailRequestModel
 import com.miso.presentation.ui.sign_up.component.NumberTextField
 import com.miso.presentation.ui.util.keyboardAsState
+import com.miso.presentation.viewmodel.EmailViewModel
+import com.miso.presentation.viewmodel.util.Event
 
 @Composable
 fun VerificationScreen(
+    viewModel: EmailViewModel,
     focusManager: FocusManager,
     onBackClick: () -> Unit,
-    onVerificationClick: (body: EmailRequestModel) -> Unit
+    onLoginClick: () -> Unit
 ) {
+    var openDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect("Email") {
+        email(
+            viewModel = viewModel,
+            onSuccess = {
+                openDialog = true
+            }
+        )
+    }
+
+    if (openDialog) {
+        MisoDialog(
+            openDialog = openDialog,
+            onStateChange = {
+                openDialog = it
+            },
+            title = "회원가입 성공",
+            content = "회원가입이 완료되었어요.\n" +
+                    "로그인 화면으로 돌아갈게요!",
+            dismissText = "",
+            checkText = "로그인하러가기",
+            onDismissClick = {},
+            onCheckClick = { onLoginClick() }
+        )
+    }
+
     val isKeyboardOpen by keyboardAsState()
 
     var sizeState by remember { mutableStateOf(0.33f) }
@@ -77,21 +106,20 @@ fun VerificationScreen(
                     number = it
                 },
                 onFourCharactersEntered = {
-                    onVerificationClick(
-                        EmailRequestModel(number)
-                    )
+                    viewModel.email(body = EmailRequestModel(number))
                 }
             )
         }
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun VerificationScreenPreView() {
-    VerificationScreen(
-        focusManager = LocalFocusManager.current,
-        onBackClick = {},
-        onVerificationClick = {}
-    )
+suspend fun email(
+    viewModel: EmailViewModel,
+    onSuccess: () -> Unit,
+) {
+    viewModel.emailResponse.collect {
+        if (it is Event.Success) {
+            onSuccess()
+        }
+    }
 }
