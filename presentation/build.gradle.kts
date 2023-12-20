@@ -76,11 +76,7 @@ dependencies {
     implementation(Dependency.Compose.COMPOSE_MATERIAL3)
     implementation(Dependency.Compose.COMPOSE_PREVIEW)
 
-    //fireBase
-    implementation(platform(Dependency.Google.FIREBASE_BOM))
-    implementation(Dependency.Google.FIREBASE_ANALYTICS)
-    implementation(Dependency.Google.FIREBASE_DATABASE)
-    implementation(Dependency.Google.FIREBASE_STORAGE)
+    //firebase
     implementation(Dependency.Google.FIREBASE_MESSAGING)
 
     //junit
