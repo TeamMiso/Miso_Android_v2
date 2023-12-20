@@ -117,7 +117,8 @@ class CameraActivity : BaseActivity() {
                 composable(CameraPage.CameraResultInconsistency.name) {
                     CameraResultInconsistencyScreen(
                         onBackClick = { navController.popBackStack()},
-                        viewModel = cameraViewModel
+                        viewModel = cameraViewModel,
+                        onItemClick = { navController.navigate(CameraPage.CameraResult.value) }
                     )
                 }
             }
