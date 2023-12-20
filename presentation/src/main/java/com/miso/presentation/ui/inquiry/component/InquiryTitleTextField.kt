@@ -45,7 +45,8 @@ fun InquiryTitleTextField(
                 focusedIndicatorColor = Color.Transparent,
                 backgroundColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                textColor = colors.BLACK
+                textColor = colors.BLACK,
+                cursorColor = colors.BULE1
             ),
             placeholder = {
                 Text(

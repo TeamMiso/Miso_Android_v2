@@ -76,6 +76,9 @@ dependencies {
     implementation(Dependency.Compose.COMPOSE_MATERIAL3)
     implementation(Dependency.Compose.COMPOSE_PREVIEW)
 
+    //firebase
+    implementation(Dependency.Google.FIREBASE_MESSAGING)
+
     //junit
     testImplementation(Dependency.Test.JUNIT)
     androidTestImplementation(Dependency.Test.ANDROID_JUNIT)

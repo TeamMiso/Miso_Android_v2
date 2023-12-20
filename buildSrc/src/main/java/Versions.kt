@@ -47,6 +47,7 @@ object Versions {
     //firebase
     const val FIREBASE_DATABASE = "20.3.0"
     const val FIREBASE_BOM = "32.5.0"
+    const val FIREBASE_MESSAGING = "23.2.1"
 
     //remote
     const val RETROFIT = "2.7.1"

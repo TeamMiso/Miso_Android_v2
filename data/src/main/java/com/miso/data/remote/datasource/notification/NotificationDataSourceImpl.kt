@@ -19,4 +19,12 @@ class NotificationDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun saveDeviceToken(deviceToken: String): Flow<Unit> = flow {
+        emit(
+            MisoApiHandler<Unit>()
+                .httpRequest { api.saveDeviceToken(deviceToken = deviceToken) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
 }

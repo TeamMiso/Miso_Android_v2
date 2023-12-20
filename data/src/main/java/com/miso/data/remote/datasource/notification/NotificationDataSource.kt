@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotificationDataSource {
     suspend fun getAnswer(id: Long): Flow<AnswerResponse>
+
+    suspend fun saveDeviceToken(deviceToken: String): Flow<Unit>
 }
