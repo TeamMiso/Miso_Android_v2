@@ -21,6 +21,7 @@ import com.miso.presentation.viewmodel.CameraViewModel
 @Composable
 fun CameraResultInconsistencyScreen(
     onBackClick: () -> Unit,
+    onItemClick: () -> Unit,
     viewModel: CameraViewModel
 ) {
     MisoTheme { colors, typography ->
@@ -46,6 +47,7 @@ fun CameraResultInconsistencyScreen(
                         imageUrl = listItem.imageUrl,
                         onClick = {
                             viewModel.setResult(index)
+                            onItemClick()
                         }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
