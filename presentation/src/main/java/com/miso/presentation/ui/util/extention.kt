@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 @SuppressLint("SimpleDateFormat")
 fun String.toDateString(): String {
     return kotlin.runCatching {
-        val originalDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS").parse(this)
+        val originalDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS").parse(this)
         if (originalDate != null) {
             val outputFormatter = SimpleDateFormat("yy.MM.dd")
             outputFormatter.format(originalDate)

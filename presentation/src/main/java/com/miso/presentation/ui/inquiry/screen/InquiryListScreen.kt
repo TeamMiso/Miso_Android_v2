@@ -21,6 +21,7 @@ import com.miso.design_system.component.text.MisoLogoTitleText
 import com.miso.presentation.ui.inquiry.component.InquiryList
 import com.miso.presentation.ui.inquiry.component.InquiryListTitleText
 import com.miso.presentation.viewmodel.InquiryViewModel
+import com.miso.presentation.viewmodel.NotificationViewModel
 import com.miso.presentation.viewmodel.UserViewModel
 import com.miso.presentation.viewmodel.util.Event
 
@@ -28,6 +29,7 @@ import com.miso.presentation.viewmodel.util.Event
 fun InquiryListScreen(
     userViewModel: UserViewModel,
     inquiryViewModel: InquiryViewModel,
+    notificationViewModel: NotificationViewModel,
     onInquiryClick: () -> Unit,
     onInquiryListDetailClick: () -> Unit
 ) {
@@ -39,6 +41,14 @@ fun InquiryListScreen(
             inquiryViewModel.getInquiryListAll()
             getInquiryListAll(viewModel = inquiryViewModel)
         }
+    }
+
+    LaunchedEffect("InquiryListDetail") {
+        getInquiryListDetail(viewModel = inquiryViewModel)
+    }
+
+    LaunchedEffect("Answer") {
+        getAnswer(viewModel = notificationViewModel)
     }
 
     Column(
@@ -68,6 +78,10 @@ fun InquiryListScreen(
         InquiryList(
             viewModel = inquiryViewModel,
             onItemClick = { id ->
+                inquiryViewModel.getInquiryListDetail(id = id)
+                if (inquiryViewModel.inquiryListDetail.value.inquiryStatus == "COMPLETE") {
+                    notificationViewModel.getAnswer(id = id)
+                }
                 onInquiryListDetailClick()
             }
         )
@@ -90,6 +104,26 @@ suspend fun getInquiryListAll(
     viewModel.getInquiryListAllResponse.collect {
         if (it is Event.Success) {
             viewModel.saveInquiryList(it.data!!.inquiryList)
+        }
+    }
+}
+
+suspend fun getInquiryListDetail(
+    viewModel: InquiryViewModel
+) {
+    viewModel.getInquiryListDetailResponse.collect {
+        if (it is Event.Success) {
+            viewModel.saveInquiryListDetail(it.data!!)
+        }
+    }
+}
+
+suspend fun getAnswer(
+    viewModel: NotificationViewModel
+) {
+    viewModel.getAnswerResponse.collect {
+        if (it is Event.Success) {
+            viewModel.saveAnswer(it.data!!)
         }
     }
 }
