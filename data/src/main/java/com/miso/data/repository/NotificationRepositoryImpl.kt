@@ -14,4 +14,8 @@ class NotificationRepositoryImpl @Inject constructor(
     override suspend fun getAnswer(id: Long): Flow<AnswerResponseModel> {
         return remoteNotificationDataSource.getAnswer(id = id).map { it.toNotificationModel() }
     }
+
+    override suspend fun saveDeviceToken(deviceToken: String): Flow<Unit> {
+        return remoteNotificationDataSource.saveDeviceToken(deviceToken = deviceToken)
+    }
 }
