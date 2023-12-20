@@ -37,6 +37,7 @@ class CameraActivity : BaseActivity() {
 
     private val cameraViewModel by viewModels<CameraViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
+
     @OptIn(ExperimentalPermissionsApi::class)
     override fun init() {
         setContent {
@@ -47,7 +48,7 @@ class CameraActivity : BaseActivity() {
             val showPermissionDialog = remember { mutableStateOf(false) }
 
             val permissionsList = listOfNotNull(
-                Manifest.permission.CAMERA
+                Manifest.permission.CAMERA,
             )
             val permissionState = rememberMultiplePermissionsState(permissions = permissionsList)
 
