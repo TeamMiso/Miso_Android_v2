@@ -104,9 +104,7 @@ fun InquiryScreen(
                                 inquiry(
                                     viewModel = viewModel,
                                     navController = navController,
-                                    errorText = { text ->
-
-                                    },
+                                    errorText = {},
                                     progressState = { state ->
                                         progressState.value = state
                                     }
@@ -120,7 +118,6 @@ fun InquiryScreen(
                         }
                     },
                     onBackClick = {
-                        viewModel.isCamera.value = false
                         viewModel.isCamera.value = false
                         navController.navigate(MainPage.Search.value){
                             popUpTo(MainPage.Search.value){
@@ -173,7 +170,12 @@ suspend fun inquiry(
             }
 
             is Event.Success -> {
-                navController.navigate(MainPage.Search.value)
+                viewModel.isCamera.value = false
+                navController.navigate(MainPage.Search.value){
+                    popUpTo(MainPage.Search.value){
+                        inclusive = true
+                    }
+                }
                 progressState(false)
             }
 

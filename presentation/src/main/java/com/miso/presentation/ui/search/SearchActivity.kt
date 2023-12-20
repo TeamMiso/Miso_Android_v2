@@ -105,6 +105,10 @@ class SearchActivity : BaseActivity() {
                 }
             }
         }
+
+        inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
+        inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
+
         setContent {
             navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -239,7 +243,7 @@ class SearchActivity : BaseActivity() {
                         currentRoute = currentRoute ?: "Search",
                         onSearchClick = { navController.navigate(MainPage.Search.value) },
                         onShopClick = { navController.navigate(MainPage.Shop.value) },
-                        onCameraClick = { navController.navigate(MainPage.Camera.value) },
+                        onCameraClick = { pageCamera() },
                         onInquiryClick = { navController.navigate(MainPage.InquiryList.value) },
                         onSettingClick = { navController.navigate(MainPage.Setting.value) }
                     )
