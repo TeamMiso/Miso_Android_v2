@@ -3,6 +3,7 @@ package com.miso.miso_android_v2.module
 import com.miso.data.repository.AuthRepositoryImpl
 import com.miso.data.repository.EmailRepositoryImpl
 import com.miso.data.repository.InquiryRepositoryImpl
+import com.miso.data.repository.NotificationRepositoryImpl
 import com.miso.data.repository.PurchaseRepositoryImpl
 import com.miso.data.repository.RecyclablesRepositoryImpl
 import com.miso.data.repository.ShopRepositoryImpl
@@ -10,6 +11,7 @@ import com.miso.data.repository.UserRepositoryImpl
 import com.miso.domain.repository.AuthRepository
 import com.miso.domain.repository.EmailRepository
 import com.miso.domain.repository.InquiryRepository
+import com.miso.domain.repository.NotificationRepository
 import com.miso.domain.repository.PurchaseRepository
 import com.miso.domain.repository.RecyclablesRepository
 import com.miso.domain.repository.ShopRepository
@@ -56,4 +58,9 @@ abstract class RepositoryModule {
     abstract fun providePurchaseRepository(
         purchaseRepositoryImpl: PurchaseRepositoryImpl
     ): PurchaseRepository
+
+    @Binds
+    abstract fun provideNotificationRepository(
+        notificationRepositoryImpl: NotificationRepositoryImpl
+    ): NotificationRepository
 }
