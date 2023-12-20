@@ -21,6 +21,14 @@ import androidx.compose.ui.unit.dp
 import com.miso.design_system.component.button.MisoBackButton
 import com.miso.design_system.component.button.MisoButton
 import com.miso.design_system.component.text.MisoBlackTitleText
+import com.miso.presentation.ui.camera.component.result.CameraRecycleCautionText
+import com.miso.presentation.ui.camera.component.result.CameraRecycleContentText
+import com.miso.presentation.ui.camera.component.result.CameraRecycleImage
+import com.miso.presentation.ui.camera.component.result.CameraRecycleMethodText
+import com.miso.presentation.ui.camera.component.result.CameraRecycleTipText
+import com.miso.presentation.ui.camera.component.result.CameraResultRecyclablesTypeText
+import com.miso.presentation.ui.camera.component.result.CameraResultSubTitleText
+import com.miso.presentation.ui.camera.component.result.CameraResultTitleText
 import com.miso.presentation.ui.camera.component.result.CameraWrongAnswerButton
 import com.miso.presentation.ui.result.component.RecycleCautionText
 import com.miso.presentation.ui.result.component.RecycleContentText
@@ -74,26 +82,26 @@ fun CameraResultScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
-        RecycleImage(imageUrl = viewModel.result.value.imageUrl)
+        CameraRecycleImage(imageUrl = viewModel.result.value.imageUrl)
         Spacer(modifier = Modifier.height(16.dp))
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-            ResultTitleText()
+            CameraResultTitleText()
             Spacer(modifier = Modifier.height(16.dp))
-            ResultSubTitleText(text = viewModel.result.value.subTitle)
+            CameraResultSubTitleText(text = viewModel.result.value.subTitle)
             Spacer(modifier = Modifier.height(8.dp))
-            ResultRecyclablesTypeText(text = viewModel.result.value.recyclablesType, imageUrl = viewModel.result.value.recycleMark)
+            CameraResultRecyclablesTypeText(text = viewModel.result.value.recyclablesType, imageUrl = viewModel.result.value.recycleMark)
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleMethodText()
+            CameraRecycleMethodText()
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleContentText(text = viewModel.result.value.recycleMethod)
+            CameraRecycleContentText(text = viewModel.result.value.recycleMethod)
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleTipText()
+            CameraRecycleTipText()
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleContentText(text = viewModel.result.value.recycleTip)
+            CameraRecycleContentText(text = viewModel.result.value.recycleTip)
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleCautionText()
+            CameraRecycleCautionText()
             Spacer(modifier = Modifier.height(16.dp))
-            RecycleContentText(text = viewModel.result.value.recycleCaution)
+            CameraRecycleContentText(text = viewModel.result.value.recycleCaution)
             Spacer(modifier = Modifier.height(56.dp))
             MisoButton(
                 modifier = Modifier,
