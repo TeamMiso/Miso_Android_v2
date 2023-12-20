@@ -43,7 +43,10 @@ fun CameraResultInconsistencyScreen(
                     CameraResultInconsistencyItem(
                         title = listItem.title,
                         content = listItem.recycleMethod,
-                        imageUrl = listItem.imageUrl
+                        imageUrl = listItem.imageUrl,
+                        onClick = {
+                            viewModel.setResult(index)
+                        }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
