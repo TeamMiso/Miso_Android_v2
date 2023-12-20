@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.component.button.MisoBackButton
 import com.miso.design_system.component.button.MisoButton
+import com.miso.design_system.component.dialog.MisoDialog
 import com.miso.design_system.component.text.MisoBlackTitleText
 import com.miso.presentation.ui.camera.component.result.CameraRecycleCautionText
 import com.miso.presentation.ui.camera.component.result.CameraRecycleContentText
@@ -47,12 +48,14 @@ fun CameraResultScreen(
     val givePointState = remember { mutableStateOf(false) }
     val progressState = remember { mutableStateOf(false) }
 
+    var openDialog = remember { mutableStateOf(false) }
+
     LaunchedEffect(givePointState.value){
         if(givePointState.value){
             givePoint(
                 viewModel = userViewModel,
                 progressState = { progressState.value = it },
-                onSuccess = { onPointClick() }
+                onSuccess = { openDialog.value = true }
             )
         }
     }
@@ -115,6 +118,21 @@ fun CameraResultScreen(
                 )
             }
         }
+    }
+    if (openDialog.value) {
+        MisoDialog(
+            openDialog = openDialog.value,
+            onStateChange = {
+                openDialog.value = it
+            },
+            title = "100포인트 획득",
+            content = "포인트가 지급되었어요!\n" +
+                      "홈 화면으로 돌아갈게요 :)",
+            dismissText = "",
+            checkText = "홈으로",
+            onDismissClick = {},
+            onCheckClick = { onPointClick() }
+        )
     }
 }
 
