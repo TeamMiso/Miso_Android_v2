@@ -159,6 +159,7 @@ fun InquiryScreen(
         }
     }
 }
+
 suspend fun inquiry(
     viewModel: InquiryViewModel,
     navController: NavController,
