@@ -75,7 +75,7 @@ fun InquiryListDetailScreen(
                     InquiryListDetailContentTitleText(text = "문의에 대한 답변")
                     Spacer(modifier = Modifier.height(16.dp))
                     InquiryListDetailContentText(
-                        text = notificationViewModel.answer.value.content
+                        text = notificationViewModel.answer.value.answer
                     )
                 }
                 Spacer(modifier = Modifier.height(40.dp))
