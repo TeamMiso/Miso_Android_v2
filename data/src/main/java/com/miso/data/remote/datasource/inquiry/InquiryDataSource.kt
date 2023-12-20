@@ -1,5 +1,6 @@
 package com.miso.data.remote.datasource.inquiry
 
+import com.miso.data.remote.dto.inquiry.response.InquiryListDetailResponse
 import com.miso.data.remote.dto.inquiry.response.InquiryListResponse
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -11,4 +12,6 @@ interface InquiryDataSource {
     suspend fun getInquiryList(): Flow<InquiryListResponse>
 
     suspend fun getInquiryListAll(): Flow<InquiryListResponse>
+
+    suspend fun getInquiryListDetail(id: Long): Flow<InquiryListDetailResponse>
 }
