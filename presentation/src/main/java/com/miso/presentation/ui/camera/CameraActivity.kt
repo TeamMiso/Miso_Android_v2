@@ -21,6 +21,7 @@ import com.miso.presentation.ui.camera.screen.CameraCaptureResultScreen
 import com.miso.presentation.ui.camera.screen.CameraResultInconsistencyScreen
 import com.miso.presentation.ui.camera.screen.CameraResultScreen
 import com.miso.presentation.ui.camera.screen.CameraScreen
+import com.miso.presentation.ui.login.LoginActivity
 import com.miso.presentation.ui.search.SearchActivity
 import com.miso.presentation.ui.util.PermissionHandlerActions
 import com.miso.presentation.viewmodel.CameraViewModel
@@ -78,22 +79,10 @@ class CameraActivity : BaseActivity() {
                             viewModel = cameraViewModel,
                             navController = navController,
                             onBackClick = {
-                                val intent = Intent(
-                                    this@CameraActivity,
-                                    SearchActivity::class.java
-                                )
-                                startActivity(intent)
-                                finish()
+                                intentSearch()
                             },
                             onInquiryCapture = {
-                                val intent = Intent(
-                                    this@CameraActivity,
-                                    SearchActivity::class.java
-                                )
-                                intent.putExtra("isCamera",true)
-                                intent.putExtra("byteArray",it)
-                                startActivity(intent)
-                                finish()
+                                intentInquiry(it)
                             }
                         )
                     }
@@ -105,7 +94,9 @@ class CameraActivity : BaseActivity() {
                         onSearch = { response ->
                             cameraViewModel.setResult(0,response)
                             navController.navigate(CameraPage.CameraResult.name)
-                        }
+                        },
+                        onDismissClick = {},
+                        onGoInquiry = {}
                     )
                 }
                 composable(CameraPage.CameraResult.name) {
@@ -113,20 +104,10 @@ class CameraActivity : BaseActivity() {
                         viewModel = cameraViewModel,
                         userViewModel = userViewModel,
                         onBackClick = {
-                            val intent = Intent(
-                                this@CameraActivity,
-                                SearchActivity::class.java
-                            )
-                            startActivity(intent)
-                            finish()
+                            intentSearch()
                         },
                         onPointClick = {
-                            val intent = Intent(
-                                this@CameraActivity,
-                                SearchActivity::class.java
-                            )
-                            startActivity(intent)
-                            finish()
+                            intentSearch()
                         },
                         onInconsistencyClick = { navController.navigate(CameraPage.CameraResultInconsistency.value) }
                     )
@@ -139,5 +120,25 @@ class CameraActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun intentSearch() {
+        startActivity(
+            Intent(
+                this@CameraActivity,
+                SearchActivity::class.java
+            )
+        )
+    }
+
+    private fun intentInquiry(byteArray: ByteArray) {
+        val intent = Intent(
+            this@CameraActivity,
+            SearchActivity::class.java
+        )
+        intent.putExtra("isCamera",true)
+        intent.putExtra("byteArray",byteArray)
+        startActivity(intent)
+        finish()
     }
 }
