@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.miso.domain.model.inquiry.response.InquiryListModel
 import com.miso.domain.model.recyclables.response.AiListModel
 import com.miso.domain.model.recyclables.response.AiListResponseModel
 import com.miso.domain.model.recyclables.response.ResultResponseModel
@@ -36,6 +37,9 @@ class CameraViewModel @Inject constructor(
     val aiListResponse = _aiListResponse.asStateFlow()
 
     var isInquiry = mutableStateOf(false)
+
+    var aiList = mutableStateListOf<AiListModel>()
+        private set
 
     var result = mutableStateOf(
         AiListModel(
@@ -97,6 +101,11 @@ class CameraViewModel @Inject constructor(
         swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream)
 
         return byteArrayOutputStream.toByteArray()
+    }
+
+    fun saveAiList(data: List<AiListModel>) {
+        aiList.clear()
+        aiList.addAll(data)
     }
 
     fun setResult(index: Int,aiAnswerList: AiListResponseModel){
