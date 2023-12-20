@@ -2,8 +2,13 @@ package com.miso.presentation.viewmodel
 
 import android.graphics.Bitmap
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miso.domain.model.inquiry.response.InquiryListModel
@@ -73,6 +78,13 @@ class CameraViewModel @Inject constructor(
         }.onFailure {
             _aiListResponse.value = Event.Loading
         }
+    }
+
+    fun getBitmap(): ImageBitmap? {
+        (captureImgBitmapState.value.capturedImage?.asImageBitmap() ?: null)?.let {
+            return it
+        }
+        return null
     }
 
     fun getMultipartFile(): MultipartBody.Part {

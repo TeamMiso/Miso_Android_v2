@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.miso.design_system.component.lottie.MisoLoadingLottie
 import com.miso.design_system.theme.MisoTheme
 import com.miso.domain.model.recyclables.response.AiListResponseModel
+import com.miso.presentation.ui.camera.CameraPage
 import com.miso.presentation.ui.camera.component.CameraResultBottomButton
 import com.miso.presentation.ui.camera.component.CameraResultPreview
 import com.miso.presentation.viewmodel.CameraViewModel
@@ -34,7 +35,7 @@ fun CameraCaptureResultScreen(
     navController: NavController,
     onSearch: (aiAnswer: AiListResponseModel) -> Unit
 ) {
-    val imageBitmap = getBitmap(viewModel = viewModel)
+    val imageBitmap = viewModel.getBitmap()
 
     val launchAi = remember { mutableStateOf(false) }
 
@@ -83,9 +84,10 @@ fun CameraCaptureResultScreen(
             CameraResultBottomButton(
                 onRecaptureClick = { navController.popBackStack() },
                 onConfirmClick = {
-                    val sendMultipartFile = viewModel.getMultipartFile()
+                    /*val sendMultipartFile = viewModel.getMultipartFile()
                     viewModel.getAiList(sendMultipartFile)
-                    launchAi.value = true
+                    launchAi.value = true*/
+                    navController.navigate(CameraPage.CameraResult.name)
                 }
             )
         }
@@ -95,15 +97,6 @@ fun CameraCaptureResultScreen(
             }
         }
     }
-}
-
-@Composable
-private fun getBitmap(viewModel: CameraViewModel): ImageBitmap? {
-    val captureImgBitmapState by viewModel.captureImgBitmapState.collectAsState()
-    (captureImgBitmapState.capturedImage?.asImageBitmap() ?: null)?.let {
-        return it
-    }
-    return null
 }
 
 suspend fun getAiResponse(
