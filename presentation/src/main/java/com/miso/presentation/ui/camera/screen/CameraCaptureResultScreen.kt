@@ -57,6 +57,7 @@ fun CameraCaptureResultScreen(
                     onSearch(response)
                 },
                 onFailure = {
+                    openDialog.value = true
                     launchAi.value = false
                 },
                 onError = {
