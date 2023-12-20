@@ -1,5 +1,6 @@
 package com.miso.domain.repository
 
+import com.miso.domain.model.inquiry.response.InquiryListDetailResponseModel
 import com.miso.domain.model.inquiry.response.InquiryListResponseModel
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -11,4 +12,6 @@ interface InquiryRepository {
     suspend fun getInquiryList(): Flow<InquiryListResponseModel>
 
     suspend fun getInquiryListAll(): Flow<InquiryListResponseModel>
+
+    suspend fun getInquiryListDetail(id: Long): Flow<InquiryListDetailResponseModel>
 }
