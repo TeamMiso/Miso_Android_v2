@@ -84,10 +84,9 @@ fun CameraCaptureResultScreen(
             CameraResultBottomButton(
                 onRecaptureClick = { navController.popBackStack() },
                 onConfirmClick = {
-                    /*val sendMultipartFile = viewModel.getMultipartFile()
+                    val sendMultipartFile = viewModel.getMultipartFile()
                     viewModel.getAiList(sendMultipartFile)
-                    launchAi.value = true*/
-                    navController.navigate(CameraPage.CameraResult.name)
+                    launchAi.value = true
                 }
             )
         }
