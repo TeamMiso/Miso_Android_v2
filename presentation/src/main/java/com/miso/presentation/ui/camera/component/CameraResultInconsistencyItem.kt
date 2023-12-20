@@ -2,6 +2,7 @@ package com.miso.presentation.ui.camera.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,13 +31,17 @@ import com.miso.design_system.theme.MisoTheme
 fun CameraResultInconsistencyItem(
     title: String,
     content: String,
-    imageUrl: String
+    imageUrl: String,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable {
+                       onClick()
+            },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
@@ -103,6 +108,6 @@ fun CameraResultInconsistencyItemPreview() {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        CameraResultInconsistencyItem(title = "폴리에틸렌(PE)", content = "붙어 있는 모든 라벨을 제거하고 재활용할 수 있도록 깨끗하게 씻어서 배출", imageUrl = "")
+        CameraResultInconsistencyItem(title = "폴리에틸렌(PE)", content = "붙어 있는 모든 라벨을 제거하고 재활용할 수 있도록 깨끗하게 씻어서 배출", imageUrl = "", onClick = {})
     }
 }

@@ -54,6 +54,7 @@ fun CameraCaptureResultScreen(
                 viewModel = viewModel,
                 progressState = { progressState.value = it },
                 onSuccess = {response ->
+                    viewModel.saveAiList(response.recyclablesList)
                     onSearch(response)
                 },
                 onFailure = {

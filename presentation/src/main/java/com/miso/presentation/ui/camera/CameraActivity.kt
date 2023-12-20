@@ -92,7 +92,7 @@ class CameraActivity : BaseActivity() {
                         viewModel = cameraViewModel,
                         navController = navController,
                         onSearch = { response ->
-                            cameraViewModel.setResult(0,response)
+                            cameraViewModel.setResult(0)
                             navController.navigate(CameraPage.CameraResult.name)
                         },
                         onDismissClick = { intentSearch() },
