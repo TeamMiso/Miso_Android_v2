@@ -94,7 +94,7 @@ class CameraViewModel @Inject constructor(
 
         val swapBitmap = _capturedImgBitmapState.value.capturedImage
 
-        swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
+        swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream)
 
         return byteArrayOutputStream.toByteArray()
     }

@@ -105,6 +105,10 @@ class SearchActivity : BaseActivity() {
                 }
             }
         }
+
+        inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
+        inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
+
         setContent {
             navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
