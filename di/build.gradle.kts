@@ -6,6 +6,7 @@ plugins {
     id(ProjectProperties.Gradle.APPLICATION)
     id(ProjectProperties.Gradle.HILT)
     kotlin(ProjectProperties.Gradle.KAPT)
+    id(ProjectProperties.Gradle.GMS_GOOGLE_SERVICE)
 }
 
 android {
