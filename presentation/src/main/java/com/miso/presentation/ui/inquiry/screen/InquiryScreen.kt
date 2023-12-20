@@ -104,9 +104,7 @@ fun InquiryScreen(
                                 inquiry(
                                     viewModel = viewModel,
                                     navController = navController,
-                                    errorText = { text ->
-
-                                    },
+                                    errorText = {},
                                     progressState = { state ->
                                         progressState.value = state
                                     }
