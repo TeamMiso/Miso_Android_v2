@@ -2,6 +2,7 @@ package com.miso.data.repository
 
 import com.miso.data.remote.datasource.inquiry.InquiryDataSource
 import com.miso.data.remote.dto.inquiry.response.toInquiryModel
+import com.miso.domain.model.inquiry.response.InquiryListDetailResponseModel
 import com.miso.domain.model.inquiry.response.InquiryListResponseModel
 import com.miso.domain.repository.InquiryRepository
 import kotlinx.coroutines.flow.Flow
@@ -29,5 +30,9 @@ class InquiryRepositoryImpl @Inject constructor(
 
     override suspend fun getInquiryListAll(): Flow<InquiryListResponseModel> {
         return remoteInquiryDataSource.getInquiryListAll().map { it.toInquiryModel() }
+    }
+
+    override suspend fun getInquiryListDetail(id: Long): Flow<InquiryListDetailResponseModel> {
+        return remoteInquiryDataSource.getInquiryListDetail(id = id).map { it.toInquiryModel() }
     }
 }
