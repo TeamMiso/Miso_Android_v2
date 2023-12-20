@@ -61,6 +61,7 @@ object Dependency {
         const val FIREBASE_DATABASE = "com.google.firebase:firebase-database-ktx:${Versions.FIREBASE_DATABASE}"
         const val FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics-ktx"
         const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Versions.FIREBASE_BOM}"
+        const val FIREBASE_MESSAGING = "com.google.firebase:firebase-messaging-ktx:${Versions.FIREBASE_MESSAGING}"
 
         //googleplay
         const val GMS_PLAY_SERVICE_AUTH =
