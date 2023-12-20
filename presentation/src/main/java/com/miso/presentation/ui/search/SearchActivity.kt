@@ -37,6 +37,7 @@ import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.AuthViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
+import com.miso.presentation.viewmodel.NotificationViewModel
 import com.miso.presentation.viewmodel.PurchaseViewModel
 import com.miso.presentation.viewmodel.RecyclablesViewModel
 import com.miso.presentation.viewmodel.ShopViewModel
@@ -69,6 +70,7 @@ class SearchActivity : BaseActivity() {
     private val userViewModel by viewModels<UserViewModel>()
     private val inquiryViewModel by viewModels<InquiryViewModel>()
     private val purchaseViewModel by viewModels<PurchaseViewModel>()
+    private val notificationViewModel by viewModels<NotificationViewModel>()
 
     private lateinit var navController: NavController
 
@@ -143,6 +145,7 @@ class SearchActivity : BaseActivity() {
                             InquiryListScreen(
                                 userViewModel = userViewModel,
                                 inquiryViewModel = inquiryViewModel,
+                                notificationViewModel = notificationViewModel,
                                 onInquiryClick = { navController.navigate(SubPage.Inquiry.value) },
                                 onInquiryListDetailClick = { navController.navigate(SubPage.InquiryListDetail.value) }
                             )
@@ -224,6 +227,8 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(SubPage.InquiryListDetail.name) {
                             InquiryListDetailScreen(
+                                inquiryViewModel = inquiryViewModel,
+                                notificationViewModel = notificationViewModel,
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
