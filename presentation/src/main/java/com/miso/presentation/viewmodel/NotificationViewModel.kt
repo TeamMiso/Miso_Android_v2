@@ -29,8 +29,7 @@ class NotificationViewModel @Inject constructor(
     var answer = mutableStateOf(
         AnswerResponseModel(
             id = 0L,
-            title = "",
-            content = ""
+            answer = ""
         )
     )
 
