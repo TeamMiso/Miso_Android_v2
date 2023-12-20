@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miso.domain.model.notification.response.AnswerResponseModel
 import com.miso.domain.usecase.notification.GetAnswerUseCase
+import com.miso.domain.usecase.notification.SaveDeviceTokenUseCase
 import com.miso.presentation.viewmodel.util.Event
 import com.miso.presentation.viewmodel.util.errorHandling
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
-    private val getAnswerUseCase: GetAnswerUseCase
+    private val getAnswerUseCase: GetAnswerUseCase,
+    private val saveDeviceTokenUseCase: SaveDeviceTokenUseCase
 ) : ViewModel() {
     private val _getAnswerResponse = MutableStateFlow<Event<AnswerResponseModel>>(Event.Loading)
     val getAnswerResponse = _getAnswerResponse.asStateFlow()
+
+    private val _saveDeviceTokenResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val saveDeviceTokenResponse = _saveDeviceTokenResponse.asStateFlow()
 
     var answer = mutableStateOf(
         AnswerResponseModel(
@@ -44,5 +49,18 @@ class NotificationViewModel @Inject constructor(
 
     fun saveAnswer(data: AnswerResponseModel) {
         answer.value = data
+    }
+
+    fun saveDeviceToken(deviceToken: String) = viewModelScope.launch {
+        saveDeviceTokenUseCase(deviceToken = deviceToken)
+            .onSuccess {
+                it.catch { remoteError ->
+                    _saveDeviceTokenResponse.value = remoteError.errorHandling()
+                }.collect { response ->
+                    _saveDeviceTokenResponse.value = Event.Success(data = response)
+                }
+            }.onFailure {
+                _saveDeviceTokenResponse.value = it.errorHandling()
+            }
     }
 }
