@@ -18,6 +18,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.camera.screen.CameraCaptureResultScreen
+import com.miso.presentation.ui.camera.screen.CameraResultInconsistencyScreen
 import com.miso.presentation.ui.camera.screen.CameraResultScreen
 import com.miso.presentation.ui.camera.screen.CameraScreen
 import com.miso.presentation.ui.search.SearchActivity
@@ -29,7 +30,8 @@ import dagger.hilt.android.AndroidEntryPoint
 enum class CameraPage(val value: String) {
     Camera("Camera"),
     CameraCaptureResult("CameraCaptureResult"),
-    CameraResult("CameraResult")
+    CameraResult("CameraResult"),
+    CameraResultInconsistency("CameraResultInconsistency")
 }
 @AndroidEntryPoint
 class CameraActivity : BaseActivity() {
@@ -105,7 +107,7 @@ class CameraActivity : BaseActivity() {
                         }
                     )
                 }
-                composable(CameraPage.CameraResult.name){
+                composable(CameraPage.CameraResult.name) {
                     CameraResultScreen(
                         viewModel = cameraViewModel,
                         userViewModel = userViewModel,
@@ -124,7 +126,14 @@ class CameraActivity : BaseActivity() {
                             )
                             startActivity(intent)
                             finish()
-                        }
+                        },
+                        onInconsistencyClick = { navController.navigate(CameraPage.CameraResultInconsistency.value) }
+                    )
+                }
+                composable(CameraPage.CameraResultInconsistency.name) {
+                    CameraResultInconsistencyScreen(
+                        onBackClick = { navController.popBackStack()},
+                        viewModel = cameraViewModel
                     )
                 }
             }
