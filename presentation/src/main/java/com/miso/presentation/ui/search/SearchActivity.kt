@@ -1,13 +1,15 @@
 package com.miso.presentation.ui.search
 
+import android.Manifest
 import android.content.Intent
-import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -110,6 +112,20 @@ class SearchActivity : BaseActivity() {
         inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
 
         setContent {
+            val permissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestMultiplePermissions()
+            ) { isGrantedMap: Map<String, Boolean> -> }
+
+            LaunchedEffect("Permission") {
+                permissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.READ_MEDIA_IMAGES,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    )
+                )
+            }
+
             navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
@@ -156,6 +172,7 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(MainPage.Setting.name) {
                             SettingScreen(
+                                context = this@SearchActivity,
                                 viewModel = userViewModel,
                                 onLogoutClick = { authViewModel.logout() }
                             )
