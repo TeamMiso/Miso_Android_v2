@@ -40,7 +40,8 @@ fun CameraResultScreen(
     viewModel: CameraViewModel,
     userViewModel: UserViewModel,
     onBackClick: () -> Unit,
-    onPointClick: () -> Unit
+    onPointClick: () -> Unit,
+    onInconsistencyClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -108,7 +109,11 @@ fun CameraResultScreen(
                     .navigationBarsPadding(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CameraWrongAnswerButton( onClick = {})
+                CameraWrongAnswerButton(
+                    onClick = {
+                        onInconsistencyClick()
+                    }
+                )
             }
         }
     }
