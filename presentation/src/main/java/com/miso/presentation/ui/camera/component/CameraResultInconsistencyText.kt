@@ -19,7 +19,9 @@ fun CameraResultInconsistencyText() {
     MisoTheme { colors, typography ->
         Text(
             text = "인식된 모든 품목",
-            modifier = Modifier.size(211.dp, 48.dp),
+            modifier = Modifier
+                .size(232.dp, 48.dp)
+                .padding(start = 16.dp),
             style = typography.titleSmall,
             fontWeight = FontWeight.ExtraBold,
             color = colors.BLACK
