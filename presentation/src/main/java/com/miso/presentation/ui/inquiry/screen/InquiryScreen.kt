@@ -34,6 +34,7 @@ import com.miso.presentation.ui.inquiry.component.bottomsheet.SelectPhotoPathBot
 import com.miso.presentation.ui.inquiry.util.getMultipartFile
 import com.miso.presentation.ui.inquiry.util.toMultipartBody
 import com.miso.presentation.ui.search.MainPage
+import com.miso.presentation.ui.search.SubPage
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.util.Event
 import kotlinx.coroutines.CoroutineScope
