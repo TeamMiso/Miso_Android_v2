@@ -106,7 +106,11 @@ class CameraActivity : BaseActivity() {
                         viewModel = cameraViewModel,
                         userViewModel = userViewModel,
                         onBackClick = {
-                            intentSearch()
+                            if(cameraViewModel.isInconsistency.value){
+                                navController.popBackStack()
+                            } else {
+                                intentSearch()
+                            }
                         },
                         onPointClick = {
                             intentSearch()
@@ -116,9 +120,12 @@ class CameraActivity : BaseActivity() {
                 }
                 composable(CameraPage.CameraResultInconsistency.name) {
                     CameraResultInconsistencyScreen(
-                        onBackClick = { navController.popBackStack()},
+                        onBackClick = { navController.popBackStack() },
                         viewModel = cameraViewModel,
-                        onItemClick = { navController.navigate(CameraPage.CameraResult.value) }
+                        onItemClick = {
+                            cameraViewModel.isInconsistency.value = true
+                            navController.navigate(CameraPage.CameraResult.value)
+                        }
                     )
                 }
             }
