@@ -114,7 +114,7 @@ class SearchActivity : BaseActivity() {
             }
         }
 
-        inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera",false)
+        inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera", false)
         inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
 
         setContent {
@@ -271,7 +271,22 @@ class SearchActivity : BaseActivity() {
                         composable(SubPage.InquiryAnswer.name) {
                             InquiryAnswerScreen(
                                 viewModel = inquiryViewModel,
-                                onBackClick = { navController.popBackStack() }
+                                focusManager = LocalFocusManager.current,
+                                onBackClick = { navController.popBackStack() },
+                                onSearchClick = {
+                                    navController.navigate(MainPage.Search.value) {
+                                        popUpTo(MainPage.Search.value) {
+                                            inclusive = true
+                                        }
+                                    }
+                                },
+                                onInquiryListDetailClick = {
+                                    navController.navigate(SubPage.InquiryListDetail.value) {
+                                        popUpTo(SubPage.InquiryListDetail.value) {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
                             )
                         }
                     }
