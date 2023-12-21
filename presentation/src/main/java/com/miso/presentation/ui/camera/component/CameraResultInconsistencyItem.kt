@@ -40,7 +40,7 @@ fun CameraResultInconsistencyItem(
             .height(80.dp)
             .padding(16.dp)
             .clickable {
-                       onClick()
+                onClick()
             },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
