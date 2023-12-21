@@ -55,7 +55,7 @@ fun TodayEnvironmentTipComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "오늘의 재활용 팁 보러가기 >>",
+                    text = "오늘의 환경 지식 보러가기 >>",
                     style = typography.textSmall,
                     fontWeight = FontWeight.Medium,
                     color = colors.PRIMARY
