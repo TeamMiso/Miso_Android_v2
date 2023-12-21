@@ -2,6 +2,7 @@ package com.miso.miso_android_v2.module
 
 import com.miso.data.remote.api.AuthAPI
 import com.miso.data.remote.api.EmailAPI
+import com.miso.data.remote.api.EnvironmentAPI
 import com.miso.data.remote.api.InquiryAPI
 import com.miso.data.remote.api.NotificationAPI
 import com.miso.data.remote.api.PurchaseAPI
@@ -18,7 +19,6 @@ import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -104,5 +104,11 @@ object NetworkModule {
     @Singleton
     fun notificationService(retrofit: Retrofit): NotificationAPI {
         return retrofit.create(NotificationAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun environmentService(retrofit: Retrofit): EnvironmentAPI {
+        return retrofit.create(EnvironmentAPI::class.java)
     }
  }

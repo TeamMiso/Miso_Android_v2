@@ -4,6 +4,8 @@ import com.miso.data.remote.datasource.auth.AuthDataSource
 import com.miso.data.remote.datasource.auth.AuthDataSourceImpl
 import com.miso.data.remote.datasource.email.EmailDataSource
 import com.miso.data.remote.datasource.email.EmailDataSourceImpl
+import com.miso.data.remote.datasource.environment.EnvironmentDataSource
+import com.miso.data.remote.datasource.environment.EnvironmentDataSourceImpl
 import com.miso.data.remote.datasource.inquiry.InquiryDataSource
 import com.miso.data.remote.datasource.inquiry.InquiryDataSourceImpl
 import com.miso.data.remote.datasource.notification.NotificationDataSource
@@ -63,4 +65,9 @@ abstract class RemoteDatasourceModule {
     abstract fun provideNotificationDataSource(
         notificationDataSourceImpl: NotificationDataSourceImpl
     ): NotificationDataSource
+
+    @Binds
+    abstract fun provideEnvironmentDataSource(
+        environmentDataSourceImpl: EnvironmentDataSourceImpl
+    ): EnvironmentDataSource
 }
