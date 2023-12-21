@@ -15,6 +15,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +39,12 @@ fun InquiryImageButton(
     selectedImageUri: Uri,
     capturedImage: ImageBitmap?
 ) {
+    var imageUri by remember { mutableStateOf(selectedImageUri) }
+    var image by remember { mutableStateOf(capturedImage) }
+
+    imageUri = selectedImageUri
+    image = capturedImage
+
     MisoTheme { colors, typography ->
         Box(
             modifier = modifier
@@ -48,15 +58,15 @@ fun InquiryImageButton(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                if (capturedImage != null) {
+                if (image != null) {
                     Image(
-                        bitmap = capturedImage,
+                        bitmap = image!!,
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Fit
                     )
                 }
-                else if(selectedImageUri == Uri.EMPTY) {
+                else if(imageUri == Uri.EMPTY) {
                     Image(
                         painter = painterResource(id = com.miso.design_system.R.drawable.ic_inquiry_add_image),
                         contentDescription = "Gallery Logo Icon",
@@ -71,12 +81,11 @@ fun InquiryImageButton(
                     )
                 } else {
                     Image(
-                        painter = rememberAsyncImagePainter(model = selectedImageUri),
+                        painter = rememberAsyncImagePainter(model = imageUri),
                         contentDescription = "Gallery Logo Icon",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Fit
                     )
-                    InquiryDeleteImageButton {}
                 }
             }
             Column(
@@ -84,7 +93,21 @@ fun InquiryImageButton(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.End,
             ) {
-                if(selectedImageUri != Uri.EMPTY) InquiryDeleteImageButton {}
+                if(capturedImage != null) {
+                    InquiryDeleteImageButton(
+                        onClick = {
+                            image = null
+                            imageUri = Uri.EMPTY
+                        }
+                    )
+                } else if (selectedImageUri != Uri.EMPTY) {
+                    InquiryDeleteImageButton(
+                        onClick = {
+                            image = null
+                            imageUri = Uri.EMPTY
+                        }
+                    )
+                }
             }
         }
     }
