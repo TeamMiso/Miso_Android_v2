@@ -3,6 +3,7 @@ package com.miso.presentation.ui.inquiry.screen
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
+import com.miso.design_system.component.dialog.MisoDialog
 import com.miso.design_system.theme.MisoTheme
 import com.miso.domain.model.inquiry.request.InquiryRequestModel
 import com.miso.presentation.ui.inquiry.component.InquiryContentTextField
@@ -34,6 +36,7 @@ import com.miso.presentation.ui.inquiry.component.bottomsheet.SelectPhotoPathBot
 import com.miso.presentation.ui.inquiry.util.getMultipartFile
 import com.miso.presentation.ui.inquiry.util.toMultipartBody
 import com.miso.presentation.ui.search.MainPage
+import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.util.Event
 import kotlinx.coroutines.CoroutineScope
@@ -48,23 +51,41 @@ import okhttp3.RequestBody.Companion.toRequestBody
 fun InquiryScreen(
     context: Context,
     onCameraClick: () -> Unit,
+    onGotoInquiry: () -> Unit,
     onInquiryClick: (filePart: MultipartBody.Part?, inquiryPart: RequestBody) -> Unit,
     viewModel: InquiryViewModel,
+    cameraViewModel: CameraViewModel,
     lifecycleScope: CoroutineScope,
     navController: NavController
 ) {
     var bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val bottomSheetScope = rememberCoroutineScope()
 
+    var openDialog = remember { mutableStateOf(false) }
+
     val progressState = remember { mutableStateOf(false) }
+
+    var isImageEmpty = remember { mutableStateOf(true) }
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf(Uri.EMPTY) }
 
+    var isInquiryResult = remember { mutableStateOf(false) }
+    var dialogTitle by remember { mutableStateOf("") }
+    var dialogContent by remember { mutableStateOf("") }
+    var dialogDismiss by remember { mutableStateOf("") }
+    var dialogCheck by remember { mutableStateOf("") }
+
     val filePart = if (imageUri != Uri.EMPTY) {
-        imageUri.toMultipartBody(context)
-    } else null
+        if(isImageEmpty.value) {
+            cameraViewModel.getMultipartFile(context, true)
+        } else {
+            imageUri.toMultipartBody(context)
+        }
+    } else {
+        null
+    }
 
     val inquiryData = InquiryRequestModel(
         title = title,
@@ -80,6 +101,7 @@ fun InquiryScreen(
             SelectPhotoPathBottomSheet(
                 bottomSheetState = bottomSheetState,
                 selectedImageUri = { uri ->
+                    isImageEmpty.value = false
                     imageUri = uri
                 },
                 onCameraClick = {
@@ -100,21 +122,8 @@ fun InquiryScreen(
                 InquiryTopBar(
                     onInquiryClick = {
                         if (title.isNotEmpty() && content.isNotEmpty()) {
-                            lifecycleScope.launch {
-                                inquiry(
-                                    viewModel = viewModel,
-                                    navController = navController,
-                                    errorText = {},
-                                    progressState = { state ->
-                                        progressState.value = state
-                                    }
-                                )
-                            }
-                            if (viewModel.isCamera.value) {
-                                onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
-                            } else {
-                                onInquiryClick(filePart, inquiryRequestBody)
-                            }
+                            isInquiryResult.value = false
+                            openDialog.value = true
                         }
                     },
                     onBackClick = {
@@ -141,8 +150,10 @@ fun InquiryScreen(
                     },
                     selectedImageUri = imageUri,
                     capturedImage = if(viewModel.isCamera.value) {
+                        isImageEmpty.value = false
                         getBitmap(viewModel)
                     } else {
+                        isImageEmpty.value = true
                         null
                     }
                 )
@@ -153,6 +164,67 @@ fun InquiryScreen(
                     }
                 )
             }
+            if (openDialog.value) {
+                MisoDialog(
+                    openDialog = openDialog.value,
+                    onStateChange = {},
+                    title = "문의하기",
+                    content = "문의사항을 게시하시겠어요?",
+                    dismissText = "취소",
+                    checkText = "게시",
+                    onDismissClick = {
+                        openDialog.value = false
+                    },
+                    onCheckClick = {
+                        lifecycleScope.launch {
+                            inquiry(
+                                viewModel = viewModel,
+                                navController = navController,
+                                errorText = {},
+                                onSuccess = {
+                                    isInquiryResult.value = true
+                                    openDialog.value = false
+                                },
+                                progressState = { state ->
+                                    progressState.value = state
+                                }
+                            )
+                        }
+                        if (!isImageEmpty.value) {
+                            if (viewModel.isCamera.value) {
+                                onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
+                            } else {
+                                onInquiryClick(filePart, inquiryRequestBody)
+                            }
+                        } else {
+                            onInquiryClick(filePart, inquiryRequestBody)
+                        }
+                    }
+                )
+            }
+            if (isInquiryResult.value) {
+                MisoDialog(
+                    openDialog = isInquiryResult.value,
+                    onStateChange = {},
+                    title = "문의 성공",
+                    content = "문의사항이 게시되었어요\n게시글을 보러 가시겠어요?",
+                    dismissText = "홈으로",
+                    checkText = "게시글로",
+                    onDismissClick = {
+                        viewModel.isCamera.value = false
+                        isInquiryResult.value = false
+                        navController.navigate(MainPage.Search.value){
+                            popUpTo(MainPage.Search.value){
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onCheckClick = {
+                        isInquiryResult.value = false
+                        onGotoInquiry()
+                    }
+                )
+            }
         }
     }
 }
@@ -160,6 +232,7 @@ fun InquiryScreen(
 suspend fun inquiry(
     viewModel: InquiryViewModel,
     navController: NavController,
+    onSuccess: () -> Unit,
     errorText: (errorText: String) -> Unit,
     progressState: (progressState: Boolean) -> Unit
 ) {
@@ -170,12 +243,7 @@ suspend fun inquiry(
             }
 
             is Event.Success -> {
-                viewModel.isCamera.value = false
-                navController.navigate(MainPage.Search.value){
-                    popUpTo(MainPage.Search.value){
-                        inclusive = true
-                    }
-                }
+                onSuccess()
                 progressState(false)
             }
 

@@ -40,6 +40,7 @@ import com.miso.presentation.ui.shop.screen.PurchaseListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.AuthViewModel
+import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.EnvironmentViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.NotificationViewModel
@@ -79,6 +80,7 @@ class SearchActivity : BaseActivity() {
     private val purchaseViewModel by viewModels<PurchaseViewModel>()
     private val notificationViewModel by viewModels<NotificationViewModel>()
     private val environmentViewModel by viewModels<EnvironmentViewModel>()
+    private val cameraViewModel by viewModels<CameraViewModel>()
 
     private lateinit var navController: NavController
 
@@ -197,6 +199,7 @@ class SearchActivity : BaseActivity() {
                                     finish()
                                 },
                                 viewModel = inquiryViewModel,
+                                cameraViewModel = cameraViewModel,
                                 lifecycleScope = lifecycleScope,
                                 navController = navController,
                                 onInquiryClick = { filePart, inquiryPart ->
@@ -204,6 +207,9 @@ class SearchActivity : BaseActivity() {
                                         filePart = filePart,
                                         inquiryPart = inquiryPart
                                     )
+                                },
+                                onGotoInquiry = {
+                                    navController.popBackStack()
                                 }
                             )
                         }
