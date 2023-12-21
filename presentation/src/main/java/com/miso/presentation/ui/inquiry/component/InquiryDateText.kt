@@ -12,7 +12,7 @@ fun InquiryDateText(
     MisoTheme { colors, typography ->
         Text(
             text = date,
-            style = typography.buttonSmall,
+            style = typography.textSmall,
             fontWeight = FontWeight.Normal,
             color = colors.GREYSCALE2
         )

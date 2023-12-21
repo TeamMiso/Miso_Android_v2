@@ -27,7 +27,7 @@ fun InquiryTitleText(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
             style = typography.titleSmall,
             fontWeight = FontWeight.ExtraBold,
-            color = colors.BLACK
+            color = colors.GREYSCALE2
         )
     }
 }
