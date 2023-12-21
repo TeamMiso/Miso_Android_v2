@@ -1,8 +1,11 @@
 package com.miso.presentation.ui.inquiry.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -16,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.miso.design_system.component.button.MisoBackButton
 import com.miso.design_system.component.text.MisoBlackTitleText
 import com.miso.design_system.theme.MisoTheme
+import com.miso.presentation.ui.inquiry.component.InquiryButton
 import com.miso.presentation.ui.inquiry.component.InquiryListDetailContentText
 import com.miso.presentation.ui.inquiry.component.InquiryListDetailContentTitleText
 import com.miso.presentation.ui.inquiry.component.InquiryListDetailImage
@@ -23,12 +27,15 @@ import com.miso.presentation.ui.inquiry.component.InquiryListDetailStatusText
 import com.miso.presentation.ui.util.toDateString
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.NotificationViewModel
+import com.miso.presentation.viewmodel.UserViewModel
 
 @Composable
 fun InquiryListDetailScreen(
     inquiryViewModel: InquiryViewModel,
     notificationViewModel: NotificationViewModel,
-    onBackClick: () -> Unit
+    userViewModel: UserViewModel,
+    onBackClick: () -> Unit,
+    onInquiryAnswerClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -41,8 +48,19 @@ fun InquiryListDetailScreen(
         ) {
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                 Spacer(modifier = Modifier.height(8.dp))
-                MisoBackButton {
-                    onBackClick()
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top
+                ) {
+                    MisoBackButton {
+                        onBackClick()
+                    }
+                    if (inquiryViewModel.inquiryListDetail.value.inquiryStatus == "WAIT" &&
+                        userViewModel.userInfo.value.role == "ROLE_ADMIN") {
+                        InquiryButton(isUser = false) {
+                            onInquiryAnswerClick()
+                        }
+                    }
                 }
                 Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                     Spacer(modifier = Modifier.height(16.dp))

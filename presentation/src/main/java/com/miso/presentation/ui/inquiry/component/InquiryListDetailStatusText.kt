@@ -19,7 +19,7 @@ fun InquiryListDetailStatusText(
         Row {
             Text(
                 text = date,
-                style = typography.captionLarge,
+                style = typography.textSmall,
                 fontWeight = FontWeight.Normal,
                 color = colors.GREYSCALE2
             )
@@ -27,7 +27,7 @@ fun InquiryListDetailStatusText(
             if (status == "WAIT") {
                 Text(
                     text = "검토 중",
-                    style = typography.captionLarge,
+                    style = typography.textSmall,
                     fontWeight = FontWeight.Normal,
                     color = colors.GREYSCALE3
                 )

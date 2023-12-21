@@ -1,6 +1,8 @@
 package com.miso.presentation.ui.inquiry.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -16,6 +18,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,22 +38,14 @@ fun InquiryTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .height(40.dp)
                 .background(colors.WHITE)
-                .statusBarsPadding(),
+                .statusBarsPadding()
+                .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Button(
-                modifier = Modifier.size(120.dp,48.dp),
-                elevation = null,
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Transparent
-                ),
-                onClick = {}
-            ) {
-                MisoBackButton { onBackClick() }
-            }
+            MisoBackButton { onBackClick() }
             InquiryText()
             InquiryButton(onClick = { onInquiryClick() }, isUser = isUser)
         }
@@ -71,37 +66,31 @@ fun InquiryText() {
 
 @Composable
 fun InquiryButton(
-    onClick: () -> Unit,
-    isUser: Boolean
+    isUser: Boolean,
+    onClick: () -> Unit
 ) {
     MisoTheme { colors, typography ->
-        Button(
-            modifier = Modifier.size(104.dp,48.dp),
-            elevation = null,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent
-            ),
-            onClick = { onClick() }
+        Row(
+            modifier = Modifier.clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { onClick() },
         ) {
-            Box(
-                modifier = Modifier.size(87.dp, 32.dp),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                if(isUser){
-                    Text(
-                        text = "문의하기",
-                        style = typography.textMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = colors.PRIMARY
-                    )
-                } else {
-                    Text(
-                        text = "답변하기",
-                        style = typography.textMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = colors.PRIMARY
-                    )
-                }
+            Spacer(modifier = Modifier.width(8.dp))
+            if (isUser) {
+                Text(
+                    text = "문의하기",
+                    style = typography.textMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.PRIMARY
+                )
+            } else {
+                Text(
+                    text = "답변하기",
+                    style = typography.textMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.PRIMARY
+                )
             }
         }
     }
@@ -113,6 +102,6 @@ fun InquiryTopBarPreview() {
     Box(
         modifier = Modifier.background(Color.White)
     ) {
-        InquiryTopBar( onInquiryClick = {}, onBackClick = {}, false)
+        InquiryTopBar(onInquiryClick = {}, onBackClick = {}, false)
     }
 }

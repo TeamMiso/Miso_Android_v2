@@ -44,9 +44,9 @@ fun InquiryContentTextField(
             ),
             placeholder = {
                 Text(
-                    text = "문의 제목 쓰기",
+                    text = "답변 내용 쓰기",
                     style = typography.textSmall,
-                    fontWeight = FontWeight(600),
+                    fontWeight = FontWeight(400),
                     color = colors.GREYSCALE3
                 )
             },
