@@ -39,6 +39,7 @@ import com.miso.presentation.ui.shop.screen.PurchaseListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
 import com.miso.presentation.ui.shop.screen.ShopScreen
 import com.miso.presentation.viewmodel.AuthViewModel
+import com.miso.presentation.viewmodel.EnvironmentViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.NotificationViewModel
 import com.miso.presentation.viewmodel.PurchaseViewModel
@@ -75,6 +76,7 @@ class SearchActivity : BaseActivity() {
     private val inquiryViewModel by viewModels<InquiryViewModel>()
     private val purchaseViewModel by viewModels<PurchaseViewModel>()
     private val notificationViewModel by viewModels<NotificationViewModel>()
+    private val environmentViewModel by viewModels<EnvironmentViewModel>()
 
     private lateinit var navController: NavController
 
@@ -258,6 +260,7 @@ class SearchActivity : BaseActivity() {
                         }
                         composable(SubPage.TodayEnvironmentTip.name) {
                             TodayEnvironmentTipScreen(
+                                viewModel = environmentViewModel,
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
