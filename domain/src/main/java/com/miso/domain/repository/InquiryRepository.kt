@@ -1,5 +1,6 @@
 package com.miso.domain.repository
 
+import com.miso.domain.model.inquiry.request.AnswerRequestModel
 import com.miso.domain.model.inquiry.response.InquiryListDetailResponseModel
 import com.miso.domain.model.inquiry.response.InquiryListResponseModel
 import kotlinx.coroutines.flow.Flow
@@ -14,4 +15,6 @@ interface InquiryRepository {
     suspend fun getInquiryListAll(): Flow<InquiryListResponseModel>
 
     suspend fun getInquiryListDetail(id: Long): Flow<InquiryListDetailResponseModel>
+
+    suspend fun sendAnswer(id: Long, body: AnswerRequestModel): Flow<Unit>
 }
