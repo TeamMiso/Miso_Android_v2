@@ -35,6 +35,7 @@ import com.miso.presentation.ui.inquiry.util.getMultipartFile
 import com.miso.presentation.ui.inquiry.util.toMultipartBody
 import com.miso.presentation.ui.search.MainPage
 import com.miso.presentation.ui.search.SubPage
+import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.util.Event
 import kotlinx.coroutines.CoroutineScope
@@ -51,6 +52,7 @@ fun InquiryScreen(
     onCameraClick: () -> Unit,
     onInquiryClick: (filePart: MultipartBody.Part?, inquiryPart: RequestBody) -> Unit,
     viewModel: InquiryViewModel,
+    cameraViewModel: CameraViewModel,
     lifecycleScope: CoroutineScope,
     navController: NavController
 ) {
@@ -59,13 +61,21 @@ fun InquiryScreen(
 
     val progressState = remember { mutableStateOf(false) }
 
+    var isImageEmpty by remember { mutableStateOf(true) }
+
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf(Uri.EMPTY) }
 
     val filePart = if (imageUri != Uri.EMPTY) {
-        imageUri.toMultipartBody(context)
-    } else null
+        if(isImageEmpty) {
+            cameraViewModel.getMultipartFile(context, true)
+        } else {
+            imageUri.toMultipartBody(context)
+        }
+    } else {
+        null
+    }
 
     val inquiryData = InquiryRequestModel(
         title = title,
@@ -81,6 +91,7 @@ fun InquiryScreen(
             SelectPhotoPathBottomSheet(
                 bottomSheetState = bottomSheetState,
                 selectedImageUri = { uri ->
+                    isImageEmpty = false
                     imageUri = uri
                 },
                 onCameraClick = {
@@ -111,8 +122,12 @@ fun InquiryScreen(
                                     }
                                 )
                             }
-                            if (viewModel.isCamera.value) {
-                                onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
+                            if (!isImageEmpty) {
+                                if (viewModel.isCamera.value) {
+                                    onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
+                                } else {
+                                    onInquiryClick(filePart, inquiryRequestBody)
+                                }
                             } else {
                                 onInquiryClick(filePart, inquiryRequestBody)
                             }
@@ -142,8 +157,10 @@ fun InquiryScreen(
                     },
                     selectedImageUri = imageUri,
                     capturedImage = if(viewModel.isCamera.value) {
+                        isImageEmpty = false
                         getBitmap(viewModel)
                     } else {
+                        isImageEmpty = true
                         null
                     }
                 )

@@ -1,22 +1,21 @@
 package com.miso.presentation.viewmodel
 
+import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.miso.domain.model.inquiry.response.InquiryListModel
 import com.miso.domain.model.recyclables.response.AiListModel
 import com.miso.domain.model.recyclables.response.AiListResponseModel
-import com.miso.domain.model.recyclables.response.ResultResponseModel
-import com.miso.domain.model.shop.response.ShopListModel
 import com.miso.domain.usecase.recyclables.GetAiListUseCase
+import com.miso.presentation.R
 import com.miso.presentation.ui.camera.state.CapturedState
 import com.miso.presentation.viewmodel.util.Event
 import com.miso.presentation.viewmodel.util.errorHandling
@@ -37,6 +36,9 @@ class CameraViewModel @Inject constructor(
 ) : ViewModel() {
     private val _capturedImgBitmapState = MutableStateFlow(CapturedState())
     val captureImgBitmapState = _capturedImgBitmapState.asStateFlow()
+
+    private val _defaultImageBitmap = MutableStateFlow(CapturedState())
+    val defaultImageBitmap = _defaultImageBitmap.asStateFlow()
 
     private val _aiListResponse = MutableStateFlow<Event<AiListResponseModel>>(Event.Loading)
     val aiListResponse = _aiListResponse.asStateFlow()
@@ -89,18 +91,57 @@ class CameraViewModel @Inject constructor(
         return null
     }
 
-    fun getMultipartFile(): MultipartBody.Part {
+    fun getMultipartFile(context: Context,isDefault: Boolean): MultipartBody.Part {
         val fileName = "capturedImage.jpg"
         val mediaType = "image/jpeg"
-        val byteArray = swapBitmapToJpegWithMultipartFile().toRequestBody(mediaType.toMediaType())
+        val byteArray = if(isDefault) {
+            _defaultImageBitmap.value.capturedImage?.recycle()
+            _defaultImageBitmap.value = _defaultImageBitmap.value.copy(
+                capturedImage = getBitmapFromDrawableResourceId(
+                    context,
+                    com.miso.design_system.R.drawable.ic_miso_color
+                )
+            )
+            swapBitmapToJpegWithMultipartFile(true).toRequestBody(mediaType.toMediaType())
+        } else {
+            swapBitmapToJpegWithMultipartFile(false).toRequestBody(mediaType.toMediaType())
+        }
 
         return MultipartBody.Part.createFormData("recyclables", fileName, byteArray)
     }
 
-    private fun swapBitmapToJpegWithMultipartFile(): ByteArray {
+    private fun getBitmapFromDrawableResourceId(context: Context, drawableResId: Int): Bitmap {
+        val drawable = ContextCompat.getDrawable(context, drawableResId)
+            ?: throw IllegalArgumentException("Invalid drawable resource ID")
+
+        return drawableToBitmap(drawable)
+    }
+
+    private fun drawableToBitmap(drawable: Drawable): Bitmap {
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap
+        }
+
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        return bitmap
+    }
+
+    private fun swapBitmapToJpegWithMultipartFile(isDefault: Boolean): ByteArray {
         val byteArrayOutputStream = ByteArrayOutputStream()
 
-        val swapBitmap = _capturedImgBitmapState.value.capturedImage
+        val swapBitmap = if(isDefault) {
+            _defaultImageBitmap.value.capturedImage
+        } else {
+            _capturedImgBitmapState.value.capturedImage
+        }
 
         swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
 
