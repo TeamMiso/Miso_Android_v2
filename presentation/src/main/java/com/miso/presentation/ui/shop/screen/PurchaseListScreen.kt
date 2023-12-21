@@ -30,6 +30,7 @@ fun PurchaseListScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(bottom = 65.dp)
             .statusBarsPadding()
     ) {
         Column(modifier = Modifier.padding(horizontal = 8.dp)) {

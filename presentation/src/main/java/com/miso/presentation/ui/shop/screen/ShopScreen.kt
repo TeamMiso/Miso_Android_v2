@@ -40,7 +40,7 @@ fun ShopScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 65.dp)
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
