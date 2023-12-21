@@ -3,6 +3,7 @@ package com.miso.presentation.ui.inquiry.screen
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
+import com.miso.design_system.component.dialog.MisoDialog
 import com.miso.design_system.theme.MisoTheme
 import com.miso.domain.model.inquiry.request.InquiryRequestModel
 import com.miso.presentation.ui.inquiry.component.InquiryContentTextField
@@ -34,7 +36,6 @@ import com.miso.presentation.ui.inquiry.component.bottomsheet.SelectPhotoPathBot
 import com.miso.presentation.ui.inquiry.util.getMultipartFile
 import com.miso.presentation.ui.inquiry.util.toMultipartBody
 import com.miso.presentation.ui.search.MainPage
-import com.miso.presentation.ui.search.SubPage
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.util.Event
@@ -59,16 +60,24 @@ fun InquiryScreen(
     var bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val bottomSheetScope = rememberCoroutineScope()
 
+    var openDialog = remember { mutableStateOf(false) }
+
     val progressState = remember { mutableStateOf(false) }
 
-    var isImageEmpty by remember { mutableStateOf(true) }
+    var isImageEmpty = remember { mutableStateOf(true) }
 
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf(Uri.EMPTY) }
 
+    var isInquiryResult = remember { mutableStateOf(false) }
+    var dialogTitle by remember { mutableStateOf("") }
+    var dialogContent by remember { mutableStateOf("") }
+    var dialogDismiss by remember { mutableStateOf("") }
+    var dialogCheck by remember { mutableStateOf("") }
+
     val filePart = if (imageUri != Uri.EMPTY) {
-        if(isImageEmpty) {
+        if(isImageEmpty.value) {
             cameraViewModel.getMultipartFile(context, true)
         } else {
             imageUri.toMultipartBody(context)
@@ -91,7 +100,7 @@ fun InquiryScreen(
             SelectPhotoPathBottomSheet(
                 bottomSheetState = bottomSheetState,
                 selectedImageUri = { uri ->
-                    isImageEmpty = false
+                    isImageEmpty.value = false
                     imageUri = uri
                 },
                 onCameraClick = {
@@ -112,25 +121,12 @@ fun InquiryScreen(
                 InquiryTopBar(
                     onInquiryClick = {
                         if (title.isNotEmpty() && content.isNotEmpty()) {
-                            lifecycleScope.launch {
-                                inquiry(
-                                    viewModel = viewModel,
-                                    navController = navController,
-                                    errorText = {},
-                                    progressState = { state ->
-                                        progressState.value = state
-                                    }
-                                )
-                            }
-                            if (!isImageEmpty) {
-                                if (viewModel.isCamera.value) {
-                                    onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
-                                } else {
-                                    onInquiryClick(filePart, inquiryRequestBody)
-                                }
-                            } else {
-                                onInquiryClick(filePart, inquiryRequestBody)
-                            }
+                            dialogTitle = "문의 하기"
+                            dialogContent = "문의사항을 게시하시겠어요?"
+                            dialogDismiss = "취소"
+                            dialogCheck = "게시"
+                            isInquiryResult.value = false
+                            openDialog.value = true
                         }
                     },
                     onBackClick = {
@@ -157,10 +153,10 @@ fun InquiryScreen(
                     },
                     selectedImageUri = imageUri,
                     capturedImage = if(viewModel.isCamera.value) {
-                        isImageEmpty = false
+                        isImageEmpty.value = false
                         getBitmap(viewModel)
                     } else {
-                        isImageEmpty = true
+                        isImageEmpty.value = true
                         null
                     }
                 )
@@ -171,6 +167,67 @@ fun InquiryScreen(
                     }
                 )
             }
+            if (openDialog.value) {
+                MisoDialog(
+                    openDialog = openDialog.value,
+                    onStateChange = {},
+                    title = dialogTitle,
+                    content = dialogContent,
+                    dismissText = dialogDismiss,
+                    checkText = dialogCheck,
+                    onDismissClick = {
+                        if(isInquiryResult.value) {
+                            viewModel.isCamera.value = false
+                            isInquiryResult.value = false
+                            navController.navigate(MainPage.Search.value){
+                                popUpTo(MainPage.Search.value){
+                                    inclusive = true
+                                }
+                            }
+                        } else {
+                            openDialog.value = false
+                        }
+                    },
+                    onCheckClick = {
+                        if(isInquiryResult.value) {
+                            isInquiryResult.value = false
+                        } else {
+                            lifecycleScope.launch {
+                                inquiry(
+                                    viewModel = viewModel,
+                                    navController = navController,
+                                    errorText = {},
+                                    onSuccess = {
+                                        Log.d("testt","진입")
+                                        Log.d("testt",isInquiryResult.value.toString())
+                                        Log.d("testt",openDialog.value.toString())
+                                        dialogTitle = "문의 성공"
+                                        dialogContent = "문의사항이 게시되었어요\n게시글을 보러 가시곘어요?"
+                                        dialogDismiss = "홈으로"
+                                        dialogCheck = "게시글로"
+                                        isInquiryResult.value = true
+                                        openDialog.value = true
+                                        Log.d("testt",isInquiryResult.value.toString())
+                                        Log.d("testt",openDialog.value.toString())
+                                    },
+                                    progressState = { state ->
+                                        progressState.value = state
+                                    }
+                                )
+                            }
+                            if (!isImageEmpty.value) {
+                                if (viewModel.isCamera.value) {
+                                    onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
+                                } else {
+                                    onInquiryClick(filePart, inquiryRequestBody)
+                                }
+                            } else {
+                                onInquiryClick(filePart, inquiryRequestBody)
+                            }
+                        }
+                    }
+                )
+            }
         }
     }
 }
@@ -178,6 +235,7 @@ fun InquiryScreen(
 suspend fun inquiry(
     viewModel: InquiryViewModel,
     navController: NavController,
+    onSuccess: () -> Unit,
     errorText: (errorText: String) -> Unit,
     progressState: (progressState: Boolean) -> Unit
 ) {
@@ -188,12 +246,7 @@ suspend fun inquiry(
             }
 
             is Event.Success -> {
-                viewModel.isCamera.value = false
-                navController.navigate(MainPage.Search.value){
-                    popUpTo(MainPage.Search.value){
-                        inclusive = true
-                    }
-                }
+                onSuccess()
                 progressState(false)
             }
 
