@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.miso.domain.model.inquiry.request.AnswerRequestModel
 import com.miso.domain.model.inquiry.response.InquiryListDetailResponseModel
 import com.miso.domain.model.inquiry.response.InquiryListModel
 import com.miso.domain.model.inquiry.response.InquiryListResponseModel
@@ -11,6 +12,7 @@ import com.miso.domain.usecase.inquiry.GetInquiryListAllUseCase
 import com.miso.domain.usecase.inquiry.GetInquiryListDetailUseCase
 import com.miso.domain.usecase.inquiry.GetInquiryListUseCase
 import com.miso.domain.usecase.inquiry.RequestInquiryUseCase
+import com.miso.domain.usecase.inquiry.SendAnswerUseCase
 import com.miso.presentation.ui.inquiry.state.ByteArrayState
 import com.miso.presentation.viewmodel.util.Event
 import com.miso.presentation.viewmodel.util.errorHandling
@@ -29,6 +31,7 @@ class InquiryViewModel @Inject constructor(
     private val getInquiryListUseCase: GetInquiryListUseCase,
     private val getInquiryListAllUseCase: GetInquiryListAllUseCase,
     private val getInquiryListDetailUseCase: GetInquiryListDetailUseCase,
+    private val sendAnswerUseCase: SendAnswerUseCase
 ) : ViewModel() {
     private val _requestInquiryResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
     val requestInquiryResponse = _requestInquiryResponse.asStateFlow()
@@ -41,6 +44,9 @@ class InquiryViewModel @Inject constructor(
 
     private val _getInquiryListDetailResponse = MutableStateFlow<Event<InquiryListDetailResponseModel>>(Event.Loading)
     val getInquiryListDetailResponse = _getInquiryListDetailResponse.asStateFlow()
+
+    private val _sendAnswerResponse = MutableStateFlow<Event<Unit>>(Event.Loading)
+    val sendAnswerResponse = _sendAnswerResponse.asStateFlow()
 
     var isCamera = mutableStateOf(false)
 
@@ -122,5 +128,18 @@ class InquiryViewModel @Inject constructor(
 
     fun saveInquiryListDetail(data: InquiryListDetailResponseModel) {
         inquiryListDetail.value = data
+    }
+
+    fun sendAnswer(id: Long, body: AnswerRequestModel) = viewModelScope.launch {
+        sendAnswerUseCase(id = id, body = body)
+            .onSuccess {
+                it.catch { remoteError ->
+                    _sendAnswerResponse.value = remoteError.errorHandling()
+                }.collect { response ->
+                    _sendAnswerResponse.value = Event.Success(data = response)
+                }
+            }.onFailure {
+                _sendAnswerResponse.value = it.errorHandling()
+            }
     }
 }
