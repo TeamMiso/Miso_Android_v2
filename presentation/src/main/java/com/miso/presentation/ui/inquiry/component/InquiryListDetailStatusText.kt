@@ -34,7 +34,7 @@ fun InquiryListDetailStatusText(
             } else {
                 Text(
                     text = "답변 완료",
-                    style = typography.captionLarge,
+                    style = typography.textSmall,
                     fontWeight = FontWeight.Normal,
                     color = colors.PRIMARY
                 )

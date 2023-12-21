@@ -46,8 +46,8 @@ fun SearchScreen(
     focusManager: FocusManager,
     viewModel: RecyclablesViewModel,
     inquiryViewModel: InquiryViewModel,
-    onInquiryCamera: () -> Unit,
     lifecycleScope: CoroutineScope,
+    onInquiryCamera: () -> Unit,
     onSearchableListClick: () -> Unit,
     onResultClick: () -> Unit,
     onTodayEnvironmentTipClick: () -> Unit
