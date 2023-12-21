@@ -43,6 +43,8 @@ class CameraViewModel @Inject constructor(
 
     var isInquiry = mutableStateOf(false)
 
+    var isInconsistency = mutableStateOf(false)
+
     var aiList = mutableStateListOf<AiListModel>()
         private set
 
