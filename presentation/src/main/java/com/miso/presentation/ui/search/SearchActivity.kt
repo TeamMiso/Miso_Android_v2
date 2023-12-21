@@ -207,6 +207,9 @@ class SearchActivity : BaseActivity() {
                                         filePart = filePart,
                                         inquiryPart = inquiryPart
                                     )
+                                },
+                                onGotoInquiry = {
+                                    navController.popBackStack()
                                 }
                             )
                         }
