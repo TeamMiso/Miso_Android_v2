@@ -33,6 +33,7 @@ import com.miso.presentation.ui.login.LoginActivity
 import com.miso.presentation.ui.result.screen.ResultScreen
 import com.miso.presentation.ui.search.screen.SearchScreen
 import com.miso.presentation.ui.search.screen.SearchableListScreen
+import com.miso.presentation.ui.search.screen.TodayEnvironmentTipScreen
 import com.miso.presentation.ui.setting.screen.SettingScreen
 import com.miso.presentation.ui.shop.screen.PurchaseListScreen
 import com.miso.presentation.ui.shop.screen.ShopDetailScreen
@@ -61,7 +62,8 @@ enum class SubPage(val value: String) {
     ShopDetail("ShopDetail"),
     Inquiry("Inquiry"),
     PurchaseList("PurchaseList"),
-    InquiryListDetail("InquiryListDetail")
+    InquiryListDetail("InquiryListDetail"),
+    TodayEnvironmentTip("TodayEnvironmentTip")
 }
 
 @AndroidEntryPoint
@@ -147,7 +149,8 @@ class SearchActivity : BaseActivity() {
                                 lifecycleScope = lifecycleScope,
                                 onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
                                 onResultClick = { navController.navigate(SubPage.Result.value) },
-                                onInquiryCamera = { navController.navigate(SubPage.Inquiry.name) }
+                                onInquiryCamera = { navController.navigate(SubPage.Inquiry.name) },
+                                onTodayEnvironmentTipClick = { navController.navigate(SubPage.TodayEnvironmentTip.value) }
                             )
                         }
                         composable(MainPage.Shop.name) {
@@ -250,6 +253,11 @@ class SearchActivity : BaseActivity() {
                             InquiryListDetailScreen(
                                 inquiryViewModel = inquiryViewModel,
                                 notificationViewModel = notificationViewModel,
+                                onBackClick = { navController.popBackStack() }
+                            )
+                        }
+                        composable(SubPage.TodayEnvironmentTip.name) {
+                            TodayEnvironmentTipScreen(
                                 onBackClick = { navController.popBackStack() }
                             )
                         }

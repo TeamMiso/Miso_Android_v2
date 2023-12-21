@@ -49,7 +49,8 @@ fun SearchScreen(
     onInquiryCamera: () -> Unit,
     lifecycleScope: CoroutineScope,
     onSearchableListClick: () -> Unit,
-    onResultClick: () -> Unit
+    onResultClick: () -> Unit,
+    onTodayEnvironmentTipClick: () -> Unit
 ) {
     LaunchedEffect(inquiryViewModel.isCamera.value) {
         if (inquiryViewModel.isCamera.value) {
@@ -169,7 +170,9 @@ fun SearchScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 96.dp),
-        ) {}
+        ) {
+            onTodayEnvironmentTipClick()
+        }
     }
 }
 
