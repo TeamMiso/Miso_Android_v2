@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -14,7 +15,10 @@ import com.miso.design_system.theme.MisoTheme
 @Composable
 fun EmailText(text: String) {
     MisoTheme { colors, typography ->
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = text,
                 style = typography.textMedium,
@@ -24,7 +28,7 @@ fun EmailText(text: String) {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = "에 로그인됨",
-                style = typography.textMedium,
+                style = typography.textSmall,
                 fontWeight = FontWeight.Normal,
                 color = colors.GREYSCALE3
             )
