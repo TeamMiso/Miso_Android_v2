@@ -1,5 +1,14 @@
 package com.miso.presentation.ui.setting.screen
 
+import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +20,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,16 +34,22 @@ import com.miso.design_system.component.toggle.MisoToggle
 import com.miso.presentation.ui.setting.component.EmailText
 import com.miso.presentation.ui.setting.component.LogoutButton
 import com.miso.presentation.ui.setting.component.PushNotificationText
-import com.miso.presentation.ui.util.formatNumber
 import com.miso.presentation.viewmodel.UserViewModel
 
 @Composable
 fun SettingScreen(
+    context: Context,
     viewModel: UserViewModel,
     onLogoutClick: () -> Unit
 ) {
     var isToggle by remember { mutableStateOf(false) }
     var openDialog by remember { mutableStateOf(false) }
+
+    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    LaunchedEffect("Notification") {
+        isToggle = notificationManager.areNotificationsEnabled()
+    }
 
     if (openDialog) {
         MisoDialog(
@@ -75,7 +91,10 @@ fun SettingScreen(
         ) {
             PushNotificationText()
             MisoToggle(selected = isToggle) {
-                isToggle = it
+                val intent = Intent()
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                intent.data = Uri.fromParts("package", context.packageName, null)
+                context.startActivity(intent)
             }
         }
         Spacer(modifier = Modifier.weight(1f))
