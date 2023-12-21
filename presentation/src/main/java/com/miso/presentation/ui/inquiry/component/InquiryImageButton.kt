@@ -41,12 +41,12 @@ fun InquiryImageButton(
                 .fillMaxWidth()
                 .height(240.dp)
                 .background(colors.GREYSCALE3)
-                .clickable { onClick() }
+                .clickable { onClick() },
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 if (capturedImage != null) {
                     Image(
@@ -56,7 +56,7 @@ fun InquiryImageButton(
                         contentScale = ContentScale.Fit
                     )
                 }
-                else if(selectedImageUri == Uri.EMPTY){
+                else if(selectedImageUri == Uri.EMPTY) {
                     Image(
                         painter = painterResource(id = com.miso.design_system.R.drawable.ic_inquiry_add_image),
                         contentDescription = "Gallery Logo Icon",
@@ -76,7 +76,15 @@ fun InquiryImageButton(
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Fit
                     )
+                    InquiryDeleteImageButton {}
                 }
+            }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.End,
+            ) {
+                if(selectedImageUri != Uri.EMPTY) InquiryDeleteImageButton {}
             }
         }
     }
