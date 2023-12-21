@@ -26,6 +26,7 @@ import com.miso.design_system.component.bottombar.MisoBottomNavigationBar
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.base.BaseActivity
 import com.miso.presentation.ui.camera.CameraActivity
+import com.miso.presentation.ui.inquiry.screen.InquiryAnswerScreen
 import com.miso.presentation.ui.inquiry.screen.InquiryListDetailScreen
 import com.miso.presentation.ui.inquiry.screen.InquiryListScreen
 import com.miso.presentation.ui.inquiry.screen.InquiryScreen
@@ -64,7 +65,8 @@ enum class SubPage(val value: String) {
     Inquiry("Inquiry"),
     PurchaseList("PurchaseList"),
     InquiryListDetail("InquiryListDetail"),
-    TodayEnvironmentTip("TodayEnvironmentTip")
+    TodayEnvironmentTip("TodayEnvironmentTip"),
+    InquiryAnswer("InquiryAnswer")
 }
 
 @AndroidEntryPoint
@@ -255,12 +257,20 @@ class SearchActivity : BaseActivity() {
                             InquiryListDetailScreen(
                                 inquiryViewModel = inquiryViewModel,
                                 notificationViewModel = notificationViewModel,
-                                onBackClick = { navController.popBackStack() }
+                                userViewModel = userViewModel,
+                                onBackClick = { navController.popBackStack() },
+                                onInquiryAnswerClick = { navController.navigate(SubPage.InquiryAnswer.value) }
                             )
                         }
                         composable(SubPage.TodayEnvironmentTip.name) {
                             TodayEnvironmentTipScreen(
                                 viewModel = environmentViewModel,
+                                onBackClick = { navController.popBackStack() }
+                            )
+                        }
+                        composable(SubPage.InquiryAnswer.name) {
+                            InquiryAnswerScreen(
+                                viewModel = inquiryViewModel,
                                 onBackClick = { navController.popBackStack() }
                             )
                         }
