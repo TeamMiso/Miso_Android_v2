@@ -106,7 +106,7 @@ class CameraActivity : BaseActivity() {
                         viewModel = cameraViewModel,
                         userViewModel = userViewModel,
                         onBackClick = {
-                            if(cameraViewModel.isInconsistency.value){
+                            if(cameraViewModel.isInconsistency.value) {
                                 navController.popBackStack()
                             } else {
                                 intentSearch()
