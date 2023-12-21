@@ -37,6 +37,7 @@ class CameraActivity : BaseActivity() {
 
     private val cameraViewModel by viewModels<CameraViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
+
     @OptIn(ExperimentalPermissionsApi::class)
     override fun init() {
         setContent {
