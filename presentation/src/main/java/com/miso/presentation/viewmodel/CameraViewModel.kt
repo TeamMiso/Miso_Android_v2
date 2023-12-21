@@ -2,10 +2,16 @@ package com.miso.presentation.viewmodel
 
 import android.graphics.Bitmap
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.miso.domain.model.inquiry.response.InquiryListModel
 import com.miso.domain.model.recyclables.response.AiListModel
 import com.miso.domain.model.recyclables.response.AiListResponseModel
 import com.miso.domain.model.recyclables.response.ResultResponseModel
@@ -36,6 +42,11 @@ class CameraViewModel @Inject constructor(
     val aiListResponse = _aiListResponse.asStateFlow()
 
     var isInquiry = mutableStateOf(false)
+
+    var isInconsistency = mutableStateOf(false)
+
+    var aiList = mutableStateListOf<AiListModel>()
+        private set
 
     var result = mutableStateOf(
         AiListModel(
@@ -71,6 +82,13 @@ class CameraViewModel @Inject constructor(
         }
     }
 
+    fun getBitmap(): ImageBitmap? {
+        (captureImgBitmapState.value.capturedImage?.asImageBitmap() ?: null)?.let {
+            return it
+        }
+        return null
+    }
+
     fun getMultipartFile(): MultipartBody.Part {
         val fileName = "capturedImage.jpg"
         val mediaType = "image/jpeg"
@@ -99,7 +117,12 @@ class CameraViewModel @Inject constructor(
         return byteArrayOutputStream.toByteArray()
     }
 
-    fun setResult(index: Int,aiAnswerList: AiListResponseModel){
-        result.value = aiAnswerList.recyclablesList[index]
+    fun saveAiList(data: List<AiListModel>) {
+        aiList.clear()
+        aiList.addAll(data)
+    }
+
+    fun setResult(index: Int){
+        result.value = aiList[index]
     }
 }
