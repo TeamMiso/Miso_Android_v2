@@ -1,6 +1,7 @@
 package com.miso.data.remote.datasource.inquiry
 
 import com.miso.data.remote.api.InquiryAPI
+import com.miso.data.remote.dto.inquiry.request.AnswerRequest
 import com.miso.data.remote.dto.inquiry.response.InquiryListDetailResponse
 import com.miso.data.remote.dto.inquiry.response.InquiryListResponse
 import com.miso.data.util.MisoApiHandler
@@ -50,6 +51,14 @@ class InquiryDataSourceImpl @Inject constructor(
         emit(
             MisoApiHandler<InquiryListDetailResponse>()
                 .httpRequest { api.getInquiryListDetail(id = id) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun sendAnswer(id: Long, body: AnswerRequest): Flow<Unit> = flow {
+        emit(
+            MisoApiHandler<Unit>()
+                .httpRequest { api.sendAnswer(id = id, body = body) }
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
