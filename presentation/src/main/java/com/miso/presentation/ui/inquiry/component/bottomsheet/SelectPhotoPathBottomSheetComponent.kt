@@ -61,7 +61,7 @@ fun SelectPhotoPathBottomSheetComponent(
                 fontWeight = FontWeight.Normal,
                 onClick = onCameraLaunchButtonClick
             )
-            Spacer(modifier = Modifier.size(80.dp))
+            Spacer(modifier = Modifier.size(32.dp))
         }
     }
 }
