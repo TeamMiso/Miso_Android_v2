@@ -51,6 +51,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 fun InquiryScreen(
     context: Context,
     onCameraClick: () -> Unit,
+    onGotoInquiry: () -> Unit,
     onInquiryClick: (filePart: MultipartBody.Part?, inquiryPart: RequestBody) -> Unit,
     viewModel: InquiryViewModel,
     cameraViewModel: CameraViewModel,
@@ -121,10 +122,6 @@ fun InquiryScreen(
                 InquiryTopBar(
                     onInquiryClick = {
                         if (title.isNotEmpty() && content.isNotEmpty()) {
-                            dialogTitle = "문의 하기"
-                            dialogContent = "문의사항을 게시하시겠어요?"
-                            dialogDismiss = "취소"
-                            dialogCheck = "게시"
                             isInquiryResult.value = false
                             openDialog.value = true
                         }
@@ -171,60 +168,60 @@ fun InquiryScreen(
                 MisoDialog(
                     openDialog = openDialog.value,
                     onStateChange = {},
-                    title = dialogTitle,
-                    content = dialogContent,
-                    dismissText = dialogDismiss,
-                    checkText = dialogCheck,
+                    title = "문의하기",
+                    content = "문의사항을 게시하시겠어요?",
+                    dismissText = "취소",
+                    checkText = "게시",
                     onDismissClick = {
-                        if(isInquiryResult.value) {
-                            viewModel.isCamera.value = false
-                            isInquiryResult.value = false
-                            navController.navigate(MainPage.Search.value){
-                                popUpTo(MainPage.Search.value){
-                                    inclusive = true
-                                }
-                            }
-                        } else {
-                            openDialog.value = false
-                        }
+                        openDialog.value = false
                     },
                     onCheckClick = {
-                        if(isInquiryResult.value) {
-                            isInquiryResult.value = false
-                        } else {
-                            lifecycleScope.launch {
-                                inquiry(
-                                    viewModel = viewModel,
-                                    navController = navController,
-                                    errorText = {},
-                                    onSuccess = {
-                                        Log.d("testt","진입")
-                                        Log.d("testt",isInquiryResult.value.toString())
-                                        Log.d("testt",openDialog.value.toString())
-                                        dialogTitle = "문의 성공"
-                                        dialogContent = "문의사항이 게시되었어요\n게시글을 보러 가시곘어요?"
-                                        dialogDismiss = "홈으로"
-                                        dialogCheck = "게시글로"
-                                        isInquiryResult.value = true
-                                        openDialog.value = true
-                                        Log.d("testt",isInquiryResult.value.toString())
-                                        Log.d("testt",openDialog.value.toString())
-                                    },
-                                    progressState = { state ->
-                                        progressState.value = state
-                                    }
-                                )
-                            }
-                            if (!isImageEmpty.value) {
-                                if (viewModel.isCamera.value) {
-                                    onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
-                                } else {
-                                    onInquiryClick(filePart, inquiryRequestBody)
+                        lifecycleScope.launch {
+                            inquiry(
+                                viewModel = viewModel,
+                                navController = navController,
+                                errorText = {},
+                                onSuccess = {
+                                    isInquiryResult.value = true
+                                    openDialog.value = false
+                                },
+                                progressState = { state ->
+                                    progressState.value = state
                                 }
+                            )
+                        }
+                        if (!isImageEmpty.value) {
+                            if (viewModel.isCamera.value) {
+                                onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
                             } else {
                                 onInquiryClick(filePart, inquiryRequestBody)
                             }
+                        } else {
+                            onInquiryClick(filePart, inquiryRequestBody)
                         }
+                    }
+                )
+            }
+            if (isInquiryResult.value) {
+                MisoDialog(
+                    openDialog = isInquiryResult.value,
+                    onStateChange = {},
+                    title = "문의 성공",
+                    content = "문의사항이 게시되었어요\n게시글을 보러 가시겠어요?",
+                    dismissText = "홈으로",
+                    checkText = "게시글로",
+                    onDismissClick = {
+                        viewModel.isCamera.value = false
+                        isInquiryResult.value = false
+                        navController.navigate(MainPage.Search.value){
+                            popUpTo(MainPage.Search.value){
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onCheckClick = {
+                        isInquiryResult.value = false
+                        onGotoInquiry()
                     }
                 )
             }
