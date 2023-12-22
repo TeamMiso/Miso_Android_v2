@@ -93,8 +93,14 @@ fun InquiryAnswerScreen(
                     "답변한 게시글을 보러 가시겠어요?",
             dismissText = "홈으로",
             checkText = "게시글로",
-            onDismissClick = { onSearchClick() },
-            onCheckClick = { onInquiryListDetailClick() }
+            onDismissClick = {
+                viewModel.initSendAnswer()
+                onSearchClick()
+            },
+            onCheckClick = {
+                viewModel.initSendAnswer()
+                onInquiryListDetailClick()
+            }
         )
     }
 
@@ -122,8 +128,9 @@ fun InquiryAnswerScreen(
             Spacer(modifier = Modifier.height(8.dp))
             InquiryTitleText(title = viewModel.inquiryListDetail.value.title)
             Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
                 InquiryDateText(date = viewModel.inquiryListDetail.value.inquiryDate.toDateString())
