@@ -142,4 +142,8 @@ class InquiryViewModel @Inject constructor(
                 _sendAnswerResponse.value = it.errorHandling()
             }
     }
+
+    fun initSendAnswer() {
+        _sendAnswerResponse.value = Event.Loading
+    }
 }
