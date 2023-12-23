@@ -41,29 +41,14 @@ fun InquiryAnswerScreen(
     onInquiryListDetailClick: () -> Unit
 ) {
     var openDialog by remember { mutableStateOf(false) }
+    var openSuccessDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect("SendAnswer") {
         sendAnswer(
             viewModel = viewModel,
             onSuccess = {
-                openDialog = true
+                openSuccessDialog = true
             }
-        )
-    }
-
-    if (openDialog) {
-        MisoDialog(
-            openDialog = openDialog,
-            onStateChange = {
-                openDialog = it
-            },
-            title = "답변 성공",
-            content = "답변을 게시했어요.\n" +
-                    "답변한 게시글을 보러 가시겠어요?",
-            dismissText = "홈으로",
-            checkText = "게시글로",
-            onDismissClick = { onSearchClick() },
-            onCheckClick = { onInquiryListDetailClick() }
         )
     }
 
@@ -76,6 +61,48 @@ fun InquiryAnswerScreen(
     }
 
     var content by remember { mutableStateOf("") }
+
+    if (openDialog) {
+        MisoDialog(
+            openDialog = openDialog,
+            onStateChange = {
+                openDialog = it
+            },
+            title = "답변을 게시할까요?",
+            content = "한 번 답변을 게시하면 수정할 수 없어요!\n신중히 검토하고 답변해 주세요 :)",
+            dismissText = "취소",
+            checkText = "답변 게시",
+            onDismissClick = {},
+            onCheckClick = {
+                viewModel.sendAnswer(
+                    id = viewModel.inquiryListDetail.value.id,
+                    body = AnswerRequestModel(answer = content)
+                )
+            }
+        )
+    }
+
+    if (openSuccessDialog) {
+        MisoDialog(
+            openDialog = openSuccessDialog,
+            onStateChange = {
+                openSuccessDialog = it
+            },
+            title = "답변 성공",
+            content = "답변을 게시했어요.\n" +
+                    "답변한 게시글을 보러 가시겠어요?",
+            dismissText = "홈으로",
+            checkText = "게시글로",
+            onDismissClick = {
+                viewModel.initSendAnswer()
+                onSearchClick()
+            },
+            onCheckClick = {
+                viewModel.initSendAnswer()
+                onInquiryListDetailClick()
+            }
+        )
+    }
 
     MisoTheme { colors, typography ->
         Column(
@@ -91,10 +118,7 @@ fun InquiryAnswerScreen(
         ) {
             InquiryTopBar(
                 onInquiryClick = {
-                    viewModel.sendAnswer(
-                        id = viewModel.inquiryListDetail.value.id,
-                        body = AnswerRequestModel(answer = content)
-                    )
+                    openDialog = true
                 },
                 onBackClick = {
                     onBackClick()
@@ -104,8 +128,9 @@ fun InquiryAnswerScreen(
             Spacer(modifier = Modifier.height(8.dp))
             InquiryTitleText(title = viewModel.inquiryListDetail.value.title)
             Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
                 InquiryDateText(date = viewModel.inquiryListDetail.value.inquiryDate.toDateString())
