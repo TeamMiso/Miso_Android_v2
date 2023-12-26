@@ -63,8 +63,6 @@ fun MisoDialog(
                                 color = colors.GREYSCALE2,
                                 style = typography.textSmall,
                                 fontWeight = FontWeight.Normal,
-                                maxLines = 3,
-                                overflow = TextOverflow.Ellipsis
                             )
                         }
                         Row(
