@@ -126,6 +126,10 @@ class InquiryViewModel @Inject constructor(
             }
     }
 
+    fun initInquiryListDetail() {
+        _getInquiryListDetailResponse.value = Event.Loading
+    }
+
     fun saveInquiryListDetail(data: InquiryListDetailResponseModel) {
         inquiryListDetail.value = data
     }

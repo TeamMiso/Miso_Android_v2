@@ -69,6 +69,10 @@ class ShopViewModel @Inject constructor(
             }
     }
 
+    fun initShopListDetail() {
+        _shopListDetailResponse.value = Event.Loading
+    }
+
     fun saveShopList(data: List<ShopListModel>) {
         shopList.clear()
         shopList.addAll(data)
