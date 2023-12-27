@@ -69,7 +69,8 @@ fun InquiryAnswerScreen(
                 openDialog = it
             },
             title = "답변을 게시할까요?",
-            content = "한 번 답변을 게시하면 수정할 수 없어요!\n신중히 검토하고 답변해 주세요 :)",
+            content = "한 번 답변을 게시하면 수정할 수 없어요!\n" +
+                    "신중히 검토하고 답변해 주세요 :)",
             dismissText = "취소",
             checkText = "답변 게시",
             onDismissClick = {},
