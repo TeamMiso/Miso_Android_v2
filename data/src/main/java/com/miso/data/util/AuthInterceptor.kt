@@ -41,6 +41,10 @@ class AuthInterceptor @Inject constructor(
             }
 
             if (currentTime.after(refreshTime.toDate())) {
+                dataSource.removeAccessToken()
+                dataSource.removeRefreshToken()
+                dataSource.removeAccessTime()
+                dataSource.removeRefreshTime()
                 throw TokenExpirationException()
             }
 
