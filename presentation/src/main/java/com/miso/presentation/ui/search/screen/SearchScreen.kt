@@ -146,7 +146,6 @@ fun SearchScreen(
                     viewModel = viewModel,
                     onItemClick = { type ->
                         viewModel.result(type)
-                        onResultClick()
                     }
                 )
             } else {

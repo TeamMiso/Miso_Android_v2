@@ -90,6 +90,8 @@ class SearchActivity : BaseActivity() {
             recyclablesViewModel.resultResponse.collect {
                 if (it is Event.Success) {
                     recyclablesViewModel.saveResult(it.data!!)
+                    navController.navigate(SubPage.Result.value)
+                    recyclablesViewModel.initResult()
                 }
             }
         }
@@ -217,7 +219,6 @@ class SearchActivity : BaseActivity() {
                             SearchableListScreen(
                                 viewModel = recyclablesViewModel,
                                 onBackClick = { navController.popBackStack() },
-                                onResultClick = { navController.navigate(SubPage.Result.value) }
                             )
                         }
                         composable(SubPage.Result.name) {
