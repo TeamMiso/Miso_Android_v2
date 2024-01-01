@@ -37,7 +37,7 @@ fun CameraResultPreview(
         }
         Spacer(modifier = Modifier.height(40.dp))
         Text(
-            text = "사진을 잘라 더 정확히 검색해 보아요 :)",
+            text = "검색할 사진이 정확하게 나왔는지 한번더 확인해 주세요 :)",
             style = typography.textSmall,
             fontWeight = FontWeight.Normal,
             color = colors.GREYSCALE3
