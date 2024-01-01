@@ -2,6 +2,7 @@ package com.miso.presentation.ui.camera.screen
 
 import android.content.Context
 import android.graphics.Bitmap
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,13 +54,12 @@ fun CameraScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 56.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 56.dp)
                     .navigationBarsPadding(),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Spacer( modifier = Modifier.width(16.dp) )
                 CameraBackButton { onBackClick() }
-                Spacer( modifier = Modifier.width(240.dp) )
                 CameraFlashButton { flashState -> isFlashOn.value = flashState }
             }
         }
