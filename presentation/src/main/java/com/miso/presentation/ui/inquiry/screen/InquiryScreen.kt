@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -66,7 +67,8 @@ fun InquiryScreen(
     lifecycleScope: CoroutineScope,
     navController: NavController
 ) {
-    var bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    var bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val bottomSheetScope = rememberCoroutineScope()
 
     var test by remember { mutableStateOf(false) }
@@ -87,7 +89,7 @@ fun InquiryScreen(
     var dialogCheck by remember { mutableStateOf("") }
 
     val filePart = if (imageUri != Uri.EMPTY) {
-        if(isImageEmpty.value) {
+        if (isImageEmpty.value) {
             cameraViewModel.getMultipartFile(context, true)
         } else {
             imageUri.toMultipartBody(context)
@@ -155,8 +157,8 @@ fun InquiryScreen(
                     },
                     onBackClick = {
                         viewModel.isCamera.value = false
-                        navController.navigate(MainPage.Search.value){
-                            popUpTo(MainPage.Search.value){
+                        navController.navigate(MainPage.Search.value) {
+                            popUpTo(MainPage.Search.value) {
                                 inclusive = true
                             }
                         }
@@ -177,11 +179,11 @@ fun InquiryScreen(
                         }
                     },
                     selectedImageUri = imageUri,
-                    capturedImage = if(viewModel.isCamera.value) {
+                    capturedImage = if (viewModel.isCamera.value) {
                         isImageEmpty.value = false
                         getBitmap(viewModel)
                     } else {
-                        isImageEmpty.value = true
+                        //isImageEmpty.value = true
                         null
                     }
                 )
@@ -193,7 +195,7 @@ fun InquiryScreen(
                 )
             }
 
-            if ( openDialog.value ) {
+            if (openDialog.value) {
                 InquiryDialog(
                     openDialog = openDialog.value,
                     title = dialogTitle,
@@ -202,20 +204,46 @@ fun InquiryScreen(
                     checkText = dialogCheck,
                     onDismissClick = { openDialog.value = false },
                     onCheckClick = {
-                        openDialog.value = false
-                        if(!isInquiryResult.value) {
-                            dialogTitle = "문의 성공"
-                            dialogContent = "문의사항이 게시되었어요\n게시글을 보러 가시겠어요?"
-                            dialogDismiss = "홈으로"
-                            dialogCheck = "게시글로"
+                        lifecycleScope.launch {
+                            inquiry(
+                                viewModel = viewModel,
+                                navController = navController,
+                                errorText = {
+                                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                                },
+                                onSuccess = {
+                                    if (!isInquiryResult.value) {
+                                        dialogTitle = "문의 성공"
+                                        dialogContent = "문의사항이 게시되었어요\n게시글을 보러 가시겠어요?"
+                                        dialogDismiss = "홈으로"
+                                        dialogCheck = "게시글로"
 
-                            isInquiryResult.value = true
+                                        isInquiryResult.value = true
+                                    }
+                                },
+                                progressState = { state ->
+                                    progressState.value = state
+                                }
+                            )
+                        }
+
+                        if (!isImageEmpty.value) {
+                            if (viewModel.isCamera.value) {
+                                onInquiryClick(
+                                    getMultipartFile(viewModel.byteArray.value.byteArray!!),
+                                    inquiryRequestBody
+                                )
+                            } else {
+                                onInquiryClick(filePart, inquiryRequestBody)
+                            }
+                        } else {
+                            onInquiryClick(filePart, inquiryRequestBody)
                         }
                     },
                 )
             }
 
-            if ( isInquiryResult.value ) {
+            if (isInquiryResult.value) {
                 InquiryDialog(
                     openDialog = isInquiryResult.value,
                     title = dialogTitle,
@@ -225,70 +253,8 @@ fun InquiryScreen(
                     onDismissClick = {
                         viewModel.isCamera.value = false
                         isInquiryResult.value = false
-                        navController.navigate(MainPage.Search.value){
-                            popUpTo(MainPage.Search.value){
-                                inclusive = true
-                            }
-                        }
-                    },
-                    onCheckClick = {
-                        isInquiryResult.value = false
-                        onGotoInquiry()
-                    }
-                )
-            }
-
-            if (test) {
-                MisoDialog(
-                    openDialog = openDialog.value,
-                    onStateChange = {},
-                    title = "문의하기",
-                    content = "문의사항을 게시하시겠어요?",
-                    dismissText = "취소",
-                    checkText = "게시",
-                    onDismissClick = {
-                        openDialog.value = false
-                    },
-                    onCheckClick = {
-                        lifecycleScope.launch {
-                            inquiry(
-                                viewModel = viewModel,
-                                navController = navController,
-                                errorText = {},
-                                onSuccess = {
-                                    isInquiryResult.value = true
-                                    openDialog.value = false
-                                },
-                                progressState = { state ->
-                                    progressState.value = state
-                                }
-                            )
-                        }
-                        if (!isImageEmpty.value) {
-                            if (viewModel.isCamera.value) {
-                                onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
-                            } else {
-                                onInquiryClick(filePart, inquiryRequestBody)
-                            }
-                        } else {
-                            onInquiryClick(filePart, inquiryRequestBody)
-                        }
-                    }
-                )
-            }
-            if (test) {
-                MisoDialog(
-                    openDialog = isInquiryResult.value,
-                    onStateChange = {},
-                    title = "문의 성공",
-                    content = "문의사항이 게시되었어요\n게시글을 보러 가시겠어요?",
-                    dismissText = "홈으로",
-                    checkText = "게시글로",
-                    onDismissClick = {
-                        viewModel.isCamera.value = false
-                        isInquiryResult.value = false
-                        navController.navigate(MainPage.Search.value){
-                            popUpTo(MainPage.Search.value){
+                        navController.navigate(MainPage.Search.value) {
+                            popUpTo(MainPage.Search.value) {
                                 inclusive = true
                             }
                         }
@@ -334,8 +300,7 @@ private fun getBitmap(viewModel: InquiryViewModel): ImageBitmap? {
     val bitmap = BitmapFactory.decodeByteArray(
         viewModel.byteArray.value.byteArray,
         0,
-        viewModel.byteArray.value.byteArray?.
-        size ?: 0
+        viewModel.byteArray.value.byteArray?.size ?: 0
     )
     (bitmap.asImageBitmap() ?: null)?.let {
         return it
