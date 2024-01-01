@@ -19,8 +19,7 @@ import com.miso.presentation.viewmodel.RecyclablesViewModel
 @Composable
 fun SearchableListScreen(
     viewModel: RecyclablesViewModel,
-    onBackClick: () -> Unit,
-    onResultClick: () -> Unit
+    onBackClick: () -> Unit
 ) {
     LaunchedEffect("SearchableList") {
         searchableList(viewModel = viewModel)
@@ -45,7 +44,6 @@ fun SearchableListScreen(
                 viewModel = viewModel,
                 onItemClick = { type ->
                     viewModel.result(type)
-                    onResultClick()
                 }
             )
         }
