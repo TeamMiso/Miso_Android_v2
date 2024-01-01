@@ -1,6 +1,7 @@
 package com.miso.presentation.ui.camera.screen
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,7 +64,6 @@ fun CameraCaptureResultScreen(
             )
         }
     }
-
     MisoTheme { colors, typography ->
         Column(
             modifier = Modifier
@@ -100,6 +100,7 @@ fun CameraCaptureResultScreen(
                 MisoLoadingLottie()
             }
         }
+
         if (openDialog.value) {
             MisoDialog(
                 openDialog = openDialog.value,
@@ -129,7 +130,11 @@ suspend fun getAiResponse(
         when (response) {
             is Event.Success -> {
                 progressState(false)
-                onSuccess(response.data!!)
+                if(response.data!!.recyclablesList.toString() != "[]") {
+                    onSuccess(response.data)
+                } else {
+                    onFailure()
+                }
             }
 
             is Event.NotFound -> {
