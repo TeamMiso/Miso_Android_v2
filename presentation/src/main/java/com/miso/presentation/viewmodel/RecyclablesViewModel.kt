@@ -147,6 +147,10 @@ class RecyclablesViewModel @Inject constructor(
         result.value = data
     }
 
+    fun initResult() {
+        _resultResponse.value = Event.Loading
+    }
+
     fun saveSearchHistory(data: List<SearchResponseModel>) {
         searchHistory.clear()
         searchHistory.addAll(data)
