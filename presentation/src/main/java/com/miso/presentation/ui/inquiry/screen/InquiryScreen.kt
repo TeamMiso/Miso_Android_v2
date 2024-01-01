@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -66,7 +67,8 @@ fun InquiryScreen(
     lifecycleScope: CoroutineScope,
     navController: NavController
 ) {
-    var bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    var bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val bottomSheetScope = rememberCoroutineScope()
 
     var test by remember { mutableStateOf(false) }
@@ -87,7 +89,7 @@ fun InquiryScreen(
     var dialogCheck by remember { mutableStateOf("") }
 
     val filePart = if (imageUri != Uri.EMPTY) {
-        if(isImageEmpty.value) {
+        if (isImageEmpty.value) {
             cameraViewModel.getMultipartFile(context, true)
         } else {
             imageUri.toMultipartBody(context)
