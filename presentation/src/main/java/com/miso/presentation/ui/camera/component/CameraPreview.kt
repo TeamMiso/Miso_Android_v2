@@ -42,7 +42,7 @@ fun CameraPreview(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(bottom = 32.dp, start = 16.dp),
+                        .padding(start = 32.dp, bottom = 32.dp),
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     CameraCaptureButton {
