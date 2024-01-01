@@ -143,7 +143,7 @@ class CameraViewModel @Inject constructor(
             _capturedImgBitmapState.value.capturedImage
         }
 
-        swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        swapBitmap?.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
 
         return byteArrayOutputStream.toByteArray()
     }
