@@ -72,7 +72,7 @@ fun CameraResultScreen(
             }
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                 Spacer(modifier = Modifier.height(16.dp))
-                MisoBlackTitleText(text = "")
+                MisoBlackTitleText(text = viewModel.result.value.title)
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }

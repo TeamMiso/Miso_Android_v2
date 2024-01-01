@@ -4,7 +4,9 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -14,14 +16,18 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
@@ -33,9 +39,11 @@ import com.miso.presentation.ui.inquiry.component.InquiryImageButton
 import com.miso.presentation.ui.inquiry.component.InquiryTitleTextField
 import com.miso.presentation.ui.inquiry.component.InquiryTopBar
 import com.miso.presentation.ui.inquiry.component.bottomsheet.SelectPhotoPathBottomSheet
+import com.miso.presentation.ui.inquiry.component.dialog.InquiryDialog
 import com.miso.presentation.ui.inquiry.util.getMultipartFile
 import com.miso.presentation.ui.inquiry.util.toMultipartBody
 import com.miso.presentation.ui.search.MainPage
+import com.miso.presentation.ui.util.keyboardAsState
 import com.miso.presentation.viewmodel.CameraViewModel
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.util.Event
@@ -50,6 +58,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 @Composable
 fun InquiryScreen(
     context: Context,
+    focusManager: FocusManager,
     onCameraClick: () -> Unit,
     onGotoInquiry: () -> Unit,
     onInquiryClick: (filePart: MultipartBody.Part?, inquiryPart: RequestBody) -> Unit,
@@ -58,9 +67,11 @@ fun InquiryScreen(
     lifecycleScope: CoroutineScope,
     navController: NavController
 ) {
-    var bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    var bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val bottomSheetScope = rememberCoroutineScope()
 
+    var test by remember { mutableStateOf(false) }
     var openDialog = remember { mutableStateOf(false) }
 
     val progressState = remember { mutableStateOf(false) }
@@ -78,7 +89,7 @@ fun InquiryScreen(
     var dialogCheck by remember { mutableStateOf("") }
 
     val filePart = if (imageUri != Uri.EMPTY) {
-        if(isImageEmpty.value) {
+        if (isImageEmpty.value) {
             cameraViewModel.getMultipartFile(context, true)
         } else {
             imageUri.toMultipartBody(context)
@@ -95,6 +106,14 @@ fun InquiryScreen(
     val inquiryJson = Gson().toJson(inquiryData)
 
     val inquiryRequestBody = inquiryJson.toRequestBody("application/json".toMediaType())
+
+    val isKeyboardOpen by keyboardAsState()
+
+    LaunchedEffect(isKeyboardOpen) {
+        if (!isKeyboardOpen) {
+            focusManager.clearFocus()
+        }
+    }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -118,18 +137,28 @@ fun InquiryScreen(
                     .fillMaxSize()
                     .background(colors.WHITE)
                     .statusBarsPadding()
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            focusManager.clearFocus()
+                        }
+                    }
             ) {
                 InquiryTopBar(
                     onInquiryClick = {
                         if (title.isNotEmpty() && content.isNotEmpty()) {
+                            dialogTitle = "문의하기"
+                            dialogContent = "문의사항을 게시하시겠어요?"
+                            dialogDismiss = "취소"
+                            dialogCheck = "게시"
+
                             isInquiryResult.value = false
                             openDialog.value = true
                         }
                     },
                     onBackClick = {
                         viewModel.isCamera.value = false
-                        navController.navigate(MainPage.Search.value){
-                            popUpTo(MainPage.Search.value){
+                        navController.navigate(MainPage.Search.value) {
+                            popUpTo(MainPage.Search.value) {
                                 inclusive = true
                             }
                         }
@@ -144,16 +173,17 @@ fun InquiryScreen(
                 )
                 InquiryImageButton(
                     onClick = {
+                        focusManager.clearFocus()
                         bottomSheetScope.launch {
                             bottomSheetState.show()
                         }
                     },
                     selectedImageUri = imageUri,
-                    capturedImage = if(viewModel.isCamera.value) {
+                    capturedImage = if (viewModel.isCamera.value) {
                         isImageEmpty.value = false
                         getBitmap(viewModel)
                     } else {
-                        isImageEmpty.value = true
+                        //isImageEmpty.value = true
                         null
                     }
                 )
@@ -164,57 +194,67 @@ fun InquiryScreen(
                     }
                 )
             }
+
             if (openDialog.value) {
-                MisoDialog(
+                InquiryDialog(
                     openDialog = openDialog.value,
-                    onStateChange = {},
-                    title = "문의하기",
-                    content = "문의사항을 게시하시겠어요?",
-                    dismissText = "취소",
-                    checkText = "게시",
-                    onDismissClick = {
-                        openDialog.value = false
-                    },
+                    title = dialogTitle,
+                    content = dialogContent,
+                    dismissText = dialogDismiss,
+                    checkText = dialogCheck,
+                    onDismissClick = { openDialog.value = false },
                     onCheckClick = {
                         lifecycleScope.launch {
                             inquiry(
                                 viewModel = viewModel,
                                 navController = navController,
-                                errorText = {},
+                                errorText = {
+                                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                                },
                                 onSuccess = {
-                                    isInquiryResult.value = true
-                                    openDialog.value = false
+                                    if (!isInquiryResult.value) {
+                                        dialogTitle = "문의 성공"
+                                        dialogContent = "문의사항이 게시되었어요\n게시글을 보러 가시겠어요?"
+                                        dialogDismiss = "홈으로"
+                                        dialogCheck = "게시글로"
+
+                                        isInquiryResult.value = true
+                                    }
                                 },
                                 progressState = { state ->
                                     progressState.value = state
                                 }
                             )
                         }
+
                         if (!isImageEmpty.value) {
                             if (viewModel.isCamera.value) {
-                                onInquiryClick(getMultipartFile(viewModel.byteArray.value.byteArray!!), inquiryRequestBody)
+                                onInquiryClick(
+                                    getMultipartFile(viewModel.byteArray.value.byteArray!!),
+                                    inquiryRequestBody
+                                )
                             } else {
                                 onInquiryClick(filePart, inquiryRequestBody)
                             }
                         } else {
                             onInquiryClick(filePart, inquiryRequestBody)
                         }
-                    }
+                    },
                 )
             }
+
             if (isInquiryResult.value) {
-                MisoDialog(
+                InquiryDialog(
                     openDialog = isInquiryResult.value,
-                    onStateChange = {},
-                    title = "문의 성공",
-                    content = "문의사항이 게시되었어요\n게시글을 보러 가시겠어요?",
-                    dismissText = "홈으로",
-                    checkText = "게시글로",
+                    title = dialogTitle,
+                    content = dialogContent,
+                    dismissText = dialogDismiss,
+                    checkText = dialogCheck,
                     onDismissClick = {
                         viewModel.isCamera.value = false
                         isInquiryResult.value = false
-                        navController.navigate(MainPage.Search.value){
-                            popUpTo(MainPage.Search.value){
+                        navController.navigate(MainPage.Search.value) {
+                            popUpTo(MainPage.Search.value) {
                                 inclusive = true
                             }
                         }
@@ -260,8 +300,7 @@ private fun getBitmap(viewModel: InquiryViewModel): ImageBitmap? {
     val bitmap = BitmapFactory.decodeByteArray(
         viewModel.byteArray.value.byteArray,
         0,
-        viewModel.byteArray.value.byteArray?.
-        size ?: 0
+        viewModel.byteArray.value.byteArray?.size ?: 0
     )
     (bitmap.asImageBitmap() ?: null)?.let {
         return it
