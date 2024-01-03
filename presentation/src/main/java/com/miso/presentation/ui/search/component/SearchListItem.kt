@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.miso.design_system.component.modifier.misoClickable
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
@@ -41,10 +42,7 @@ fun SearchListItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { onItemClick() },
+                .misoClickable { onItemClick() },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

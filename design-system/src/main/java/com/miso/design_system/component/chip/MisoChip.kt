@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.R
+import com.miso.design_system.component.modifier.misoClickable
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
@@ -42,20 +43,15 @@ fun MisoChip(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .background(backgroundColor)
+                .misoClickable(isIndication = true) {
+                    backgroundColor = colors.GREYSCALE3
+                    onClick()
+                    backgroundColor = Color.Transparent
+                }
         ) {
             Row(
                 modifier = modifier
-                    .padding(horizontal = 12.dp, vertical = 5.5.dp)
-                    .pointerInput(Unit) {
-                        detectTapGestures(
-                            onPress = {
-                                backgroundColor = colors.GREYSCALE3
-                                onClick()
-                                this.awaitRelease()
-                                backgroundColor = Color.Transparent
-                            },
-                        )
-                    },
+                    .padding(horizontal = 12.dp, vertical = 5.5.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
