@@ -66,7 +66,6 @@ fun ShopScreen(
             viewModel = viewModel,
             onItemClick = { id ->
                 viewModel.shopListDetail(id = id)
-                onShopDetailClick()
             }
         )
     }
