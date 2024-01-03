@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.miso.design_system.component.modifier.misoClickable
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
@@ -17,10 +18,7 @@ fun MisoBackButton(
 ) {
     MisoTheme { colors, typography ->
         Row(
-            modifier = modifier.clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) { onClick() },
+            modifier = modifier.misoClickable { onClick() },
         ) {
             Text(
                 text = "< 돌아가기",
