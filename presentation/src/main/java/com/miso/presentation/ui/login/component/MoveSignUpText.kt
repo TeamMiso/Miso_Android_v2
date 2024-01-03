@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.miso.design_system.component.modifier.misoClickable
 import com.miso.design_system.theme.MisoTheme
 
 @Composable
@@ -21,10 +22,7 @@ fun MoveSignUpText(onClick: () -> Unit) {
         ) {
             Text(
                 text = "회원가입",
-                modifier = Modifier.clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { onClick() },
+                modifier = Modifier.misoClickable { onClick() },
                 style = typography.textSmall,
                 fontWeight = FontWeight.Normal,
                 color = colors.BULE1
