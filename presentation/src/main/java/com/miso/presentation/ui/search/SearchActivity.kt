@@ -302,11 +302,11 @@ class SearchActivity : BaseActivity() {
                         modifier = Modifier.align(Alignment.BottomCenter),
                         isVisible = currentRoute in MainPage.values().map { it.name },
                         currentRoute = currentRoute ?: "Search",
-                        onSearchClick = { navController.navigate(MainPage.Search.value) },
-                        onShopClick = { navController.navigate(MainPage.Shop.value) },
+                        onSearchClick = { navController.navigate(MainPage.Search.value) { launchSingleTop = true } },
+                        onShopClick = { navController.navigate(MainPage.Shop.value) { launchSingleTop = true } },
                         onCameraClick = { pageCamera() },
-                        onInquiryClick = { navController.navigate(MainPage.InquiryList.value) },
-                        onSettingClick = { navController.navigate(MainPage.Setting.value) }
+                        onInquiryClick = { navController.navigate(MainPage.InquiryList.value) { launchSingleTop = true } },
+                        onSettingClick = { navController.navigate(MainPage.Setting.value) { launchSingleTop = true } }
                     )
                 }
             }
