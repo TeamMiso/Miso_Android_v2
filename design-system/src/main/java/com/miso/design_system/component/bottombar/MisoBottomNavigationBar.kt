@@ -22,7 +22,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.miso.design_system.component.modifier.misoClickable
 import com.miso.design_system.icon.CameraIcon
 import com.miso.design_system.icon.InquiryIcon
 import com.miso.design_system.icon.NavBackgroundIcon
@@ -60,7 +59,10 @@ fun MisoBottomNavigationBar(
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .misoClickable { onSearchClick() },
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onSearchClick() },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         SearchIcon(isClick = currentRoute == "Search")
@@ -74,7 +76,10 @@ fun MisoBottomNavigationBar(
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .misoClickable  { onShopClick() },
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onShopClick() },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         ShopIcon(isClick = currentRoute == "Shop")
@@ -92,7 +97,10 @@ fun MisoBottomNavigationBar(
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .misoClickable { onInquiryClick() },
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onInquiryClick() },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         InquiryIcon(isClick = currentRoute == "InquiryList")
@@ -106,7 +114,10 @@ fun MisoBottomNavigationBar(
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .misoClickable { onSettingClick() },
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) { onSettingClick() },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         SettingIcon(isClick = currentRoute == "Setting")
@@ -122,7 +133,10 @@ fun MisoBottomNavigationBar(
                     modifier = Modifier
                         .width(64.dp)
                         .height(80.dp)
-                        .misoClickable { onCameraClick() },
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) { onCameraClick() },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(8.dp))
