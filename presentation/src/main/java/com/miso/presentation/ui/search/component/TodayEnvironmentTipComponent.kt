@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.miso.design_system.component.modifier.misoClickable
 import com.miso.design_system.icon.HideButtonIcon
 import com.miso.design_system.theme.MisoTheme
 
@@ -47,10 +48,7 @@ fun TodayEnvironmentTipComponent(
                         shape = RoundedCornerShape(999.dp)
                     )
                     .padding(start = 16.dp, end = 16.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) { onClick() },
+                    .misoClickable { onClick() },
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {

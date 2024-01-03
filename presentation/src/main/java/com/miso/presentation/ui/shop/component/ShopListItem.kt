@@ -1,7 +1,5 @@
 package com.miso.presentation.ui.shop.component
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -12,13 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.miso.design_system.component.modifier.misoClickable
 import com.miso.design_system.theme.MisoTheme
 import com.miso.presentation.ui.util.formatNumber
 
@@ -34,11 +32,7 @@ fun ShopListItem(
             modifier = Modifier
                 .fillMaxHeight(0.3f)
                 .fillMaxWidth(0.5f)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = { onItemClick() }
-                )
+                .misoClickable { onItemClick() }
         ) {
             AsyncImage(
                 model = image,
