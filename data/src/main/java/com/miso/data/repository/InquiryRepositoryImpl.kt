@@ -30,10 +30,6 @@ class InquiryRepositoryImpl @Inject constructor(
         return remoteInquiryDataSource.getInquiryList().map { it.toInquiryModel() }
     }
 
-    override suspend fun getInquiryListAll(): Flow<InquiryListResponseModel> {
-        return remoteInquiryDataSource.getInquiryListAll().map { it.toInquiryModel() }
-    }
-
     override suspend fun getInquiryListDetail(id: Long): Flow<InquiryListDetailResponseModel> {
         return remoteInquiryDataSource.getInquiryListDetail(id = id).map { it.toInquiryModel() }
     }
