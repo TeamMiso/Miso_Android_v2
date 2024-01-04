@@ -39,14 +39,6 @@ class InquiryDataSourceImpl @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getInquiryListAll(): Flow<InquiryListResponse> = flow {
-        emit(
-            MisoApiHandler<InquiryListResponse>()
-                .httpRequest { api.getInquiryListAll() }
-                .sendRequest()
-        )
-    }.flowOn(Dispatchers.IO)
-
     override suspend fun getInquiryListDetail(id: Long): Flow<InquiryListDetailResponse> = flow {
         emit(
             MisoApiHandler<InquiryListDetailResponse>()
