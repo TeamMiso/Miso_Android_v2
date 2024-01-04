@@ -8,7 +8,6 @@ import com.miso.domain.model.inquiry.request.AnswerRequestModel
 import com.miso.domain.model.inquiry.response.InquiryListDetailResponseModel
 import com.miso.domain.model.inquiry.response.InquiryListModel
 import com.miso.domain.model.inquiry.response.InquiryListResponseModel
-import com.miso.domain.usecase.inquiry.GetInquiryListAllUseCase
 import com.miso.domain.usecase.inquiry.GetInquiryListDetailUseCase
 import com.miso.domain.usecase.inquiry.GetInquiryListUseCase
 import com.miso.domain.usecase.inquiry.RequestInquiryUseCase
@@ -29,7 +28,6 @@ import javax.inject.Inject
 class InquiryViewModel @Inject constructor(
     private val requestInquiryUseCase: RequestInquiryUseCase,
     private val getInquiryListUseCase: GetInquiryListUseCase,
-    private val getInquiryListAllUseCase: GetInquiryListAllUseCase,
     private val getInquiryListDetailUseCase: GetInquiryListDetailUseCase,
     private val sendAnswerUseCase: SendAnswerUseCase
 ) : ViewModel() {
@@ -38,9 +36,6 @@ class InquiryViewModel @Inject constructor(
 
     private val _getInquiryListResponse = MutableStateFlow<Event<InquiryListResponseModel>>(Event.Loading)
     val getInquiryListResponse = _getInquiryListResponse.asStateFlow()
-
-    private val _getInquiryListAllResponse = MutableStateFlow<Event<InquiryListResponseModel>>(Event.Loading)
-    val getInquiryListAllResponse = _getInquiryListAllResponse.asStateFlow()
 
     private val _getInquiryListDetailResponse = MutableStateFlow<Event<InquiryListDetailResponseModel>>(Event.Loading)
     val getInquiryListDetailResponse = _getInquiryListDetailResponse.asStateFlow()
@@ -92,19 +87,6 @@ class InquiryViewModel @Inject constructor(
                 }
             }.onFailure {
                 _getInquiryListResponse.value = it.errorHandling()
-            }
-    }
-
-    fun getInquiryListAll() = viewModelScope.launch {
-        getInquiryListAllUseCase()
-            .onSuccess {
-                it.catch { remoteError ->
-                    _getInquiryListAllResponse.value = remoteError.errorHandling()
-                }.collect { response ->
-                    _getInquiryListAllResponse.value = Event.Success(data = response)
-                }
-            }.onFailure {
-                _getInquiryListAllResponse.value = it.errorHandling()
             }
     }
 
