@@ -27,20 +27,14 @@ import com.miso.presentation.viewmodel.util.Event
 
 @Composable
 fun InquiryListScreen(
-    userViewModel: UserViewModel,
     inquiryViewModel: InquiryViewModel,
     notificationViewModel: NotificationViewModel,
     onInquiryClick: () -> Unit,
     onInquiryListDetailClick: () -> Unit
 ) {
     LaunchedEffect("InquiryList") {
-        if (userViewModel.userInfo.value.role == "ROLE_USER") {
-            inquiryViewModel.getInquiryList()
-            getInquiryList(viewModel = inquiryViewModel)
-        } else {
-            inquiryViewModel.getInquiryListAll()
-            getInquiryListAll(viewModel = inquiryViewModel)
-        }
+        inquiryViewModel.getInquiryList()
+        getInquiryList(viewModel = inquiryViewModel)
     }
 
     LaunchedEffect("InquiryListDetail") {
@@ -92,16 +86,6 @@ suspend fun getInquiryList(
     viewModel: InquiryViewModel
 ) {
     viewModel.getInquiryListResponse.collect {
-        if (it is Event.Success) {
-            viewModel.saveInquiryList(it.data!!.inquiryList)
-        }
-    }
-}
-
-suspend fun getInquiryListAll(
-    viewModel: InquiryViewModel
-) {
-    viewModel.getInquiryListAllResponse.collect {
         if (it is Event.Success) {
             viewModel.saveInquiryList(it.data!!.inquiryList)
         }
