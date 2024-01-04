@@ -21,11 +21,8 @@ interface InquiryAPI {
         @Part("inquiry") inquiryPart: RequestBody
     )
 
-    @GET("inquiry")
+    @GET("inquiry/list")
     suspend fun getInquiryList(): InquiryListResponse
-
-    @GET("inquiry/all")
-    suspend fun getInquiryListAll(): InquiryListResponse
 
     @GET("inquiry/{id}")
     suspend fun getInquiryListDetail(
