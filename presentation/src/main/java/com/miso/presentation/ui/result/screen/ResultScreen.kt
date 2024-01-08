@@ -71,7 +71,6 @@ fun ResultScreen(
             RecycleContentText(viewModel.result.value.recycleCaution)
             Spacer(modifier = Modifier.height(56.dp))
             MisoButton(
-                modifier = Modifier,
                 text = "홈으로"
             ) {
                 onSearchClick()

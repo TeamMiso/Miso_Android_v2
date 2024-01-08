@@ -143,7 +143,6 @@ fun ShopDetailScreen(
             DetailContentText(text = shopViewModel.shopListDetail.value.content)
             Spacer(modifier = Modifier.weight(1f))
             MisoButton(
-                modifier = Modifier,
                 text = if (shopViewModel.shopListDetail.value.amount != 0) "${
                     formatNumber(
                         shopViewModel.shopListDetail.value.price
