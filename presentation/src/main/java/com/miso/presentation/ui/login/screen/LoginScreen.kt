@@ -115,7 +115,6 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(56.dp))
         MisoButton(
-            modifier = Modifier,
             text = "로그인",
         ) {
             isButtonClick = !isButtonClick

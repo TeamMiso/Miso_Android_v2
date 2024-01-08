@@ -22,7 +22,6 @@ import com.miso.presentation.ui.inquiry.component.InquiryList
 import com.miso.presentation.ui.inquiry.component.InquiryListTitleText
 import com.miso.presentation.viewmodel.InquiryViewModel
 import com.miso.presentation.viewmodel.NotificationViewModel
-import com.miso.presentation.viewmodel.UserViewModel
 import com.miso.presentation.viewmodel.util.Event
 
 @Composable
@@ -30,7 +29,8 @@ fun InquiryListScreen(
     inquiryViewModel: InquiryViewModel,
     notificationViewModel: NotificationViewModel,
     onInquiryClick: () -> Unit,
-    onInquiryListDetailClick: () -> Unit
+    onInquiryListDetailClick: () -> Unit,
+    onBottomSheetClick: () -> Unit
 ) {
     LaunchedEffect("InquiryList") {
         inquiryViewModel.getInquiryList()
@@ -71,7 +71,19 @@ fun InquiryListScreen(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        InquiryListTitleText()
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            InquiryListTitleText()
+            MisoChip(
+                text = "필터",
+                icon = R.drawable.ic_filter
+            ) {
+                onBottomSheetClick()
+            }
+        }
         Spacer(modifier = Modifier.height(16.dp))
         InquiryList(
             viewModel = inquiryViewModel,

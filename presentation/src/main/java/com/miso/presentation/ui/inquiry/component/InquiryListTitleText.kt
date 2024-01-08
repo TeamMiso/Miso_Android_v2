@@ -11,13 +11,11 @@ import com.miso.design_system.theme.MisoTheme
 @Composable
 fun InquiryListTitleText() {
     MisoTheme { colors, typography ->
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = "문의 내역",
-                style = typography.textMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = colors.BLACK
-            )
-        }
+        Text(
+            text = "문의 내역",
+            style = typography.textMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = colors.BLACK
+        )
     }
 }

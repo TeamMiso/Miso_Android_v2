@@ -136,7 +136,6 @@ fun SignUpScreen(
             )
             Spacer(modifier = Modifier.fillMaxHeight(animatedSpacerHeight2))
             MisoButton(
-                modifier = Modifier,
                 text = "회원가입",
             ) {
                 isEmailError = !email.isEmailValid()

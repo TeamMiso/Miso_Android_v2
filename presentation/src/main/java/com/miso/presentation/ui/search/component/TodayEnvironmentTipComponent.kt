@@ -59,10 +59,7 @@ fun TodayEnvironmentTipComponent(
                     color = colors.PRIMARY
                 )
                 Box(
-                    modifier = Modifier.clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) { isHidden = true }
+                    modifier = Modifier.misoClickable { isHidden = true }
                 ) {
                     HideButtonIcon()
                 }

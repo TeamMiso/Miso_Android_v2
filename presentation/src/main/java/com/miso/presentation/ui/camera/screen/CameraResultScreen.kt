@@ -98,7 +98,6 @@ fun CameraResultScreen(
             CameraRecycleContentText(text = viewModel.result.value.recycleCaution)
             Spacer(modifier = Modifier.height(56.dp))
             MisoButton(
-                modifier = Modifier,
                 text = "100 포인트 받기"
             ) {
                 userViewModel.givePoint()
