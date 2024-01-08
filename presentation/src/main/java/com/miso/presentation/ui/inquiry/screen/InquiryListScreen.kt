@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,6 +29,7 @@ import com.miso.presentation.viewmodel.NotificationViewModel
 import com.miso.presentation.viewmodel.UserViewModel
 import com.miso.presentation.viewmodel.util.Event
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun InquiryListScreen(
     inquiryViewModel: InquiryViewModel,
@@ -71,7 +76,19 @@ fun InquiryListScreen(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        InquiryListTitleText()
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            InquiryListTitleText()
+            MisoChip(
+                text = "필터",
+                icon = R.drawable.ic_filter
+            ) {
+
+            }
+        }
         Spacer(modifier = Modifier.height(16.dp))
         InquiryList(
             viewModel = inquiryViewModel,
