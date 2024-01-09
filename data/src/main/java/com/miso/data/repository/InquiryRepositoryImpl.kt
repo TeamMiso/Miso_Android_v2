@@ -42,4 +42,8 @@ class InquiryRepositoryImpl @Inject constructor(
             )
         )
     }
+
+    override suspend fun getInquiryListFilter(state: String): Flow<InquiryListResponseModel> {
+        return remoteInquiryDataSource.getInquiryListFilter(state = state).map { it.toInquiryModel() }
+    }
 }
