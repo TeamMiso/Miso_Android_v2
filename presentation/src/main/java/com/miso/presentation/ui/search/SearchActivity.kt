@@ -16,7 +16,10 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -128,7 +131,8 @@ class SearchActivity : BaseActivity() {
         }
 
         inquiryViewModel.isCamera.value = intent.getBooleanExtra("isCamera", false)
-        inquiryViewModel.byteArray.value = inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
+        inquiryViewModel.byteArray.value =
+            inquiryViewModel.byteArray.value.copy(intent.getByteArrayExtra("byteArray"))
 
         setContent {
             val permissionLauncher = rememberLauncherForActivityResult(
@@ -149,16 +153,19 @@ class SearchActivity : BaseActivity() {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
 
-            val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+            val bottomSheetState =
+                rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
             val scope = rememberCoroutineScope()
+            var state by remember { mutableStateOf("") }
 
             ModalBottomSheetLayout(
                 sheetContent = {
                     SelectFilterBottomSheet(
                         coroutineScope = scope,
                         bottomSheetState = bottomSheetState,
-                        onWaitClick = {},
-                        onCompleteClick = {}
+                        state = {
+                            state = it
+                        }
                     )
                 },
                 sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
@@ -199,6 +206,7 @@ class SearchActivity : BaseActivity() {
                             }
                             composable(MainPage.InquiryList.name) {
                                 InquiryListScreen(
+                                    state = state,
                                     inquiryViewModel = inquiryViewModel,
                                     notificationViewModel = notificationViewModel,
                                     onInquiryClick = { navController.navigate(SubPage.Inquiry.value) },
@@ -331,11 +339,27 @@ class SearchActivity : BaseActivity() {
                             modifier = Modifier.align(Alignment.BottomCenter),
                             isVisible = currentRoute in MainPage.values().map { it.name },
                             currentRoute = currentRoute ?: "Search",
-                            onSearchClick = { navController.navigate(MainPage.Search.value) { launchSingleTop = true } },
-                            onShopClick = { navController.navigate(MainPage.Shop.value) { launchSingleTop = true } },
+                            onSearchClick = {
+                                navController.navigate(MainPage.Search.value) {
+                                    launchSingleTop = true
+                                }
+                            },
+                            onShopClick = {
+                                navController.navigate(MainPage.Shop.value) {
+                                    launchSingleTop = true
+                                }
+                            },
                             onCameraClick = { pageCamera() },
-                            onInquiryClick = { navController.navigate(MainPage.InquiryList.value) { launchSingleTop = true } },
-                            onSettingClick = { navController.navigate(MainPage.Setting.value) { launchSingleTop = true } }
+                            onInquiryClick = {
+                                navController.navigate(MainPage.InquiryList.value) {
+                                    launchSingleTop = true
+                                }
+                            },
+                            onSettingClick = {
+                                navController.navigate(MainPage.Setting.value) {
+                                    launchSingleTop = true
+                                }
+                            }
                         )
                     }
                 }

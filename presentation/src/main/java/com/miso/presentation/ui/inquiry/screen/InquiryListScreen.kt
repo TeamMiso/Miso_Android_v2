@@ -26,15 +26,27 @@ import com.miso.presentation.viewmodel.util.Event
 
 @Composable
 fun InquiryListScreen(
+    state: String,
     inquiryViewModel: InquiryViewModel,
     notificationViewModel: NotificationViewModel,
     onInquiryClick: () -> Unit,
     onInquiryListDetailClick: () -> Unit,
     onBottomSheetClick: () -> Unit
 ) {
-    LaunchedEffect("InquiryList") {
-        inquiryViewModel.getInquiryList()
-        getInquiryList(viewModel = inquiryViewModel)
+    LaunchedEffect(state) {
+        when (state) {
+            "ALL" -> {
+                inquiryViewModel.getInquiryList()
+                getInquiryList(viewModel = inquiryViewModel)
+            }
+            "WAIT", "COMPLETE" -> {
+                inquiryViewModel.getInquiryListFilter(state)
+                getInquiryListFilter(viewModel = inquiryViewModel)
+            }
+            else -> {
+                inquiryViewModel.inquiryList.clear()
+            }
+        }
     }
 
     LaunchedEffect("InquiryListDetail") {
@@ -127,6 +139,16 @@ suspend fun getAnswer(
     viewModel.getAnswerResponse.collect {
         if (it is Event.Success) {
             viewModel.saveAnswer(it.data!!)
+        }
+    }
+}
+
+suspend fun getInquiryListFilter(
+    viewModel: InquiryViewModel
+) {
+    viewModel.getInquiryListFilterResponse.collect {
+        if (it is Event.Success) {
+            viewModel.saveInquiryList(it.data!!.inquiryList)
         }
     }
 }

@@ -15,4 +15,6 @@ interface InquiryDataSource {
     suspend fun getInquiryListDetail(id: Long): Flow<InquiryListDetailResponse>
 
     suspend fun sendAnswer(id: Long, body: AnswerRequest): Flow<Unit>
+
+    suspend fun getInquiryListFilter(state: String): Flow<InquiryListResponse>
 }
