@@ -34,4 +34,9 @@ interface InquiryAPI {
         @Path("id") id: Long,
         @Body body: AnswerRequest
     )
+
+    @GET("inquiry/filter/{state}")
+    suspend fun getInquiryListFilter(
+        @Path("state") state: String
+    ): InquiryListResponse
 }
