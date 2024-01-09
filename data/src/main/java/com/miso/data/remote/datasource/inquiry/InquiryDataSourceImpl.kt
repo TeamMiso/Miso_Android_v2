@@ -54,4 +54,12 @@ class InquiryDataSourceImpl @Inject constructor(
                 .sendRequest()
         )
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun getInquiryListFilter(state: String): Flow<InquiryListResponse> = flow {
+        emit(
+            MisoApiHandler<InquiryListResponse>()
+                .httpRequest { api.getInquiryListFilter(state = state) }
+                .sendRequest()
+        )
+    }.flowOn(Dispatchers.IO)
 }
