@@ -16,7 +16,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -34,9 +37,16 @@ import kotlinx.coroutines.launch
 fun SelectFilterBottomSheet(
     coroutineScope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
-    onWaitClick: () -> Unit,
-    onCompleteClick: () -> Unit
+    state: (String) -> Unit
 ) {
+    var waitButtonState by remember { mutableStateOf<ButtonState>(ButtonState.Normal) }
+    var completeButtonState by remember { mutableStateOf<ButtonState>(ButtonState.Normal) }
+
+    if (waitButtonState == ButtonState.Normal && completeButtonState == ButtonState.Normal) state("ALL")
+    else if (waitButtonState == ButtonState.Normal && completeButtonState == ButtonState.OutLine) state("WAIT")
+    else if (waitButtonState == ButtonState.OutLine && completeButtonState == ButtonState.Normal) state("COMPLETE")
+    else state("")
+
     MisoTheme { colors, typography ->
         Column(
             modifier = Modifier
@@ -75,12 +85,16 @@ fun SelectFilterBottomSheet(
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp),
-                    state = ButtonState.OutLine,
+                    state = waitButtonState,
                     text = "검토중"
                 ) {
-                    onWaitClick()
-                    coroutineScope.launch {
-                        bottomSheetState.hide()
+                    waitButtonState = when (waitButtonState) {
+                        is ButtonState.OutLine -> {
+                            ButtonState.Normal
+                        }
+                        is ButtonState.Normal -> {
+                            ButtonState.OutLine
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.width(8.dp))
@@ -88,11 +102,16 @@ fun SelectFilterBottomSheet(
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp),
+                    state = completeButtonState,
                     text = "답변 완료"
                 ) {
-                    onCompleteClick()
-                    coroutineScope.launch {
-                        bottomSheetState.hide()
+                    completeButtonState = when (completeButtonState) {
+                        is ButtonState.OutLine -> {
+                            ButtonState.Normal
+                        }
+                        is ButtonState.Normal -> {
+                            ButtonState.OutLine
+                        }
                     }
                 }
             }
