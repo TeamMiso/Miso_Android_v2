@@ -63,11 +63,6 @@ fun LoginScreen(
     var isEmailError by remember { mutableStateOf(false) }
     var isPasswordError by remember { mutableStateOf(false) }
     var errorText by remember { mutableStateOf("") }
-    var isButtonClick by remember { mutableStateOf(false) }
-
-    LaunchedEffect(isButtonClick) {
-        viewModel.initLogIn()
-    }
 
     Column(
         modifier = Modifier
@@ -117,7 +112,6 @@ fun LoginScreen(
         MisoButton(
             text = "로그인",
         ) {
-            isButtonClick = !isButtonClick
             if (email.isNotBlank() && password.isNotBlank()) {
                 onLoginClick(
                     AuthLogInRequestModel(

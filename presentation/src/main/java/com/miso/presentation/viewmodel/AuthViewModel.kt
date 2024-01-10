@@ -56,6 +56,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun authLogIn(body: AuthLogInRequestModel) = viewModelScope.launch {
+        _authLogInResponse.value = Event.Loading
         authLogInUseCase(
             body = body
         ).onSuccess {
@@ -67,10 +68,6 @@ class AuthViewModel @Inject constructor(
         }.onFailure {
             _authLogInResponse.value = it.errorHandling()
         }
-    }
-
-    fun initLogIn() {
-        _authLogInResponse.value = Event.Loading
     }
 
     fun saveToken(token: AuthLogInResponseModel) = viewModelScope.launch {
