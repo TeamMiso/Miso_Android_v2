@@ -52,8 +52,7 @@ fun InquiryListScreen(
     LaunchedEffect("InquiryListDetail") {
         getInquiryListDetail(
             inquiryViewModel = inquiryViewModel,
-            notificationViewModel = notificationViewModel,
-            onInquiryListDetailClick = { onInquiryListDetailClick() }
+            notificationViewModel = notificationViewModel
         )
     }
 
@@ -101,6 +100,7 @@ fun InquiryListScreen(
             viewModel = inquiryViewModel,
             onItemClick = { id ->
                 inquiryViewModel.getInquiryListDetail(id = id)
+                onInquiryListDetailClick()
             }
         )
     }
@@ -119,7 +119,6 @@ suspend fun getInquiryList(
 suspend fun getInquiryListDetail(
     inquiryViewModel: InquiryViewModel,
     notificationViewModel: NotificationViewModel,
-    onInquiryListDetailClick: () -> Unit
 ) {
     inquiryViewModel.getInquiryListDetailResponse.collect {
         if (it is Event.Success) {
@@ -127,8 +126,6 @@ suspend fun getInquiryListDetail(
             if (inquiryViewModel.inquiryListDetail.value.inquiryStatus == "COMPLETE") {
                 notificationViewModel.getAnswer(id = inquiryViewModel.inquiryListDetail.value.id)
             }
-            onInquiryListDetailClick()
-            inquiryViewModel.initInquiryListDetail()
         }
     }
 }

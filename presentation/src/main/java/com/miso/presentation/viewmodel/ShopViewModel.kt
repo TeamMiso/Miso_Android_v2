@@ -56,7 +56,13 @@ class ShopViewModel @Inject constructor(
             }
     }
 
+    fun saveShopList(data: List<ShopListModel>) {
+        shopList.clear()
+        shopList.addAll(data)
+    }
+
     fun shopListDetail(id: Long) = viewModelScope.launch {
+        _shopListDetailResponse.value = Event.Loading
         shopListDetailUseCase(id = id)
             .onSuccess {
                 it.catch { remoteError ->
@@ -67,15 +73,6 @@ class ShopViewModel @Inject constructor(
             }.onFailure {
                 _shopListDetailResponse.value = it.errorHandling()
             }
-    }
-
-    fun initShopListDetail() {
-        _shopListDetailResponse.value = Event.Loading
-    }
-
-    fun saveShopList(data: List<ShopListModel>) {
-        shopList.clear()
-        shopList.addAll(data)
     }
 
     fun saveShopListDetail(data: ShopListDetailResponseModel) {

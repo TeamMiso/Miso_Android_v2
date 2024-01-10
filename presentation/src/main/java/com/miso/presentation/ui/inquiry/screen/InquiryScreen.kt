@@ -157,11 +157,7 @@ fun InquiryScreen(
                     },
                     onBackClick = {
                         viewModel.isCamera.value = false
-                        navController.navigate(MainPage.Search.value) {
-                            popUpTo(MainPage.Search.value) {
-                                inclusive = true
-                            }
-                        }
+                        navController.popBackStack()
                     },
                     isUser = true
                 )
@@ -207,7 +203,6 @@ fun InquiryScreen(
                         lifecycleScope.launch {
                             inquiry(
                                 viewModel = viewModel,
-                                navController = navController,
                                 errorText = {
                                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                                 },
@@ -271,7 +266,6 @@ fun InquiryScreen(
 
 suspend fun inquiry(
     viewModel: InquiryViewModel,
-    navController: NavController,
     onSuccess: () -> Unit,
     errorText: (errorText: String) -> Unit,
     progressState: (progressState: Boolean) -> Unit
