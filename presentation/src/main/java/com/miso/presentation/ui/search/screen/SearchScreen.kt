@@ -29,6 +29,7 @@ import com.miso.presentation.viewmodel.util.Event
 import com.miso.design_system.component.chip.MisoChip
 import com.miso.design_system.component.text.MisoLogoTitleText
 import com.miso.design_system.component.textfield.MisoSearchTextField
+import com.miso.design_system.R
 import com.miso.presentation.ui.search.component.NoSearchText
 import com.miso.presentation.ui.search.component.SearchList
 import com.miso.presentation.ui.search.component.SearchListItem
@@ -49,7 +50,6 @@ fun SearchScreen(
     lifecycleScope: CoroutineScope,
     onInquiryCamera: () -> Unit,
     onSearchableListClick: () -> Unit,
-    onResultClick: () -> Unit,
     onTodayEnvironmentTipClick: () -> Unit
 ) {
     LaunchedEffect(inquiryViewModel.isCamera.value) {
@@ -111,7 +111,7 @@ fun SearchScreen(
                 MisoLogoTitleText()
                 MisoChip(
                     text = "검색 가능 목록",
-                    icon = com.miso.design_system.R.drawable.ic_menu
+                    icon = R.drawable.ic_menu
                 ) {
                     viewModel.searchableList()
                     onSearchableListClick()
@@ -160,7 +160,6 @@ fun SearchScreen(
                     ) {
                         viewModel.saveSearchHistory(viewModel.search.value)
                         viewModel.result(viewModel.search.value.recyclablesType)
-                        onResultClick()
                     }
                 }
             }

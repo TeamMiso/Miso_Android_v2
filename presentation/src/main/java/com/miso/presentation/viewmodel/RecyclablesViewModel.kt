@@ -85,6 +85,10 @@ class RecyclablesViewModel @Inject constructor(
             }
     }
 
+    fun saveSearch(data: SearchResponseModel) {
+        search.value = data
+    }
+
     fun searchableList() = viewModelScope.launch {
         searchableListUseCase()
             .onSuccess {
@@ -98,7 +102,13 @@ class RecyclablesViewModel @Inject constructor(
             }
     }
 
+    fun saveSearchableList(data: List<SearchableListModel>) {
+        recyclableList.clear()
+        recyclableList.addAll(data)
+    }
+
     fun result(recyclablesType: String) = viewModelScope.launch {
+        _resultResponse.value = Event.Loading
         resultUseCase(recyclablesType = recyclablesType)
             .onSuccess {
                 it.catch { remoteError ->
@@ -109,6 +119,10 @@ class RecyclablesViewModel @Inject constructor(
             }.onFailure {
                 _resultResponse.value = it.errorHandling()
             }
+    }
+
+    fun saveResult(data: ResultResponseModel) {
+        result.value = data
     }
 
     fun saveSearchHistory(searchHistory: SearchResponseModel) = viewModelScope.launch {
@@ -132,23 +146,6 @@ class RecyclablesViewModel @Inject constructor(
             }.onFailure {
                 _getSearchHistoryResponse.value = it.errorHandling()
             }
-    }
-
-    fun saveSearch(data: SearchResponseModel) {
-        search.value = data
-    }
-
-    fun saveSearchableList(data: List<SearchableListModel>) {
-        recyclableList.clear()
-        recyclableList.addAll(data)
-    }
-
-    fun saveResult(data: ResultResponseModel) {
-        result.value = data
-    }
-
-    fun initResult() {
-        _resultResponse.value = Event.Loading
     }
 
     fun saveSearchHistory(data: List<SearchResponseModel>) {

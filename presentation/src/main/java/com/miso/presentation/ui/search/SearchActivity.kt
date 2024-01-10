@@ -103,7 +103,6 @@ class SearchActivity : BaseActivity() {
                 if (it is Event.Success) {
                     recyclablesViewModel.saveResult(it.data!!)
                     navController.navigate(SubPage.Result.value)
-                    recyclablesViewModel.initResult()
                 }
             }
         }
@@ -188,7 +187,6 @@ class SearchActivity : BaseActivity() {
                                     inquiryViewModel = inquiryViewModel,
                                     lifecycleScope = lifecycleScope,
                                     onSearchableListClick = { navController.navigate(SubPage.SearchableList.value) },
-                                    onResultClick = { navController.navigate(SubPage.Result.value) },
                                     onInquiryCamera = { navController.navigate(SubPage.Inquiry.name) },
                                     onTodayEnvironmentTipClick = { navController.navigate(SubPage.TodayEnvironmentTip.value) }
                                 )
