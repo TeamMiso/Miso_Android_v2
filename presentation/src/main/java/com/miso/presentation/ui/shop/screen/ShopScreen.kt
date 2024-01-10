@@ -35,8 +35,7 @@ fun ShopScreen(
 
     LaunchedEffect("ShopListDetail") {
         shopListDetail(
-            viewModel = viewModel,
-            onShopDetailClick = { onShopDetailClick() }
+            viewModel = viewModel
         )
     }
 
@@ -66,6 +65,7 @@ fun ShopScreen(
             viewModel = viewModel,
             onItemClick = { id ->
                 viewModel.shopListDetail(id = id)
+                onShopDetailClick()
             }
         )
     }
@@ -82,14 +82,11 @@ suspend fun shopList(
 }
 
 suspend fun shopListDetail(
-    viewModel: ShopViewModel,
-    onShopDetailClick: () -> Unit
+    viewModel: ShopViewModel
 ) {
     viewModel.shopListDetailResponse.collect {
         if (it is Event.Success) {
             viewModel.saveShopListDetail(it.data!!)
-            onShopDetailClick()
-            viewModel.initShopListDetail()
         }
     }
 }
