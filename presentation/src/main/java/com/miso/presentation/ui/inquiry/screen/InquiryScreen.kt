@@ -157,11 +157,7 @@ fun InquiryScreen(
                     },
                     onBackClick = {
                         viewModel.isCamera.value = false
-                        navController.navigate(MainPage.Search.value) {
-                            popUpTo(MainPage.Search.value) {
-                                inclusive = true
-                            }
-                        }
+                        navController.popBackStack()
                     },
                     isUser = true
                 )

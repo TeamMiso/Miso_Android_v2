@@ -101,6 +101,7 @@ class InquiryViewModel @Inject constructor(
     }
 
     fun getInquiryListDetail(id: Long) = viewModelScope.launch {
+        _getInquiryListDetailResponse.value = Event.Loading
         getInquiryListDetailUseCase(id = id)
             .onSuccess {
                 it.catch { remoteError ->
@@ -111,10 +112,6 @@ class InquiryViewModel @Inject constructor(
             }.onFailure {
                 _getInquiryListDetailResponse.value = it.errorHandling()
             }
-    }
-
-    fun initInquiryListDetail() {
-        _getInquiryListDetailResponse.value = Event.Loading
     }
 
     fun saveInquiryListDetail(data: InquiryListDetailResponseModel) {
