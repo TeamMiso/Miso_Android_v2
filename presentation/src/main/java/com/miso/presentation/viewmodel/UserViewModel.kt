@@ -58,6 +58,10 @@ class UserViewModel @Inject constructor(
             }
     }
 
+    fun saveUserInfo(data: UserInfoResponseModel) {
+        userInfo.value = data
+    }
+
     fun getPoint() = viewModelScope.launch {
         getPointUseCase()
             .onSuccess {
@@ -71,6 +75,10 @@ class UserViewModel @Inject constructor(
             }
     }
 
+    fun savePoint(data: PointResponseModel) {
+        userInfo.value.point = data.point
+    }
+
     fun givePoint() = viewModelScope.launch {
         givePointUseCase()
             .onSuccess {
@@ -82,12 +90,5 @@ class UserViewModel @Inject constructor(
             }.onFailure { error ->
                 _givePointResponse.value = error.errorHandling()
             }
-    }
-    fun saveUserInfo(data: UserInfoResponseModel) {
-        userInfo.value = data
-    }
-
-    fun savePoint(data: PointResponseModel) {
-        userInfo.value.point = data.point
     }
 }

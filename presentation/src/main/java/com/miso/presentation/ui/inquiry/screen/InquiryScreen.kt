@@ -203,7 +203,6 @@ fun InquiryScreen(
                         lifecycleScope.launch {
                             inquiry(
                                 viewModel = viewModel,
-                                navController = navController,
                                 errorText = {
                                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                                 },
@@ -267,7 +266,6 @@ fun InquiryScreen(
 
 suspend fun inquiry(
     viewModel: InquiryViewModel,
-    navController: NavController,
     onSuccess: () -> Unit,
     errorText: (errorText: String) -> Unit,
     progressState: (progressState: Boolean) -> Unit
