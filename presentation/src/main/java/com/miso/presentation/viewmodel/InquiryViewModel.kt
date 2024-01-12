@@ -48,6 +48,9 @@ class InquiryViewModel @Inject constructor(
     private val _getInquiryListFilterResponse = MutableStateFlow<Event<InquiryListResponseModel>>(Event.Loading)
     val getInquiryListFilterResponse = _getInquiryListFilterResponse.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     var isCamera = mutableStateOf(false)
 
     var byteArray = mutableStateOf(ByteArrayState())
@@ -93,6 +96,7 @@ class InquiryViewModel @Inject constructor(
             }.onFailure {
                 _getInquiryListResponse.value = it.errorHandling()
             }
+        _isRefreshing.value = false
     }
 
     fun saveInquiryList(data: List<InquiryListModel>) {
@@ -146,5 +150,6 @@ class InquiryViewModel @Inject constructor(
             }.onFailure {
                 _getInquiryListFilterResponse.value = it.errorHandling()
             }
+        _isRefreshing.value = false
     }
 }
