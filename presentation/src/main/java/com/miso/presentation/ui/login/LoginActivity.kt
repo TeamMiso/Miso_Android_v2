@@ -82,6 +82,7 @@ class LoginActivity : BaseActivity() {
                     SignUpScreen(
                         focusManager = LocalFocusManager.current,
                         onBackClick = { navController.popBackStack() },
+                        viewModel = authViewModel,
                         onVerificationClick = { navController.navigate(LoginPage.Verification.value) },
                         onSignUpClick = { body ->
                             authViewModel.authSignUp(body = body)

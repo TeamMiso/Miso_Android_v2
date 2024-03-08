@@ -1,5 +1,7 @@
 package com.miso.presentation.ui.sign_up.screen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
@@ -20,10 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miso.design_system.component.button.MisoBackButton
 import com.miso.design_system.component.button.MisoButton
@@ -33,14 +34,18 @@ import com.miso.design_system.component.textfield.MisoTextField
 import com.miso.domain.model.auth.request.AuthSignUpRequestModel
 import com.miso.presentation.ui.util.isEmailValid
 import com.miso.presentation.ui.util.keyboardAsState
+import com.miso.presentation.viewmodel.AuthViewModel
+import com.miso.presentation.viewmodel.util.Event
 
 @Composable
 fun SignUpScreen(
     focusManager: FocusManager,
     onBackClick: () -> Unit,
+    viewModel: AuthViewModel,
     onVerificationClick: () -> Unit,
     onSignUpClick: (body: AuthSignUpRequestModel) -> Unit
 ) {
+    val context = LocalContext.current
     val isKeyboardOpen by keyboardAsState()
 
     var sizeState by remember { mutableStateOf(0.112f) }
@@ -57,6 +62,16 @@ fun SignUpScreen(
             sizeState2 = 0.1f
             focusManager.clearFocus()
         }
+    }
+
+    LaunchedEffect("SignUp") {
+        signUp(
+            context = context,
+            viewModel = viewModel,
+            onSuccess = {
+                onVerificationClick()
+            }
+        )
     }
 
     var email by remember { mutableStateOf("") }
@@ -148,20 +163,32 @@ fun SignUpScreen(
                             passwordCheck = confirmPassword
                         )
                     )
-                    onVerificationClick()
                 }
             }
         }
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun SignUpScreenPreView() {
-    SignUpScreen(
-        focusManager = LocalFocusManager.current,
-        onBackClick = {},
-        onVerificationClick = {},
-        onSignUpClick = {}
-    )
+suspend fun signUp(
+    context: Context,
+    viewModel: AuthViewModel,
+    onSuccess: () -> Unit,
+) {
+    viewModel.authSignUpResponse.collect {
+        when (it) {
+            is Event.Loading -> Unit
+
+            is Event.Success -> {
+                onSuccess()
+            }
+
+            is Event.Conflict -> {
+                Toast.makeText(context, "이미 가입된 이메일 입니다.", Toast.LENGTH_LONG).show()
+            }
+
+            else -> {
+                Toast.makeText(context, "알 수 없는 에러.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 }
