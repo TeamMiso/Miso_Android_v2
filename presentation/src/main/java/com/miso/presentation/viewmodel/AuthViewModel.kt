@@ -42,6 +42,7 @@ class AuthViewModel @Inject constructor(
     val logoutResponse = _logoutResponse.asStateFlow()
 
     fun authSignUp(body: AuthSignUpRequestModel) = viewModelScope.launch {
+        _authSignUpResponse.value = Event.Loading
         authSignUpUseCase(
             body = body
         ).onSuccess {
